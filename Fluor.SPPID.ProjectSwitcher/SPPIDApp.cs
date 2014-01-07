@@ -7,7 +7,8 @@ namespace Fluor.SPPID.ProjectSwitcher
         public string AppName { get; set; }
         public string ParentApp { get; set; }
         public string Exe { get; set; }
-
+        public string ExeFullPath { get; set; }
+ 
         private bool isChecked;
         public bool IsChecked
         {

@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
@@ -110,7 +111,6 @@ namespace Fluor.SPPID.ProjectSwitcher
                     "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
                 throw;
             }
-            
         }
 
         /// <summary>
@@ -135,11 +135,11 @@ namespace Fluor.SPPID.ProjectSwitcher
                     //SET THE INSTALLATION PATH BASED ON THE PARENT APPLICATION -- DRAWING MANAGER IS INSTALLED UNDER THE P&ID WORKSTATION DIRECTORY SO ITS PARENT IS "SPPID"
                     if (sa.ParentApp == "SPENG")
                     {
-                        sa.Exe = sa.Exe.Insert(0, spemInstallPath);
+                        sa.ExeFullPath = spemInstallPath + "\\Program\\" + sa.Exe;
                     }
                     else if (sa.ParentApp == "SPPID")
                     {
-                        sa.Exe = sa.Exe.Insert(0, sppidInstallPath);
+                        sa.ExeFullPath = sppidInstallPath + "\\Program\\" + sa.Exe;
                     }
 
                     //IF THE APPLICATION IS MARKED AS "ISSELECTED = TRUE" THEN SET THE APPLICATION CHECKBOX TO CHECKED
@@ -173,6 +173,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                 if (sppidProject.IniFile == sppidIniPath && sppidProject.PlantName == sppidPlantName)
                 {
                     lstProjects.SelectedItem = sppidProject;
+                    sppidProject.IsActiveProject = true;
                 }
             }
         }
@@ -187,45 +188,92 @@ namespace Fluor.SPPID.ProjectSwitcher
             CloseAndOpenApplications();
         }
 
+        /// <summary>
+        /// Closes any open applications and opens new ones.
+        /// </summary>
         private async void CloseAndOpenApplications()
         {
             if (lstProjects.SelectedItem != null)
             {
-                SPPIDProject sp = (SPPIDProject)lstProjects.SelectedItem;
+                SPPIDProject sppidProject = (SPPIDProject)lstProjects.SelectedItem;
 
                 Process p = new Process();
 
+                //SHOW STATUS GRID WHICH COVERS ALL CONTROLS
                 gdStatus.Visibility = System.Windows.Visibility.Visible;
 
-                if (File.Exists("CheckRunning.exe"))
+                //ONLY CLOSE OPEN APPLICATIONS IF THE SELECTED PROJECT IS NOT THE ACTIVE PROJECT
+                if (sppidProject.IsActiveProject != true)
                 {
-                    //CLOSE OPEN APPLICATIONS
-                    tbStatus.Text = "closing applications";
-                    bool closeResult = await CloseApplicationsAsync(p);
-                }
-                else
-                {
-                    MessageBox.Show("CheckRunning.exe is missing from the source directory. Existing open SPENG and/or SPPID applications " +
-                        "will not be closed.\n\nThe active project will be switched and new applications opened.", "Cannot Close Open Applications", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (File.Exists("CheckRunning.exe"))
+                    {
+                        //CLOSE OPEN APPLICATIONS
+                        tbStatus.Text = "closing applications";
+                        bool closeResult = await CloseApplicationsAsync(p);
+                    }
+                    else
+                    {
+                        MessageBox.Show("CheckRunning.exe is missing from the source directory. Existing open SPENG and/or SPPID applications " +
+                            "will not be closed.\n\nThe active project will be switched and new applications opened.", "Cannot Close Open Applications", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
 
-                //SET INI PATH AND PLANT NAME IN THE SMARTPLANTV4.INI
-                _sppidIni.IniWriteValue("SmartPlant Manager", "SiteServer", sp.IniFile);
-                _sppidIni.IniWriteValue("SmartPlant Manager", "ActivePlant", sp.PlantName);
-                _sppidIni.IniWriteValue("SmartPlant Manager", "ActiveParentPlant", sp.PlantName);
-
+                ChangeActiveProject(sppidProject);
+               
                 tbStatus.Text = "opening applications";
+
+                //OPEN NEW APPLICATIONS
                 bool openResult = await OpenApplicationsAsync(p);
                 
+                //HIDE THE STATUS GRID
                 gdStatus.Visibility = System.Windows.Visibility.Hidden;
             }
         }
 
+        private void ChangeActiveProject(SPPIDProject selectedSppidProject)
+        {
+            if (selectedSppidProject.IsActiveProject == false)
+            {
+                selectedSppidProject.IsActiveProject = true;
+                foreach (SPPIDProject sppidProject in lstProjects.Items)
+                {
+                    if (sppidProject.ProjectName != selectedSppidProject.ProjectName)
+                    {
+                        sppidProject.IsActiveProject = false;
+                    }
+                }
+
+                //SELECTED PROJECT IS NOT THE CURRENT ACTIVE PROJECT SO CHANGE CONNECTION DETAILS IN THE SMARTPLANTV4.INI
+                ChangeSmartPlantv4INI(selectedSppidProject);
+            }
+        }
+
+        /// <summary>
+        /// Set ini plant and plant name in the smartplantv4.ini.
+        /// </summary>
+        /// <param name="sppidProject">The sppid project.</param>
+        private void ChangeSmartPlantv4INI(SPPIDProject sppidProject)
+        {
+            _sppidIni.IniWriteValue("SmartPlant Manager", "SiteServer", sppidProject.IniFile);
+            _sppidIni.IniWriteValue("SmartPlant Manager", "ActivePlant", sppidProject.PlantName);
+            _sppidIni.IniWriteValue("SmartPlant Manager", "ActiveParentPlant", sppidProject.PlantName);
+        }
+
+        /// <summary>
+        /// Closes the applications asynchronous.
+        /// </summary>
+        /// <param name="p">The process.</param>
+        /// <returns></returns>
         private Task<bool> CloseApplicationsAsync(Process p)
         {
             return Task.Run<bool>(() => ClosingApplications(p));
         }
 
+        /// <summary>
+        /// Closes the applications.
+        /// </summary>
+        /// <param name="p">The process.</param>
+        /// <returns></returns>
         private bool ClosingApplications(Process p)
         {
             p.StartInfo.FileName = "CheckRunning.exe";
@@ -235,28 +283,39 @@ namespace Fluor.SPPID.ProjectSwitcher
         }
 
         /// <summary>
-        /// Opens each selected application.
+        /// Opens the applications asynchronous.
         /// </summary>
-        /// <param name="p">The process.</param>
+        /// <param name="p">The p.</param>
+        /// <returns></returns>
         private Task<bool> OpenApplicationsAsync(Process p)
         {
             return Task.Run<bool>(() => OpeningApplications(p));
         }
 
+        /// <summary>
+        /// Opens the applications.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <returns></returns>
         private bool OpeningApplications(Process p)
         {
             try
             {
                 int i = 0;
-                foreach (SPPIDApp sa in _sppidApplicationCollection)
+                foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
                 {
-                    if (sa.IsChecked)
-                    {
-                        p = new Process();
-                        p.StartInfo.FileName = sa.Exe;
-                        p.Start();
+                    if (sppidApp.IsChecked)
+                    {                       
+                        //CHECK IF APPLICATION IS ALREADY OPEN
+                        Process[] processName = Process.GetProcessesByName(sppidApp.Exe.Replace(".exe", ""));
 
-                        i += 1;
+                        if (processName.Length == 0)
+                        {
+                            p = new Process();
+                            p.StartInfo.FileName = sppidApp.ExeFullPath;
+                            p.Start();
+                            i += 1;
+                        }
                     }
                 }
                 System.Threading.Thread.Sleep(3000 * i);
@@ -341,7 +400,6 @@ namespace Fluor.SPPID.ProjectSwitcher
                         sppidApp.IsChecked = isChecked;
                     }
                 }
-                
             }
         }
 
@@ -380,6 +438,34 @@ namespace Fluor.SPPID.ProjectSwitcher
                 }
                 p.StartInfo.Arguments = argument;
                 p.Start();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSettings control. Opens the sppid projects xml file
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "SPPIDProjects.xml";
+            p.Start();
+        }
+
+        /// <summary>
+        /// Handles the SelectionChanged event of the lstProjects control. Changes the plant name label depending on which project is selected.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        private void lstProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView lv = (ListView)sender;
+            SPPIDProject sppidProject = (SPPIDProject)lv.SelectedItem;
+
+            if (sppidProject != null)
+            {
+                lblPlantName.DataContext = sppidProject;
             }
         }
     }
