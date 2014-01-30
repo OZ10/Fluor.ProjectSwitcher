@@ -4,25 +4,6 @@
         xmlns:local="clr-namespace:Fluor.SPPID.ProjectSwitcher"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
         Title="SPPID PROJECT SWITCHER" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="380" MinWidth="500" ShowTitleBar="False">
-    <Controls:MetroWindow.Resources>
-        <DataTemplate x:Key="projectTemplate">
-            <StackPanel Orientation="Horizontal">
-                <Rectangle Width="5" Fill="{Binding BackgroundColor}" />
-                <Label Content="{Binding ProjectName}"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="applicationTemplate">
-            <CheckBox Content="{Binding AppName}" IsChecked="{Binding IsChecked}" Margin="5,0,0,0"/>
-        </DataTemplate>
-        <DataTemplate x:Key="separatorTemplate">
-            <Separator Margin="5,0,5,0" IsEnabled="False"/>
-        </DataTemplate>
-        <DataTemplate x:Key="headerTemplate">
-            <Label Content="{Binding AppName}" FontSize="12" FontStyle="Normal" FontWeight="Bold" Margin="25,0,0,0"/>
-        </DataTemplate>
-
-        <local:ListViewTemplateSelector x:Key="ListViewTemplateSelector" ProjectTemplate="{StaticResource projectTemplate}" ApplicationTemplate="{StaticResource applicationTemplate}" SeparatorTemplate="{StaticResource separatorTemplate}" HeaderTemplate="{StaticResource headerTemplate}"/>
-    </Controls:MetroWindow.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250"/>
@@ -33,9 +14,9 @@
             <RowDefinition />
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Label Content="Projects" FontStyle="Italic" FontSize="20"/>
-        <Label Content="Applications" Grid.Column="2" FontStyle="Italic" FontSize="20"/>
-        <ListView Name="lstProjects" BorderThickness="0,2,2,0" Grid.Row="1" BorderBrush="#FF41B1E1" SelectionChanged="lstProjects_SelectionChanged" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}">
+        <Label Content="Projects" FontSize="20"/>
+        <Label Content="Applications" Grid.Column="2" FontSize="20"/>
+        <ListView Name="lstProjects" BorderThickness="0,2,2,0" Grid.Row="1" Padding="0,2,0,0" BorderBrush="#FF41B1E1" SelectionChanged="lstProjects_SelectionChanged" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}" ItemContainerStyle="{DynamicResource MetroListViewItem}">
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="miOpenEngineeringManagerPath" Header="open engineering manager folder" Click="OpenFolder_Click">
@@ -51,7 +32,12 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        <ListView Name="lstApps" Grid.Column="2" Grid.Row="1" BorderBrush="#FF41B1E1" BorderThickness="0,2,0,0" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}">
+        <ListView Name="lstApps" Grid.Column="2" Grid.Row="1" BorderBrush="#FF41B1E1" BorderThickness="0,2,0,0" Padding="0,5,0,0" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}" ItemContainerStyle="{DynamicResource MetroListViewItem}">
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="ListViewItem.Visibility" Value="{Binding IsVisible}"/>
+                </Style>
+            </ListView.ItemContainerStyle>-->
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="miSelectAll" Header="select all" Click="MenuItem_Click">
@@ -83,6 +69,20 @@
         </Button>
         <Button Name="btnSettings" Grid.ColumnSpan="2" Grid.Row="2" Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnSettings_Click">
             <Path Stretch="Uniform" Fill="#FF41B1E1" Data="{Binding Data, Source={StaticResource SettingsIcon}}"/>
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="miCloseAllApps" Header="close all open apps" Click="miCloseAllApps_Click">
+                        <MenuItem.Icon>
+                            <Path Fill="#FF41B1E1" Width="15" Height="15" Stretch="Uniform" Data="{Binding Data, Source={StaticResource CloseIcon}}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="miAbout" Header="about" Click="miAbout_Click">
+                        <MenuItem.Icon>
+                            <Path Fill="#FF41B1E1" Width="15" Height="15" Stretch="Uniform" Data="{Binding Data, Source={StaticResource AboutIcon}}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Button.ContextMenu>
         </Button>
         <Grid Name="gdStatus" Grid.RowSpan="4" Grid.ColumnSpan="2" Visibility="Hidden" >
             <Grid.RowDefinitions>
@@ -96,6 +96,22 @@
             <TextBlock Name="tbStatus" Text="LOADING" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <ProgressBar Grid.Row="2" Margin="10" IsIndeterminate="True"/>
             <Rectangle Fill="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Opacity="0.9" Grid.Row="3"/>
+        </Grid>
+        <Grid Name="gdAbout" Grid.RowSpan="4" Grid.ColumnSpan="2" Visibility="Hidden" MouseLeave="gdAbout_MouseLeave">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="White"/>
+            <TextBlock Text="SPPID project switcher" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Name="tbVersion" Text="VERSION" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Grid.Row="2" Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="False" HorizontalAlignment="Right">
+                <Path Stretch="Uniform"  Data="{Binding Data, Source={StaticResource RebelIcon}}" Fill="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}"/>
+            </Button>
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Grid.Row="4"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>

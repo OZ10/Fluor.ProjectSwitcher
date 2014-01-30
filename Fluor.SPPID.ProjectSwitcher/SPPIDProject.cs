@@ -1,15 +1,52 @@
 ﻿using System.Windows.Media;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
     class SPPIDProject : INotifyPropertyChanged
     {
-        public string ProjectName { get; set; }
-        public string PlantName { get; set; }
+        public string Name { get; set; }
         public string IniFile { get; set; }
         public string PIDPath { get; set; }
         public string SPENGPath { get; set; }
+        public bool IsEnabled { get; set; }
+
+        private Visibility isVisible;
+        public Visibility IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                isVisible = value;
+
+                //IF THE APP IS HIDDEN SET IT TO BE DISABLED
+                if (value == Visibility.Collapsed)
+                {
+                    IsEnabled = false;
+                }
+            }
+        }
+
+        private string plantName;
+        public string PlantName
+        {
+            get
+            {
+                return plantName;
+            }
+            set
+            {
+                plantName = value;
+                if (value == "SEP" | value == "HEADER")
+                {
+                    IsEnabled = false;
+                }
+            }
+        }
 
         private bool _isActiveProject;
         public bool IsActiveProject
@@ -24,32 +61,33 @@ namespace Fluor.SPPID.ProjectSwitcher
 
                 if (_isActiveProject == true)
                 {
-                    this.BackgroundColor = new SolidColorBrush(Colors.Red);
+                    this.HighLightColor = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFC0504D");
                 }
                 else
                 {
-                    this.BackgroundColor = null;
+                    this.HighLightColor = new SolidColorBrush(Colors.Black);
                 }
             }
         }
 
-        private SolidColorBrush _backgroundColor;
-        public SolidColorBrush BackgroundColor
+        private SolidColorBrush _highLightColor;
+        public SolidColorBrush HighLightColor
         {
             get
             {
-                return _backgroundColor;
+                return _highLightColor;
             }
             set
             {
-                _backgroundColor = value;
-                NotifyPropertyChanged("BackgroundColor");
+                _highLightColor = value;
+                NotifyPropertyChanged("HighLightColor");
             }
         }
 
         public SPPIDProject()
         {
-            //this.BackgroundColor = new SolidColorBrush(Colors.Red);
+            IsEnabled = true;
+            this.HighLightColor = new SolidColorBrush(Colors.Black);
         }
 
         private void NotifyPropertyChanged(string propertyName = null)

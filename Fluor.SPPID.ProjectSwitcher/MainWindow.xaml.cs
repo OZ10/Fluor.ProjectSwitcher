@@ -10,6 +10,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Linq;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
@@ -21,7 +22,6 @@ namespace Fluor.SPPID.ProjectSwitcher
         ObservableCollection<SPPIDProject> _sppidProjectsCollection = new ObservableCollection<SPPIDProject>();
         ObservableCollection<SPPIDApp> _sppidApplicationCollection = new ObservableCollection<SPPIDApp>();
         IniFile _sppidIni;
-        BackgroundWorker _bgw;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -29,7 +29,17 @@ namespace Fluor.SPPID.ProjectSwitcher
         public MainWindow()
         {
             InitializeComponent();
-            
+
+            tbVersion.Text = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+
+            SetupEnvironment();
+        }
+
+        /// <summary>
+        /// Setups the environment.
+        /// </summary>
+        private void SetupEnvironment()
+        {
             //CHECK IF THE SMARTPLANTV4.INI EXISTS
             if (File.Exists(Environment.ExpandEnvironmentVariables("%userprofile%\\SmartPlantManager.INI")))
             {
@@ -55,12 +65,6 @@ namespace Fluor.SPPID.ProjectSwitcher
 
                         lstApps.DataContext = _sppidApplicationCollection;
                         lstApps.ItemsSource = _sppidApplicationCollection;
-
-                        //foreach (ListViewItem lvi in lstApps.Items)
-                        //{
-                        //    lvi.Focusable = false;
-                        //}
-
 
                         SelectActiveProject();
                     }
@@ -97,7 +101,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                 for (int i = 0; i < elemList.Count; i++)
                 {
                     sp = new SPPIDProject();
-                    sp.ProjectName = elemList[i].Attributes["NAME"].Value;
+                    sp.Name = elemList[i].Attributes["NAME"].Value;
                     sp.PlantName = elemList[i].Attributes["PLANTNAME"].Value;
                     sp.IniFile = elemList[i].Attributes["INIFILE"].Value;
                     sp.PIDPath = elemList[i].Attributes["PIDPATH"].Value;
@@ -128,7 +132,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                 for (int i = 0; i < elemList.Count; i++)
                 {
                     sa = new SPPIDApp();
-                    sa.AppName = elemList[i].Attributes["NAME"].Value;
+                    sa.Name = elemList[i].Attributes["NAME"].Value;
                     sa.ParentApp = elemList[i].Attributes["PARENTAPP"].Value;
                     sa.Exe = elemList[i].Attributes["EXE"].Value;
 
@@ -146,6 +150,15 @@ namespace Fluor.SPPID.ProjectSwitcher
                     if (elemList[i].Attributes["ISSELECTED"].Value == "TRUE")
                     {
                         sa.IsChecked = true;
+                    }
+
+                    if (elemList[i].Attributes["ISVISIBLE"].Value == "TRUE")
+                    {
+                        sa.IsVisible = Visibility.Visible;
+                    }
+                    else
+                    {
+                        sa.IsVisible = Visibility.Collapsed;
                     }
 
                     //ADD APPLICATION TO COLLECTION
@@ -197,25 +210,23 @@ namespace Fluor.SPPID.ProjectSwitcher
             {
                 SPPIDProject sppidProject = (SPPIDProject)lstProjects.SelectedItem;
 
-                Process p = new Process();
-
                 //SHOW STATUS GRID WHICH COVERS ALL CONTROLS
                 gdStatus.Visibility = System.Windows.Visibility.Visible;
 
                 //ONLY CLOSE OPEN APPLICATIONS IF THE SELECTED PROJECT IS NOT THE ACTIVE PROJECT
                 if (sppidProject.IsActiveProject != true)
                 {
-                    if (File.Exists("CheckRunning.exe"))
-                    {
+                    //if (File.Exists("CheckRunning.exe"))
+                    //{
                         //CLOSE OPEN APPLICATIONS
                         tbStatus.Text = "closing applications";
-                        bool closeResult = await CloseApplicationsAsync(p);
-                    }
-                    else
-                    {
-                        MessageBox.Show("CheckRunning.exe is missing from the source directory. Existing open SPENG and/or SPPID applications " +
-                            "will not be closed.\n\nThe active project will be switched and new applications opened.", "Cannot Close Open Applications", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
+                        bool closeResult = await CloseApplicationsAsync();
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("CheckRunning.exe is missing from the source directory. Existing open SPENG and/or SPPID applications " +
+                    //        "will not be closed.\n\nThe active project will be switched and new applications opened.", "Cannot Close Open Applications", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //}
                 }
 
                 ChangeActiveProject(sppidProject);
@@ -223,7 +234,8 @@ namespace Fluor.SPPID.ProjectSwitcher
                 tbStatus.Text = "opening applications";
 
                 //OPEN NEW APPLICATIONS
-                bool openResult = await OpenApplicationsAsync(p);
+                System.Threading.Thread.Sleep(1000);
+                bool openResult = await OpenApplicationsAsync();
                 
                 //HIDE THE STATUS GRID
                 gdStatus.Visibility = System.Windows.Visibility.Hidden;
@@ -237,7 +249,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                 selectedSppidProject.IsActiveProject = true;
                 foreach (SPPIDProject sppidProject in lstProjects.Items)
                 {
-                    if (sppidProject.ProjectName != selectedSppidProject.ProjectName)
+                    if (sppidProject.Name != selectedSppidProject.Name)
                     {
                         sppidProject.IsActiveProject = false;
                     }
@@ -262,23 +274,31 @@ namespace Fluor.SPPID.ProjectSwitcher
         /// <summary>
         /// Closes the applications asynchronous.
         /// </summary>
-        /// <param name="p">The process.</param>
         /// <returns></returns>
-        private Task<bool> CloseApplicationsAsync(Process p)
+        private Task<bool> CloseApplicationsAsync()
         {
-            return Task.Run<bool>(() => ClosingApplications(p));
+            return Task.Run<bool>(() => ClosingApplications());
         }
 
         /// <summary>
         /// Closes the applications.
         /// </summary>
-        /// <param name="p">The process.</param>
         /// <returns></returns>
-        private bool ClosingApplications(Process p)
+        private bool ClosingApplications()
         {
-            p.StartInfo.FileName = "CheckRunning.exe";
-            p.Start();
-            p.WaitForExit(1000 * 60); //* 1);
+            //CHECK IF AN APPLICATION IS ALREADY OPEN
+            foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
+            {
+                Process[] procs = Process.GetProcessesByName(sppidApp.Exe.Replace(".exe", ""));
+
+                if (procs.Length > 0)
+                {
+                    for (var i = 0; i < procs.Length; i++)
+                    {
+                        procs[i].CloseMainWindow();
+                    }
+                }
+            }
             return true;
         }
 
@@ -287,9 +307,9 @@ namespace Fluor.SPPID.ProjectSwitcher
         /// </summary>
         /// <param name="p">The p.</param>
         /// <returns></returns>
-        private Task<bool> OpenApplicationsAsync(Process p)
+        private Task<bool> OpenApplicationsAsync()
         {
-            return Task.Run<bool>(() => OpeningApplications(p));
+            return Task.Run<bool>(() => OpeningApplications());
         }
 
         /// <summary>
@@ -297,10 +317,11 @@ namespace Fluor.SPPID.ProjectSwitcher
         /// </summary>
         /// <param name="p">The p.</param>
         /// <returns></returns>
-        private bool OpeningApplications(Process p)
+        private bool OpeningApplications()
         {
             try
             {
+                Process p;
                 int i = 0;
                 foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
                 {
@@ -318,7 +339,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                         }
                     }
                 }
-                System.Threading.Thread.Sleep(3000 * i);
+                System.Threading.Thread.Sleep(2000 * i);
                 return true;
             }
             catch (Exception)
@@ -376,15 +397,15 @@ namespace Fluor.SPPID.ProjectSwitcher
 
             foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
             {
-                //IF APPLICATION IS NOT A SEPARATOR
-                if (sppidApp.ParentApp != "SEP" && sppidApp.ParentApp != "HEADER")
+                //IF APPLICATION IS ENABLED I.E. NOT A SEPARATOR, HEADER OR HIDDEN ITEM
+                if (sppidApp.IsEnabled == true)
                 {
                     //IF A MENUITEM HAS BEEN PASSED IN THEN EITHER THE "SELECTONLYTHIS" OR "SELECTALLEXCEPTTHIS" BUTTON HAS BEEN CLICKED
                     if (mi != null)
                     {
                         if (selectedApp != null)
                         {
-                            if (sppidApp.AppName == selectedApp.AppName)
+                            if (sppidApp.Name == selectedApp.Name)
                             {
                                 //ASSIGN THE OPPOSITE ISCHECKED VALUE
                                 sppidApp.IsChecked = !isChecked;
@@ -467,6 +488,21 @@ namespace Fluor.SPPID.ProjectSwitcher
             {
                 lblPlantName.DataContext = sppidProject;
             }
+        }
+
+        private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
+        {
+            CloseApplicationsAsync();
+        }
+
+        private void miAbout_Click(object sender, RoutedEventArgs e)
+        {
+            gdAbout.Visibility = Visibility.Visible;
+        }
+
+        private void gdAbout_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            gdAbout.Visibility = Visibility.Hidden;
         }
     }
 }
