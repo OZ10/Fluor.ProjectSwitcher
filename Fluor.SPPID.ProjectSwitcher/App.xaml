@@ -13,6 +13,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <Color x:Key="AppBlueColor">#FF41B1E1</Color>
+            <SolidColorBrush x:Key="AppBlueBrush" Color="{DynamicResource AppBlueColor}"/>
+
             <Path x:Key="FolderIcon" Data="F1 M 21,30.0001L 55.9999,30.0001L 55.9999,50L 21,50L 21,30.0001 Z M 52,28L 37,28C 38,25 39.4999,24.0001 39.4999,24.0001L 50.75,24C 51.3023,24 52,24.6977 52,25.25L 52,28 Z "/>
             <Path x:Key="PlusIcon" Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z "/>
             <Path x:Key="MinusIcon" Data="F1 M 19,38L 57,38L 57,44L 19,44L 19,38 Z "/>
@@ -31,7 +34,7 @@
                 <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Margin="5,0,0,0" FontSize="14"/>
             </DataTemplate>
             <DataTemplate x:Key="separatorTemplate">
-                <Separator Margin="5,0,5,0" Background="#FF41B1E1"/>
+                <Separator Margin="5,0,5,0" Background="{DynamicResource AppBlueBrush}"/>
             </DataTemplate>
             <DataTemplate x:Key="headerTemplate">
                 <Label Content="{Binding Name}" FontWeight="Bold"/>

@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
-    class SPPIDProject : INotifyPropertyChanged
+    public class SPPIDProject : ViewModelEntity
     {
         public string Name { get; set; }
         public string IniFile { get; set; }
@@ -89,16 +89,5 @@ namespace Fluor.SPPID.ProjectSwitcher
             IsEnabled = true;
             this.HighLightColor = new SolidColorBrush(Colors.Black);
         }
-
-        private void NotifyPropertyChanged(string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
-    class SPPIDApp : INotifyPropertyChanged
+    public class SPPIDApp : ViewModelEntity
     {
         public string Name { get; set; }
         public string Exe { get; set; }
@@ -62,16 +62,5 @@ namespace Fluor.SPPID.ProjectSwitcher
         {
             IsEnabled = true;
         }
-
-        private void NotifyPropertyChanged(string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

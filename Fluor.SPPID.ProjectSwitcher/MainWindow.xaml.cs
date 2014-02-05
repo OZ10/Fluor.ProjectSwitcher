@@ -19,8 +19,6 @@ namespace Fluor.SPPID.ProjectSwitcher
     /// </summary>
     public partial class MainWindow
     {
-        ObservableCollection<SPPIDProject> _sppidProjectsCollection = new ObservableCollection<SPPIDProject>();
-        ObservableCollection<SPPIDApp> _sppidApplicationCollection = new ObservableCollection<SPPIDApp>();
         IniFile _sppidIni;
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace Fluor.SPPID.ProjectSwitcher
         {
             InitializeComponent();
 
-            tbVersion.Text = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+            AboutWindow.tbVersion.Text = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
 
             SetupEnvironment();
         }
@@ -56,15 +54,9 @@ namespace Fluor.SPPID.ProjectSwitcher
                         var xmlDoc = new XmlDocument();
                         xmlDoc.Load("SPPIDProjects.xml");
 
-                        PopulateProjects(xmlDoc);
+                        ViewModel.PopulateProjects(xmlDoc);
 
-                        PopulateApplications(spemInstallPath, sppidInstallPath, xmlDoc);
-
-                        lstProjects.DataContext = _sppidProjectsCollection;
-                        lstProjects.ItemsSource = _sppidProjectsCollection;
-
-                        lstApps.DataContext = _sppidApplicationCollection;
-                        lstApps.ItemsSource = _sppidApplicationCollection;
+                        ViewModel.PopulateApplications(spemInstallPath, sppidInstallPath, xmlDoc);
 
                         SelectActiveProject();
                     }
@@ -89,91 +81,6 @@ namespace Fluor.SPPID.ProjectSwitcher
         }
 
         /// <summary>
-        /// Reads the project details from the xml file and populates the projects listview.
-        /// </summary>
-        /// <param name="xmlDoc">The XML document.</param>
-        private void PopulateProjects(XmlDocument xmlDoc)
-        {
-            try
-            {
-                SPPIDProject sp;
-                XmlNodeList elemList = xmlDoc.GetElementsByTagName("PROJECT");
-                for (int i = 0; i < elemList.Count; i++)
-                {
-                    sp = new SPPIDProject();
-                    sp.Name = elemList[i].Attributes["NAME"].Value;
-                    sp.PlantName = elemList[i].Attributes["PLANTNAME"].Value;
-                    sp.IniFile = elemList[i].Attributes["INIFILE"].Value;
-                    sp.PIDPath = elemList[i].Attributes["PIDPATH"].Value;
-                    sp.SPENGPath = elemList[i].Attributes["SPENGPATH"].Value;
-                    _sppidProjectsCollection.Add(sp);
-                }
-            }
-            catch (NullReferenceException)
-            {
-                MessageBox.Show("The SPPIDProjects section of the configuration XML file contains errors.\n\nMandatory attributes are:\nNAME\nPLANTNAME\nINIFILE\nPIDPATH\nSPENGPATH", 
-                    "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Reads the application details from the xml file and populates the applications listview.
-        /// </summary>
-        /// <param name="spemInstallPath">The spem install path.</param>
-        /// <param name="sppidInstallPath">The sppid install path.</param>
-        /// <param name="xmlDoc">The XML document.</param>
-        private void PopulateApplications(string spemInstallPath, string sppidInstallPath, XmlDocument xmlDoc)
-        {
-            try
-            {
-                SPPIDApp sa;
-                XmlNodeList elemList = xmlDoc.GetElementsByTagName("APP");
-                for (int i = 0; i < elemList.Count; i++)
-                {
-                    sa = new SPPIDApp();
-                    sa.Name = elemList[i].Attributes["NAME"].Value;
-                    sa.ParentApp = elemList[i].Attributes["PARENTAPP"].Value;
-                    sa.Exe = elemList[i].Attributes["EXE"].Value;
-
-                    //SET THE INSTALLATION PATH BASED ON THE PARENT APPLICATION -- DRAWING MANAGER IS INSTALLED UNDER THE P&ID WORKSTATION DIRECTORY SO ITS PARENT IS "SPPID"
-                    if (sa.ParentApp == "SPENG")
-                    {
-                        sa.ExeFullPath = spemInstallPath + "\\Program\\" + sa.Exe;
-                    }
-                    else if (sa.ParentApp == "SPPID")
-                    {
-                        sa.ExeFullPath = sppidInstallPath + "\\Program\\" + sa.Exe;
-                    }
-
-                    //IF THE APPLICATION IS MARKED AS "ISSELECTED = TRUE" THEN SET THE APPLICATION CHECKBOX TO CHECKED
-                    if (elemList[i].Attributes["ISSELECTED"].Value == "TRUE")
-                    {
-                        sa.IsChecked = true;
-                    }
-
-                    if (elemList[i].Attributes["ISVISIBLE"].Value == "TRUE")
-                    {
-                        sa.IsVisible = Visibility.Visible;
-                    }
-                    else
-                    {
-                        sa.IsVisible = Visibility.Collapsed;
-                    }
-
-                    //ADD APPLICATION TO COLLECTION
-                    _sppidApplicationCollection.Add(sa);
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("The SPPIDApps section of the configuration XML file contains errors.\n\nMandatory attributes are:\nNAME\nPARENTAPP\nEXE\nISELECTED",
-                    "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Reads the active (last connected) project from the SmartPlantv4.ini and selects it in the projects listview.
         /// </summary>
         private void SelectActiveProject()
@@ -181,7 +88,7 @@ namespace Fluor.SPPID.ProjectSwitcher
             string sppidIniPath = _sppidIni.IniReadValue("SmartPlant Manager", "SiteServer");
             string sppidPlantName = _sppidIni.IniReadValue("SmartPlant Manager", "ActivePlant");
 
-            foreach (SPPIDProject sppidProject in _sppidProjectsCollection)
+            foreach (SPPIDProject sppidProject in ViewModel.ProjectsCollection)
             {
                 if (sppidProject.IniFile == sppidIniPath && sppidProject.PlantName == sppidPlantName)
                 {
@@ -211,7 +118,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                 SPPIDProject sppidProject = (SPPIDProject)lstProjects.SelectedItem;
 
                 //SHOW STATUS GRID WHICH COVERS ALL CONTROLS
-                gdStatus.Visibility = System.Windows.Visibility.Visible;
+                StatusWindow.Visibility = System.Windows.Visibility.Visible;
 
                 //ONLY CLOSE OPEN APPLICATIONS IF THE SELECTED PROJECT IS NOT THE ACTIVE PROJECT
                 if (sppidProject.IsActiveProject != true)
@@ -219,7 +126,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                     //if (File.Exists("CheckRunning.exe"))
                     //{
                         //CLOSE OPEN APPLICATIONS
-                        tbStatus.Text = "closing applications";
+                        StatusWindow.tbStatus.Text = "closing applications";
                         bool closeResult = await CloseApplicationsAsync();
                     //}
                     //else
@@ -230,15 +137,15 @@ namespace Fluor.SPPID.ProjectSwitcher
                 }
 
                 ChangeActiveProject(sppidProject);
-               
-                tbStatus.Text = "opening applications";
+
+                StatusWindow.tbStatus.Text = "opening applications";
 
                 //OPEN NEW APPLICATIONS
                 System.Threading.Thread.Sleep(1000);
                 bool openResult = await OpenApplicationsAsync();
                 
                 //HIDE THE STATUS GRID
-                gdStatus.Visibility = System.Windows.Visibility.Hidden;
+                StatusWindow.Visibility = System.Windows.Visibility.Hidden;
             }
         }
 
@@ -287,7 +194,7 @@ namespace Fluor.SPPID.ProjectSwitcher
         private bool ClosingApplications()
         {
             //CHECK IF AN APPLICATION IS ALREADY OPEN
-            foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
+            foreach (SPPIDApp sppidApp in ViewModel.ApplicationCollection)
             {
                 Process[] procs = Process.GetProcessesByName(sppidApp.Exe.Replace(".exe", ""));
 
@@ -323,7 +230,7 @@ namespace Fluor.SPPID.ProjectSwitcher
             {
                 Process p;
                 int i = 0;
-                foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
+                foreach (SPPIDApp sppidApp in ViewModel.ApplicationCollection)
                 {
                     if (sppidApp.IsChecked)
                     {                       
@@ -395,7 +302,7 @@ namespace Fluor.SPPID.ProjectSwitcher
                 selectedApp = (SPPIDApp)lstApps.SelectedItem;
             }
 
-            foreach (SPPIDApp sppidApp in _sppidApplicationCollection)
+            foreach (SPPIDApp sppidApp in ViewModel.ApplicationCollection)
             {
                 //IF APPLICATION IS ENABLED I.E. NOT A SEPARATOR, HEADER OR HIDDEN ITEM
                 if (sppidApp.IsEnabled == true)
@@ -497,12 +404,7 @@ namespace Fluor.SPPID.ProjectSwitcher
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
-            gdAbout.Visibility = Visibility.Visible;
-        }
-
-        private void gdAbout_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            gdAbout.Visibility = Visibility.Hidden;
+            AboutWindow.Visibility = Visibility.Visible;
         }
     }
 }
