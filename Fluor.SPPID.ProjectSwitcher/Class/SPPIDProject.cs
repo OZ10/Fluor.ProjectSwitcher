@@ -1,10 +1,10 @@
 ﻿using System.Windows.Media;
-using System.ComponentModel;
 using System.Windows;
+using GalaSoft.MvvmLight;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
-    public class SPPIDProject : ViewModelEntity
+    public class SPPIDProject : ViewModelBase
     {
         public string Name { get; set; }
         public string IniFile { get; set; }
@@ -80,7 +80,7 @@ namespace Fluor.SPPID.ProjectSwitcher
             set
             {
                 _highLightColor = value;
-                NotifyPropertyChanged("HighLightColor");
+                RaisePropertyChanged("HighLightColor");
             }
         }
 

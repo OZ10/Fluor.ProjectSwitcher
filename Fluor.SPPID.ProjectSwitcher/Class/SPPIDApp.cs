@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
+using GalaSoft.MvvmLight;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
-    public class SPPIDApp : ViewModelEntity
+    public class SPPIDApp : ViewModelBase 
     {
         public string Name { get; set; }
         public string Exe { get; set; }
@@ -54,7 +54,7 @@ namespace Fluor.SPPID.ProjectSwitcher
             set
             {
                 isChecked = value;
-                NotifyPropertyChanged("IsChecked");
+                RaisePropertyChanged("IsChecked");
             }
         }
 

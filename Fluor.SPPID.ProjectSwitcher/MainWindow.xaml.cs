@@ -1,16 +1,6 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
+﻿using System.Windows;
 using System.Diagnostics;
-using Ini;
-using System.Xml;
-using Microsoft.Win32;
-using System.IO;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Linq;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
@@ -19,7 +9,13 @@ namespace Fluor.SPPID.ProjectSwitcher
     /// </summary>
     public partial class MainWindow
     {
-        IniFile _sppidIni;
+        public ViewModel.MainViewModel vm
+        {
+            get
+            {
+                return (ViewModel.MainViewModel)DataContext;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -28,74 +24,11 @@ namespace Fluor.SPPID.ProjectSwitcher
         {
             InitializeComponent();
 
+            Messenger.Default.Register<Message.StatusUpdateMessage>(this, UpdateStatusWindow);
+
             AboutWindow.tbVersion.Text = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
 
-            SetupEnvironment();
-        }
-
-        /// <summary>
-        /// Setups the environment.
-        /// </summary>
-        private void SetupEnvironment()
-        {
-            //CHECK IF THE SMARTPLANTV4.INI EXISTS
-            if (File.Exists(Environment.ExpandEnvironmentVariables("%userprofile%\\SmartPlantManager.INI")))
-            {
-                _sppidIni = new IniFile(Environment.ExpandEnvironmentVariables("%userprofile%\\SmartPlantManager.INI"));
-
-                //GET SPENG & SPPID ALL INSTALLATION DIRECTORIES
-                string spemInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\SmartPlant Engineering Manager\CurrentVersion", "PathName", null);
-                string sppidInstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\SmartPlant P&ID\CurrentVersion", "InstallationPath", null);
-
-                if (spemInstallPath != "" || sppidInstallPath != "")
-                {
-                    if (File.Exists("SPPIDProjects.xml"))
-                    {
-                        var xmlDoc = new XmlDocument();
-                        xmlDoc.Load("SPPIDProjects.xml");
-
-                        ViewModel.PopulateProjects(xmlDoc);
-
-                        ViewModel.PopulateApplications(spemInstallPath, sppidInstallPath, xmlDoc);
-
-                        SelectActiveProject();
-                    }
-                    else
-                    {
-                        MessageBox.Show("The configuration file -- SPPIDProjects.xml -- is missing from the source directory.", "Missing XML File", MessageBoxButton.OK, MessageBoxImage.Stop);
-                        this.Close();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("The installation path for either SmartPlant Engineering Manager and/or SmartPlant P&ID cannot be found", "Installation Path", MessageBoxButton.OK, MessageBoxImage.Stop);
-                    this.Close();
-                }
-            }
-            else
-            {
-                MessageBox.Show("SmartPlant Engineering Manager ini file not found in your profile.\n\nPlease open SmartPlant Engineering Manager, manually connect to a project " +
-                    "and then re-run this application.", "Missing INI", MessageBoxButton.OK, MessageBoxImage.Stop);
-                this.Close();
-            }
-        }
-
-        /// <summary>
-        /// Reads the active (last connected) project from the SmartPlantv4.ini and selects it in the projects listview.
-        /// </summary>
-        private void SelectActiveProject()
-        {
-            string sppidIniPath = _sppidIni.IniReadValue("SmartPlant Manager", "SiteServer");
-            string sppidPlantName = _sppidIni.IniReadValue("SmartPlant Manager", "ActivePlant");
-
-            foreach (SPPIDProject sppidProject in ViewModel.ProjectsCollection)
-            {
-                if (sppidProject.IniFile == sppidIniPath && sppidProject.PlantName == sppidPlantName)
-                {
-                    lstProjects.SelectedItem = sppidProject;
-                    sppidProject.IsActiveProject = true;
-                }
-            }
+            vm.SetupEnvironment();
         }
 
         /// <summary>
@@ -105,268 +38,7 @@ namespace Fluor.SPPID.ProjectSwitcher
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void btnOpenProject_Click(object sender, RoutedEventArgs e)
         {
-            CloseAndOpenApplications();
-        }
-
-        /// <summary>
-        /// Closes any open applications and opens new ones.
-        /// </summary>
-        private async void CloseAndOpenApplications()
-        {
-            if (lstProjects.SelectedItem != null)
-            {
-                SPPIDProject sppidProject = (SPPIDProject)lstProjects.SelectedItem;
-
-                //SHOW STATUS GRID WHICH COVERS ALL CONTROLS
-                StatusWindow.Visibility = System.Windows.Visibility.Visible;
-
-                //ONLY CLOSE OPEN APPLICATIONS IF THE SELECTED PROJECT IS NOT THE ACTIVE PROJECT
-                if (sppidProject.IsActiveProject != true)
-                {
-                    //if (File.Exists("CheckRunning.exe"))
-                    //{
-                        //CLOSE OPEN APPLICATIONS
-                        StatusWindow.tbStatus.Text = "closing applications";
-                        bool closeResult = await CloseApplicationsAsync();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("CheckRunning.exe is missing from the source directory. Existing open SPENG and/or SPPID applications " +
-                    //        "will not be closed.\n\nThe active project will be switched and new applications opened.", "Cannot Close Open Applications", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //}
-                }
-
-                ChangeActiveProject(sppidProject);
-
-                StatusWindow.tbStatus.Text = "opening applications";
-
-                //OPEN NEW APPLICATIONS
-                System.Threading.Thread.Sleep(1000);
-                bool openResult = await OpenApplicationsAsync();
-                
-                //HIDE THE STATUS GRID
-                StatusWindow.Visibility = System.Windows.Visibility.Hidden;
-            }
-        }
-
-        private void ChangeActiveProject(SPPIDProject selectedSppidProject)
-        {
-            if (selectedSppidProject.IsActiveProject == false)
-            {
-                selectedSppidProject.IsActiveProject = true;
-                foreach (SPPIDProject sppidProject in lstProjects.Items)
-                {
-                    if (sppidProject.Name != selectedSppidProject.Name)
-                    {
-                        sppidProject.IsActiveProject = false;
-                    }
-                }
-
-                //SELECTED PROJECT IS NOT THE CURRENT ACTIVE PROJECT SO CHANGE CONNECTION DETAILS IN THE SMARTPLANTV4.INI
-                ChangeSmartPlantv4INI(selectedSppidProject);
-            }
-        }
-
-        /// <summary>
-        /// Set ini plant and plant name in the smartplantv4.ini.
-        /// </summary>
-        /// <param name="sppidProject">The sppid project.</param>
-        private void ChangeSmartPlantv4INI(SPPIDProject sppidProject)
-        {
-            _sppidIni.IniWriteValue("SmartPlant Manager", "SiteServer", sppidProject.IniFile);
-            _sppidIni.IniWriteValue("SmartPlant Manager", "ActivePlant", sppidProject.PlantName);
-            _sppidIni.IniWriteValue("SmartPlant Manager", "ActiveParentPlant", sppidProject.PlantName);
-        }
-
-        /// <summary>
-        /// Closes the applications asynchronous.
-        /// </summary>
-        /// <returns></returns>
-        private Task<bool> CloseApplicationsAsync()
-        {
-            return Task.Run<bool>(() => ClosingApplications());
-        }
-
-        /// <summary>
-        /// Closes the applications.
-        /// </summary>
-        /// <returns></returns>
-        private bool ClosingApplications()
-        {
-            //CHECK IF AN APPLICATION IS ALREADY OPEN
-            foreach (SPPIDApp sppidApp in ViewModel.ApplicationCollection)
-            {
-                Process[] procs = Process.GetProcessesByName(sppidApp.Exe.Replace(".exe", ""));
-
-                if (procs.Length > 0)
-                {
-                    for (var i = 0; i < procs.Length; i++)
-                    {
-                        procs[i].CloseMainWindow();
-                    }
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Opens the applications asynchronous.
-        /// </summary>
-        /// <param name="p">The p.</param>
-        /// <returns></returns>
-        private Task<bool> OpenApplicationsAsync()
-        {
-            return Task.Run<bool>(() => OpeningApplications());
-        }
-
-        /// <summary>
-        /// Opens the applications.
-        /// </summary>
-        /// <param name="p">The p.</param>
-        /// <returns></returns>
-        private bool OpeningApplications()
-        {
-            try
-            {
-                Process p;
-                int i = 0;
-                foreach (SPPIDApp sppidApp in ViewModel.ApplicationCollection)
-                {
-                    if (sppidApp.IsChecked)
-                    {                       
-                        //CHECK IF APPLICATION IS ALREADY OPEN
-                        Process[] processName = Process.GetProcessesByName(sppidApp.Exe.Replace(".exe", ""));
-
-                        if (processName.Length == 0)
-                        {
-                            p = new Process();
-                            p.StartInfo.FileName = sppidApp.ExeFullPath;
-                            p.Start();
-                            i += 1;
-                        }
-                    }
-                }
-                System.Threading.Thread.Sleep(2000 * i);
-                return true;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Executable is missing from install directory.\n\nCheck the executable paths in the configuration XML file.", "Executable Missing", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-                //throw;
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the MenuItem control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem mi = (MenuItem)sender;
-
-            if (mi != null)
-            {
-                switch (mi.Name)
-                {
-                    case "miSelectAll":
-                        SelectApplications(true);
-                        break;
-                    case "miSelectNone":
-                        SelectApplications(false);
-                        break;
-                    case "miSelectOnlyThis":
-                        SelectApplications(false, mi);
-                        break;
-                    case "miSelectAllExceptThis":
-                        SelectApplications(true, mi);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Selects / unselects the applications checkboxes.
-        /// </summary>
-        /// <param name="isChecked">if set to <c>true</c> [is checked].</param>
-        /// <param name="mi">The mi.</param>
-        private void SelectApplications(bool isChecked, MenuItem mi = null)
-        {
-            //GET THE SELECTED APPLICATION
-            SPPIDApp selectedApp = null;
-            if (lstApps.SelectedItem != null)
-            {
-                selectedApp = (SPPIDApp)lstApps.SelectedItem;
-            }
-
-            foreach (SPPIDApp sppidApp in ViewModel.ApplicationCollection)
-            {
-                //IF APPLICATION IS ENABLED I.E. NOT A SEPARATOR, HEADER OR HIDDEN ITEM
-                if (sppidApp.IsEnabled == true)
-                {
-                    //IF A MENUITEM HAS BEEN PASSED IN THEN EITHER THE "SELECTONLYTHIS" OR "SELECTALLEXCEPTTHIS" BUTTON HAS BEEN CLICKED
-                    if (mi != null)
-                    {
-                        if (selectedApp != null)
-                        {
-                            if (sppidApp.Name == selectedApp.Name)
-                            {
-                                //ASSIGN THE OPPOSITE ISCHECKED VALUE
-                                sppidApp.IsChecked = !isChecked;
-                            }
-                            else
-                            {
-                                sppidApp.IsChecked = isChecked;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        sppidApp.IsChecked = isChecked;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the Projects context menu.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OpenFolder_Click(object sender, RoutedEventArgs e)
-        {
-            //GETS THE MENU ITEM THAT HAS BEEN CLICKED
-            MenuItem mi = (MenuItem)sender;
-            
-            //GETS THE PROJECT THAT IS CURRENTLY SELECTED
-            SPPIDProject sppidProject = (SPPIDProject)lstProjects.SelectedItem;
-
-            if (sppidProject != null)
-            {
-                string argument = null;
-
-                //OPEN WINDOWS EXPLORER
-                Process p = new Process();
-                p.StartInfo.FileName = "explorer.exe";
-
-                //ADD A DIRECTORY PATH AS AN ARGUMENT
-                switch (mi.Name)
-                {
-                    case "miOpenPIDReferenceData":
-                        argument = sppidProject.PIDPath;
-                        break;
-                    case "miOpenEngineeringManagerPath":
-                        argument = sppidProject.SPENGPath;
-                        break;
-                    default:
-                        break;
-                }
-                p.StartInfo.Arguments = argument;
-                p.Start();
-            }
+            vm.CloseAndOpenApplications();   
         }
 
         /// <summary>
@@ -381,30 +53,20 @@ namespace Fluor.SPPID.ProjectSwitcher
             p.Start();
         }
 
-        /// <summary>
-        /// Handles the SelectionChanged event of the lstProjects control. Changes the plant name label depending on which project is selected.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
-        private void lstProjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListView lv = (ListView)sender;
-            SPPIDProject sppidProject = (SPPIDProject)lv.SelectedItem;
-
-            if (sppidProject != null)
-            {
-                lblPlantName.DataContext = sppidProject;
-            }
-        }
-
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
         {
-            CloseApplicationsAsync();
+            vm.CloseApplicationsAsync();
         }
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
             AboutWindow.Visibility = Visibility.Visible;
+        }
+
+        private void UpdateStatusWindow(Message.StatusUpdateMessage statusUpdateMessage)
+        {
+            StatusWindow.Visibility = statusUpdateMessage.Visibility;
+            StatusWindow.tbStatus.Text = statusUpdateMessage.StatusText;
         }
     }
 }

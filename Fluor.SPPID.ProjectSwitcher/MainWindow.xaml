@@ -2,11 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Fluor.SPPID.ProjectSwitcher"          
+        xmlns:View="clr-namespace:Fluor.SPPID.ProjectSwitcher.View"      
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
-        Title="SPPID PROJECT SWITCHER" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="380" MinWidth="500" ShowTitleBar="False">
-    <Controls:MetroWindow.DataContext>
-        <local:ProjectSwitcherViewModel x:Name="ViewModel"/>
-    </Controls:MetroWindow.DataContext>
+        Title="SPPID PROJECT SWITCHER" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="380" MinWidth="510" ShowTitleBar="False" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" >
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -20,49 +18,9 @@
         </Grid.RowDefinitions>
         <Label Content="Projects" FontSize="20"/>
         <Label Content="Applications" Grid.Column="2" FontSize="20"/>
-        <ListView Name="lstProjects" BorderThickness="0,2,2,0" Grid.Row="1" Padding="0,2,0,0" BorderBrush="{DynamicResource AppBlueBrush}" SelectionChanged="lstProjects_SelectionChanged" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}" ItemContainerStyle="{DynamicResource MetroListViewItem}" ItemsSource="{Binding ProjectsCollection}">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Name="miOpenEngineeringManagerPath" Header="open engineering manager folder" Click="OpenFolder_Click">
-                        <MenuItem.Icon>
-                            <Path Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform" Data="{Binding Data, Source={StaticResource FolderIcon}}"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miOpenPIDReferenceData" Header="open PID reference data folder" Click="OpenFolder_Click">
-                        <MenuItem.Icon>
-                            <Path Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform" Data="{Binding Data, Source={StaticResource FolderIcon}}"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
-        <ListView Name="lstApps" Grid.Column="2" Grid.Row="1" BorderBrush="{DynamicResource AppBlueBrush}" BorderThickness="0,2,0,0" Padding="0,5,0,0" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}" ItemContainerStyle="{DynamicResource MetroListViewItem}" ItemsSource="{Binding ApplicationCollection}">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Name="miSelectAll" Header="select all" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Data="{Binding Data, Source={StaticResource PlusIcon}}" Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miSelectNone" Header="select none" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Data="{Binding Data, Source={StaticResource MinusIcon}}" Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miSelectOnlyThis" Header="select only this" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Data="{Binding Data, Source={StaticResource SelectThisOnlyIcon}}" Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miSelectAllExceptThis" Header="select all except this" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform" Data="{Binding Data, Source={StaticResource SelectAllExceptThisIcon}}"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
-        <Label Name="lblPlantName" Content="{Binding PlantName}" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="12"/>
+        <View:ProjectsUC Grid.Row="1"/>
+        <View:ApplicationsUC Grid.Row="1" Grid.Column="1"/>
+        <Label Name="lblPlantName" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="12" Content="{Binding SelectedSPPIDProject.PlantName}"/>
         <Button Name="btnOpenProject" Grid.ColumnSpan="2" Grid.Row="2" Margin="0,10,0,0" Click="btnOpenProject_Click" Width="50" Height="40" ToolTip="switch project">
             <Path Stretch="Uniform" Fill="{DynamicResource AppBlueBrush}" Data="{Binding Data, Source={StaticResource SwitchProjectIcon}}"/>
         </Button>
