@@ -93,9 +93,6 @@
     <Compile Include="Message\StatusUpdateMessage.cs" />
     <Compile Include="ViewModel\ApplicationsViewModel.cs" />
     <Compile Include="ViewModel\ProjectsViewModel.cs" />
-    <Compile Include="View\AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Class\ListViewTemplateSelector.cs" />
     <Compile Include="Class\ini.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -111,7 +108,7 @@
       <DependentUpon>StatusWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Page Include="View\AboutWindow.xaml">
+    <Page Include="Style\AccentFluor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,9 +166,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon6.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -187,6 +181,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon6.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

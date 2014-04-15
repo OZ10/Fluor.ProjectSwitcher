@@ -6,29 +6,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Applications, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <ListView Name="lstApps" BorderBrush="{DynamicResource AppBlueBrush}" BorderThickness="0,2,0,0" Padding="0,5,0,0" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}" ItemContainerStyle="{DynamicResource MetroListViewItemCustom}" ItemsSource="{Binding ApplicationsCollection}">
+        <ListView Name="lstApps" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="0,2,0,2" Padding="0,5,0,0" ItemTemplateSelector="{StaticResource ListViewTemplateSelector}" ItemContainerStyle="{DynamicResource MetroListViewItemCustom}" ItemsSource="{Binding ApplicationsCollection}">
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Name="miSelectAll" Header="select all" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Data="{Binding Data, Source={StaticResource PlusIcon}}" Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miSelectNone" Header="select none" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Data="{Binding Data, Source={StaticResource MinusIcon}}" Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miSelectOnlyThis" Header="select only this" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Data="{Binding Data, Source={StaticResource SelectThisOnlyIcon}}" Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="miSelectAllExceptThis" Header="select all except this" Click="MenuItem_Click">
-                        <MenuItem.Icon>
-                            <Path Fill="{DynamicResource AppBlueBrush}" Width="15" Height="15" Stretch="Uniform" Data="{Binding Data, Source={StaticResource SelectAllExceptThisIcon}}"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                    <MenuItem Name="miSelectAll" Header="select all" Click="MenuItem_Click" Icon="{DynamicResource PlusIcon}"/>
+                    <MenuItem Name="miSelectNone" Header="select none" Click="MenuItem_Click" Icon="{DynamicResource MinusIcon}"/>
+                    <MenuItem Name="miSelectOnlyThis" Header="select only this" Click="MenuItem_Click" Icon="{DynamicResource SelectThisOnlyIcon}"/>
+                    <MenuItem Name="miSelectAllExceptThis" Header="select all except this" Click="MenuItem_Click" Icon="{DynamicResource SelectAllExceptThisIcon}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

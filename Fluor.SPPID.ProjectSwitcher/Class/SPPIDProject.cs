@@ -61,7 +61,7 @@ namespace Fluor.SPPID.ProjectSwitcher
 
                 if (_isActiveProject == true)
                 {
-                    this.HighLightColor = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFC0504D");
+                    this.HighLightColor = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFC27000");
                 }
                 else
                 {

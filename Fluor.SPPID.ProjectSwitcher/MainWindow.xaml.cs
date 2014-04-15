@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Diagnostics;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Input;
+using System;
 
 namespace Fluor.SPPID.ProjectSwitcher
 {
@@ -26,7 +28,7 @@ namespace Fluor.SPPID.ProjectSwitcher
 
             Messenger.Default.Register<Message.StatusUpdateMessage>(this, UpdateStatusWindow);
 
-            AboutWindow.tbVersion.Text = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+            lblVersion.Content = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
 
             vm.SetupEnvironment();
         }
@@ -48,9 +50,28 @@ namespace Fluor.SPPID.ProjectSwitcher
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            Process p = new Process();
-            p.StartInfo.FileName = "SPPIDProjects.xml";
-            p.Start();
+            flySettings.IsOpen = true;
+        }
+
+        private void recDisable_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //recDisable.Visibility = System.Windows.Visibility.Hidden;
+            flySettings.IsOpen = false;
+            flyAbout.IsOpen = false;
+        }
+
+        private void flyOut_IsOpenChanged(object sender, EventArgs e)
+        {
+            MahApps.Metro.Controls.Flyout fly = (MahApps.Metro.Controls.Flyout)sender;
+
+            if (fly.IsOpen == true)
+            {
+                recDisable.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                recDisable.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
 
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
@@ -60,13 +81,26 @@ namespace Fluor.SPPID.ProjectSwitcher
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
-            AboutWindow.Visibility = Visibility.Visible;
+            flySettings.IsOpen = false;
+            flyAbout.IsOpen = true;
         }
 
         private void UpdateStatusWindow(Message.StatusUpdateMessage statusUpdateMessage)
         {
             StatusWindow.Visibility = statusUpdateMessage.Visibility;
             StatusWindow.tbStatus.Text = statusUpdateMessage.StatusText;
+        }
+
+        private void miViewSettingsFile_Click(object sender, RoutedEventArgs e)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "SPPIDProjects.xml";
+            p.Start();
+        }
+
+        private void flyAbout_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            flyAbout.IsOpen = false;
         }
     }
 }
