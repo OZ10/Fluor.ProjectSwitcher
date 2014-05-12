@@ -26,7 +26,7 @@ namespace Fluor.ProjectSwitcher
         {
             InitializeComponent();
 
-            Messenger.Default.Register<Message.StatusUpdateMessage>(this, UpdateStatusWindow);
+            Messenger.Default.Register<Message.MessageStatusUpdate>(this, UpdateStatusWindow);
 
             lblVersion.Content = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
 
@@ -77,6 +77,7 @@ namespace Fluor.ProjectSwitcher
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
         {
             vm.CloseApplicationsAsync();
+            flySettings.IsOpen = false;
         }
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
@@ -85,7 +86,7 @@ namespace Fluor.ProjectSwitcher
             flyAbout.IsOpen = true;
         }
 
-        private void UpdateStatusWindow(Message.StatusUpdateMessage statusUpdateMessage)
+        private void UpdateStatusWindow(Message.MessageStatusUpdate statusUpdateMessage)
         {
             StatusWindow.Visibility = statusUpdateMessage.Visibility;
             StatusWindow.tbStatus.Text = statusUpdateMessage.StatusText;
@@ -94,8 +95,10 @@ namespace Fluor.ProjectSwitcher
         private void miViewSettingsFile_Click(object sender, RoutedEventArgs e)
         {
             Process p = new Process();
-            p.StartInfo.FileName = "SPPIDProjects.xml";
+            p.StartInfo.FileName = "Fluor.ProjectSwitcher.Projects.xml";
             p.Start();
+
+            flySettings.IsOpen = false;
         }
 
         private void flyAbout_MouseDown(object sender, MouseButtonEventArgs e)

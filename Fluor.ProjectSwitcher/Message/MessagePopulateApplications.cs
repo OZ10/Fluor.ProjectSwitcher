@@ -3,11 +3,11 @@ using Fluor.ProjectSwitcher.Class;
 
 namespace Fluor.ProjectSwitcher.Message
 {
-    public class PopulateApplicationsMessage
+    public class MessagePopulateApplications
     {
         public ObservableCollection<ApplicationBase> ApplicationsCollection { get; set; }
 
-        public PopulateApplicationsMessage(ObservableCollection<ApplicationBase> applicationsCollection)
+        public MessagePopulateApplications(ObservableCollection<ApplicationBase> applicationsCollection)
         {
             ApplicationsCollection = applicationsCollection;
         }

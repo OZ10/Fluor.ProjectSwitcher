@@ -9,18 +9,18 @@ namespace Fluor.ProjectSwitcher.View
     /// </summary>
     public partial class ProjectsUC : UserControl
     {
-        public ViewModel.ProjectsViewModel vm
+        public ViewModel.ViewModelProjects vm
         {
             get
             {
-                return (ViewModel.ProjectsViewModel)DataContext;
+                return (ViewModel.ViewModelProjects)DataContext;
             }
         }
 
         public ProjectsUC()
         {
             InitializeComponent();
-            Messenger.Default.Register<Message.ChangeSelectedProjectMessage>(this, ChangeSelectedProject);
+            Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
         }
 
         /// <summary>
@@ -30,13 +30,13 @@ namespace Fluor.ProjectSwitcher.View
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            //GETS THE MENU ITEM THAT HAS BEEN CLICKED
-            MenuItem mi = (MenuItem)sender;
+            ////GETS THE MENU ITEM THAT HAS BEEN CLICKED
+            //MenuItem mi = (MenuItem)sender;
 
-            //GETS THE PROJECT THAT IS CURRENTLY SELECTED
-            SPPIDProject sppidProject = (SPPIDProject)tvProjects.SelectedItem;
+            ////GETS THE PROJECT THAT IS CURRENTLY SELECTED
+            //SPPIDProject sppidProject = (SPPIDProject)tvProjects.SelectedItem;
 
-            vm.OpenFolder(mi, sppidProject);
+            //vm.OpenFolder(mi, sppidProject);
         }
 
         ///// <summary>
@@ -51,7 +51,7 @@ namespace Fluor.ProjectSwitcher.View
         //    vm.ProjectChanged(lv);
         //}
 
-        private void ChangeSelectedProject(Message.ChangeSelectedProjectMessage changeSelectedProjectMessage)
+        private void ChangeSelectedProject(Message.MessageChangeSelectedProject changeSelectedProjectMessage)
         {
             //lstProjects.SelectedItem = changeSelectedProjectMessage.SelectedProject;
         }

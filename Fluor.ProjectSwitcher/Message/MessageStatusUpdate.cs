@@ -2,12 +2,12 @@
 
 namespace Fluor.ProjectSwitcher.Message
 {
-    public class StatusUpdateMessage
+    public class MessageStatusUpdate
     {
         public Visibility Visibility { get; set; }
         public string StatusText { get; set; }
 
-        public StatusUpdateMessage(Visibility visibility, string statusText = "")
+        public MessageStatusUpdate(Visibility visibility, string statusText = "")
         {
             Visibility = visibility;
             StatusText = statusText;

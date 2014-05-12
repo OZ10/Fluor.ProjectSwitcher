@@ -40,7 +40,8 @@
             <local:ListViewTemplateSelector x:Key="ListViewTemplateSelector" ProjectTemplate="{StaticResource ProjectTemplate}" ApplicationTemplate="{StaticResource ApplicationTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}" HeaderTemplate="{StaticResource HeaderTemplate}" />
 
             <Style x:Key="MetroTreeViewItemCustom" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
-                <Setter Property="ListViewItem.Visibility" Value="{Binding Visibilty}" />
+                <Setter Property="TreeViewItem.Visibility" Value="{Binding Visibility}"/>
+                <Setter Property="TreeViewItem.IsExpanded" Value="{Binding IsExpanded}"/>
                 <!--<Setter Property="ListViewItem.IsEnabled" Value="{Binding IsEnabled}" />-->
             </Style>
 

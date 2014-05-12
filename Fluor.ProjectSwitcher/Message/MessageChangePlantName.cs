@@ -1,11 +1,11 @@
 ﻿
 namespace Fluor.ProjectSwitcher.Message
 {
-    public class ChangePlantNameMessage
+    public class MessageChangePlantName
     {
         public string PlantName { get; set; }
 
-        public ChangePlantNameMessage(string plantName)
+        public MessageChangePlantName(string plantName)
         {
             PlantName = plantName;
         }

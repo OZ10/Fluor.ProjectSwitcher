@@ -87,30 +87,27 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Class\ApplicationBase.cs" />
-    <Compile Include="Class\ProjectBase.cs" />
-    <Compile Include="Class\ProjectsList.cs" />
+    <Compile Include="Class\Association.cs" />
+    <Compile Include="Class\Project.cs" />
     <Compile Include="Class\SubApplication.cs" />
-    <Compile Include="Interface\IAssociatedProject.cs" />
-    <Compile Include="Message\ChangePlantNameMessage.cs" />
-    <Compile Include="Message\ChangeSelectedProjectMessage.cs" />
-    <Compile Include="Message\PopulateApplicationsMessage.cs" />
-    <Compile Include="Message\PopulateProjectsMessage.cs" />
-    <Compile Include="Message\StatusUpdateMessage.cs" />
-    <Compile Include="ViewModel\ApplicationsViewModel.cs" />
-    <Compile Include="ViewModel\ProjectsViewModel.cs" />
+    <Compile Include="Message\MessageChangePlantName.cs" />
+    <Compile Include="Message\MessageChangeSelectedProject.cs" />
+    <Compile Include="Message\MessagePopulateApplications.cs" />
+    <Compile Include="Message\MessagePopulateProjects.cs" />
+    <Compile Include="Message\MessageStatusUpdate.cs" />
+    <Compile Include="ViewModel\ViewModelApplications.cs" />
+    <Compile Include="ViewModel\ViewModelProjects.cs" />
     <Compile Include="Class\ListViewTemplateSelector.cs" />
     <Compile Include="Class\ini.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Class\SPPIDApp.cs" />
-    <Compile Include="Class\SPPIDProject.cs" />
-    <Compile Include="View\ApplicationsUC.xaml.cs">
-      <DependentUpon>ApplicationsUC.xaml</DependentUpon>
+    <Compile Include="View\ViewApplications.xaml.cs">
+      <DependentUpon>ViewApplications.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProjectsUC.xaml.cs">
-      <DependentUpon>ProjectsUC.xaml</DependentUpon>
+    <Compile Include="View\ViewProjects.xaml.cs">
+      <DependentUpon>ViewProjects.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StatusWindow.xaml.cs">
-      <DependentUpon>StatusWindow.xaml</DependentUpon>
+    <Compile Include="View\ViewStatusWindow.xaml.cs">
+      <DependentUpon>ViewStatusWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="Style\AccentFluor.xaml">
@@ -129,15 +126,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\ApplicationsUC.xaml">
+    <Page Include="View\ViewApplications.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ProjectsUC.xaml">
+    <Page Include="View\ViewProjects.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StatusWindow.xaml">
+    <Page Include="View\ViewStatusWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

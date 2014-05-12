@@ -12,7 +12,26 @@ namespace Fluor.ProjectSwitcher.Class
     {
         public bool IsExpanded { get; set; }
         public string Exe { get; set; }
-        public bool IsSelected { get; set; }
+
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get
+            {
+                return isSelected;
+            }
+            set
+            {
+                isSelected = value;
+
+                foreach (SubApplication subApplication in SubApplications)
+                {
+                    subApplication.IsSelected = value;
+                }
+
+                RaisePropertyChanged("IsSelected");
+            }
+        }
         public Visibility Visibility { get; set; }
 
         private bool isVisible;
@@ -65,9 +84,14 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public SubApplication()//string installPath = "")
+        public SubApplication(string applicationName, string installPath, bool isExpanded, string exe, bool isSelected, bool isVisible) : base(applicationName)
         {
-            //InstallPath = installPath;
+            Name = applicationName;
+            InstallPath = installPath;
+            IsExpanded = isExpanded;
+            Exe = exe;
+            IsSelected = isSelected;
+            IsVisible = isVisible;
         }
     }
 }

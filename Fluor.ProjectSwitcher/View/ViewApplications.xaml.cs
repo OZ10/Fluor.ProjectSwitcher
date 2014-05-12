@@ -8,11 +8,11 @@ namespace Fluor.ProjectSwitcher.View
     /// </summary>
     public partial class ApplicationsUC : UserControl
     {
-        public ViewModel.ApplicationsViewModel vm
+        public ViewModel.ViewModelApplications vm
         {
             get
             {
-                return (ViewModel.ApplicationsViewModel)DataContext;
+                return (ViewModel.ViewModelApplications)DataContext;
             }
         }
 
@@ -30,14 +30,14 @@ namespace Fluor.ProjectSwitcher.View
         {
             MenuItem mi = (MenuItem)sender;
 
-            //GET THE SELECTED APPLICATION
-            SPPIDApp selectedApp = null;
-            if (lstApps.SelectedItem != null)
-            {
-                selectedApp = (SPPIDApp)lstApps.SelectedItem;
-            }
+            ////GET THE SELECTED APPLICATION
+            //SPPIDApp selectedApp = null;
+            //if (lstApps.SelectedItem != null)
+            //{
+            //    selectedApp = (SPPIDApp)lstApps.SelectedItem;
+            //}
 
-            vm.MenuItemClicked(mi, selectedApp);
+            //vm.MenuItemClicked(mi, selectedApp);
         }
     }
 }
