@@ -9,13 +9,22 @@
         <TreeView Name="tvProjects" BorderThickness="0,2,2,2" Padding="0,2,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ItemsSource="{Binding ProjectsCollection}" SelectedItemChanged="tvProjects_SelectedItemChanged" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding SubProjects}">
-                    <Label Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14"/>
+                    <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14" MouseRightButtonUp="lblProject_MouseRightButtonUp"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
             <TreeView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Name="miOpenEngineeringManagerPath" Header="open engineering manager folder" Click="OpenFolder_Click" Icon="{DynamicResource FolderIcon}"/>
-                    <MenuItem Name="miOpenPIDReferenceData" Header="open PID reference data folder" Click="OpenFolder_Click" Icon="{DynamicResource FolderIcon}"/>
+                <ContextMenu ItemsSource="{Binding ContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}">
+                    <!--<ContextMenu.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Name="muProject"/>
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>-->
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <!--<Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>-->
+                            <EventSetter Event="Click" Handler="muProject_Click"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>

@@ -97,7 +97,7 @@
     <Compile Include="Message\MessageStatusUpdate.cs" />
     <Compile Include="ViewModel\ViewModelApplications.cs" />
     <Compile Include="ViewModel\ViewModelProjects.cs" />
-    <Compile Include="Class\ListViewTemplateSelector.cs" />
+    <Compile Include="Class\MenuItemTemplateSelector.cs" />
     <Compile Include="Class\ini.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\ViewApplications.xaml.cs">

@@ -19,6 +19,20 @@ namespace Fluor.ProjectSwitcher.Class
         public SolidColorBrush HighLightColor { get; set; }
         public ObservableCollection<Project> SubProjects { get; set; }
 
+        private bool isActive;
+        public bool IsActive
+        {
+            get
+            {
+                return isActive;
+            }
+            set
+            {
+                isActive = value;
+                RaisePropertyChanged("IsActive");
+            }
+        }
+
         private bool _isActiveProject;
         public bool IsActiveProject
         {

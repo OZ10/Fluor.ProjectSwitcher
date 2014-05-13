@@ -34,6 +34,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Allow associations -- in one xml row -- between mulitple projects and one application. Required for applications which don't require project specific setup
         //      i.e. notepad is just an exe. Defining a row per project is pointless and messy.
         // TODO Collapse all & expand all options
+        // TODO Icons for menu items
+        // TODO Seperators needs to be disabled
+        // TODO Application context menus - against association or application???
 
         public ObservableCollection<Project> ProjectsCollection { get; set; }
         public ObservableCollection<ApplicationBase> ApplicationsCollection { get; set; }
@@ -65,6 +68,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             AssociatedApplicationCollection = new ObservableCollection<ApplicationBase>();
 
             Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
+            Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
         }
 
         /// <summary>
@@ -201,7 +205,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // PARAMETER Structure:
                 // Parameters are seperated by ';'
                 // Within each parameter there is a type (ini, regitry etc) and one or more setting
-                // The type and setting(s) are seperated by ':'
+                // The type and setting(s) are seperated by '#'
 
                 // TYPE Structure:
                 // Within the type is the type name in '( )' and a location (of the ini, registry key etc)
@@ -240,7 +244,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Ini.IniFile ini;
 
             // Split parameter into ini type & settings
-            string[] iniTypeSettings = parameter.Split(':');
+            string[] iniTypeSettings = parameter.Split('#');
 
             // Array:
             // [0] = Ini type & location
@@ -413,6 +417,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
             // Send the associated applications to the Applications view
             Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
+        }
+
+        private void GetContextMenuParameters(NotificationMessageAction<string> getContextMenuMessage)
+        {
+            foreach (Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
+            {
+                getContextMenuMessage.Execute(association.ContextMenus);
+            }
         }
     }
 }

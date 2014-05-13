@@ -3,29 +3,27 @@ using System.Windows.Controls;
 
 namespace Fluor.ProjectSwitcher
 {
-    public class ListViewTemplateSelector : DataTemplateSelector
+    public class MenuItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate ProjectTemplate { get; set; }
         public DataTemplate ApplicationTemplate { get; set; }
         public DataTemplate SeparatorTemplate { get; set; }
         public DataTemplate HeaderTemplate { get; set; }
+        public DataTemplate MenuItemTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            //SPPIDProject sppidProject = item as SPPIDProject;
+            MenuItem menuItem = (MenuItem)item;
+            //MenuItem menuItem = item as MenuItem;
 
-            //if (sppidProject != null)
-            //{
-            //    if (sppidProject.PlantName == "SEP")
-            //    {
-            //        return SeparatorTemplate;
-            //    }
-            //    else if (sppidProject.PlantName == "HEADER")
-            //    {
-            //        return HeaderTemplate;
-            //    }
-            //    return ProjectTemplate;
-            //}
+            if (menuItem != null)
+            {
+                return MenuItemTemplate;
+            }
+            else
+            {
+                return SeparatorTemplate;
+            }
 
             //SPPIDApp sppidApp = item as SPPIDApp;
 
@@ -41,7 +39,6 @@ namespace Fluor.ProjectSwitcher
             //    }
             //    return ApplicationTemplate;
             //}
-            return null;
         }
     }
 }
