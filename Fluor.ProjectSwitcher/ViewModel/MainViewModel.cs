@@ -11,7 +11,6 @@ using System.Xml;
 using GalaSoft.MvvmLight.Messaging;
 using System.Xml.Linq;
 using System.Linq;
-using Fluor.ProjectSwitcher.Class;
 using System.Collections.Generic;
 
 namespace Fluor.ProjectSwitcher.ViewModel
@@ -38,13 +37,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Seperators needs to be disabled
         // TODO Application context menus - against association or application???
 
-        public ObservableCollection<Project> ProjectsCollection { get; set; }
-        public ObservableCollection<ApplicationBase> ApplicationsCollection { get; set; }
-        public List<Association> Associations { get; set; }
-        public ObservableCollection<ApplicationBase> AssociatedApplicationCollection { get; set; }
+        public ObservableCollection<Class.Project> ProjectsCollection { get; set; }
+        public ObservableCollection<Class.Application> ApplicationsCollection { get; set; }
+        public List<Class.Association> Associations { get; set; }
+        public ObservableCollection<Class.Application> AssociatedApplicationCollection { get; set; }
 
-        Project selectedProject;
-        public Project SelectedProject
+        Class.Project selectedProject;
+        public Class.Project SelectedProject
         {
             get
             {
@@ -62,10 +61,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            ProjectsCollection = new ObservableCollection<Project>();
-            ApplicationsCollection = new ObservableCollection<Class.ApplicationBase>();
-            Associations = new List<Association>();
-            AssociatedApplicationCollection = new ObservableCollection<ApplicationBase>();
+            ProjectsCollection = new ObservableCollection<Class.Project>();
+            ApplicationsCollection = new ObservableCollection<Class.Application>();
+            Associations = new List<Class.Association>();
+            AssociatedApplicationCollection = new ObservableCollection<Class.Application>();
 
             Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
@@ -91,16 +90,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             try
             {
-                Project project;
+                Class.Project project;
                 foreach (XElement xmlProjects in xmlDoc.Elements("PROJECTS"))
                 {
                     foreach (XElement xmlProject in xmlProjects.Elements("PROJECT"))
                     {
                         // Create a new project instance
-                        project = new Project(xmlProject.Attribute("NAME").Value, xmlProject.Attribute("ID").Value, (bool)xmlProject.Attribute("ISEXPANDED"));
+                        project = new Class.Project(xmlProject.Attribute("NAME").Value,
+                                                xmlProject.Attribute("ID").Value,
+                                                (bool)xmlProject.Attribute("ISEXPANDED"),
+                                                xmlProject.Attribute("CONTEXTMENU").Value);
 
                         // Get any sub projects associated with this project
-                        project.GetSubProjects(xmlProject);
+                        project.GetSubProjects(xmlProject, project.ContextMenus);
 
                         ProjectsCollection.Add(project);
                     }
@@ -120,12 +122,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void PopulateAssociations(XElement xmlDoc)
         {
-            Association association;
+            Class.Association association;
             foreach (XElement xmlAssociations in xmlDoc.Elements("ASSOCIATIONS"))
             {
                 foreach (XElement xmlAssociation in xmlAssociations.Elements("ASSOCIATION"))
                 {
-                    association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
+                    association = new Class.Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
                                                     xmlAssociation.Attribute("PARAMETERS").Value, xmlAssociation.Attribute("CONTEXTMENU").Value);
 
                     Associations.Add(association);
@@ -136,12 +138,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void PopulateApplications(XElement xmlDoc)
         {
-            ApplicationBase application;
+            Class.Application application;
             foreach (XElement xmlApplication in xmlDoc.Elements("APPLICATION"))
             {
-                application = new ApplicationBase(xmlApplication.Attribute("NAME").Value);
+                application = new Class.Application(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value);
 
-                application.GetSubApplications(xmlApplication);
+                application.GetSubApplications(xmlApplication, "", application.ContextMenus);
 
                 ApplicationsCollection.Add(application);
             }
@@ -183,7 +185,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 SelectedProject.IsActiveProject = true;
 
                 // Unselect all other projects
-                foreach (Project project in ProjectsCollection.Where(proj => proj.Name != SelectedProject.Name))
+                foreach (Class.Project project in ProjectsCollection.Where(proj => proj.Name != SelectedProject.Name))
                 {
                     project.IsActiveProject = false;
                     project.ChangeIsActiveForSubProjects(SelectedProject.Name);
@@ -197,7 +199,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public void SetProjectSpecificSettings()
         {
             // For all associations associated with the selected project
-            foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+            foreach (Class.Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
             {
                 // Associations have a 'parameters' field. This field contains project & application specific settings which need to be set.
                 // This could be an ini file setting(s), registry setting(s) or something else (as long as code as been written to deal with it).
@@ -282,7 +284,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private void SetRegistry(string parameter)
         {
             // Remove type string to leave registry settings
-            parameter = parameter.Replace("(REG):", "");
+            parameter = parameter.Replace("(REG)#", "");
 
             // Groups of registry settings are seperated by '( )'.
             // Split registry settings by ')(' - i.e. the finish ')' and start of a new group '('
@@ -317,9 +319,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private bool ClosingApplications()
         {
             // Check if the application is already open
-            foreach (ApplicationBase application in AssociatedApplicationCollection)
+            foreach (Class.Application application in AssociatedApplicationCollection)
             {
-                foreach (SubApplication subApplication in application.SubApplications)
+                foreach (Class.SubApplication subApplication in application.SubApplications)
                 {
                     Process[] procs = Process.GetProcessesByName(subApplication.Exe.Replace(".exe", ""));
 
@@ -356,14 +358,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             try
             {
                 int i = 0;
-                foreach (SubApplication application in AssociatedApplicationCollection)
+                foreach (Class.SubApplication application in AssociatedApplicationCollection)
                 {
                     if (application.IsSelected && application.Exe != "")
                     {
                         LaunchApplication(ref i, application);
                     }
 
-                    foreach (SubApplication subApplication in application.SubApplications.Where(subapp => subapp.IsSelected == true))
+                    foreach (Class.SubApplication subApplication in application.SubApplications.Where(subapp => subapp.IsSelected == true))
                     {
                         LaunchApplication(ref i, subApplication);
                     }
@@ -380,7 +382,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void LaunchApplication(ref int i, SubApplication subApplication)
+        private void LaunchApplication(ref int i, Class.SubApplication subApplication)
         {
             Process p;
 
@@ -400,16 +402,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             // Collect all the applications that are associated with the newly selected project
 
-            AssociatedApplicationCollection = new ObservableCollection<ApplicationBase>();
+            AssociatedApplicationCollection = new ObservableCollection<Class.Application>();
 
             SelectedProject = changeSelectedProjectMessage.SelectedProject;
 
             // Get all the associations assoicated with the selected project
-            foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+            foreach (Class.Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
             {
-                foreach (ApplicationBase application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                foreach (Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
                 {
-                    foreach (ApplicationBase subApplication in application.SubApplications)
+                    foreach (Class.Application subApplication in application.SubApplications)
                     {
                         AssociatedApplicationCollection.Add(subApplication); 
                     }
@@ -421,10 +423,81 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void GetContextMenuParameters(NotificationMessageAction<string> getContextMenuMessage)
         {
-            foreach (Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
+            string contextMenus = "";
+
+            // If the projects view is sending the message - get all context menus defined for the project and those applications specific menus associated with the project
+            if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelProjects")
             {
-                getContextMenuMessage.Execute(association.ContextMenus);
+                foreach (Class.Project project in ProjectsCollection)
+                {
+                    if (project.Name == getContextMenuMessage.Notification)
+                    {
+                        if (contextMenus != "")
+                        {
+                            contextMenus = contextMenus + ";" + project.ContextMenus;
+                        }
+                        else
+                        {
+                            contextMenus = project.ContextMenus;
+                        }
+                    }
+
+                    foreach (Class.Project subProject in project.SubProjects.Where(proj => proj.Name == getContextMenuMessage.Notification))
+                    {
+                        if (contextMenus != "")
+                        {
+                            contextMenus = contextMenus + ";" + subProject.ContextMenus;
+                        }
+                        else
+                        {
+                            contextMenus = subProject.ContextMenus;
+                        }
+                    }
+                }
+
+                foreach (Class.Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
+                {
+                    if (contextMenus != "")
+                    {
+                        contextMenus = contextMenus + ";" + association.ContextMenus;
+                    }
+                    else
+                    {
+                        contextMenus = association.ContextMenus;
+                    }
+                }
             }
+            else if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelApplications")
+            {
+                foreach (Class.SubApplication subApplication in AssociatedApplicationCollection)
+                {
+                    if (subApplication.Name == getContextMenuMessage.Notification)
+                    {
+                        if (contextMenus != "")
+                        {
+                            contextMenus = contextMenus + ";" + subApplication.ContextMenus;
+                        }
+                        else
+                        {
+                            contextMenus = subApplication.ContextMenus;
+                        }
+                    }
+
+                    foreach (Class.SubApplication subSubApplication in subApplication.SubApplications.Where(subApp => subApp.Name == getContextMenuMessage.Notification))
+                    {
+                        if (contextMenus != "")
+                        {
+                            contextMenus = contextMenus + ";" + subApplication.ContextMenus;
+                        }
+                        else
+                        {
+                            contextMenus = subApplication.ContextMenus;
+                        }
+                    }
+                }
+            }
+
+            getContextMenuMessage.Execute(contextMenus);
         }
     }
 }

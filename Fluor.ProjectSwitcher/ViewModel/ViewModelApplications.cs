@@ -3,13 +3,14 @@ using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
 using Fluor.ProjectSwitcher.Class;
+using System.Linq;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class ViewModelApplications :ViewModelBase 
     {
-        private ObservableCollection<ApplicationBase> applicationsCollection;
-        public ObservableCollection<ApplicationBase> ApplicationsCollection
+        private ObservableCollection<Application> applicationsCollection;
+        public ObservableCollection<Application> ApplicationsCollection
         {
             get
             {
@@ -19,6 +20,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 applicationsCollection = value;
                 RaisePropertyChanged("ApplicationsCollection");
+            }
+        }
+
+        private ObservableCollection<MenuItem> applicationContextMenus;
+        public ObservableCollection<MenuItem> ApplicationContextMenus
+        {
+            get
+            {
+                return applicationContextMenus;
+            }
+            set
+            {
+                applicationContextMenus = value;
+                RaisePropertyChanged("ApplicationContextMenus");
             }
         }
 
@@ -38,6 +53,54 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 subApplication.IsSelected = selectedApp.IsSelected;
             }
+        }
+
+        public void DisplayContextMenus(string applicationName)
+        {
+            // Triggered by a right-click on an application. The treeview does not change the selecteditem when right-clicking
+            // so had to write  this routine to change the selected item
+
+            SubApplication subApplication = GetSelectedApplication(applicationName);
+
+            ApplicationContextMenus = new ObservableCollection<MenuItem>();
+
+            // Send a message containing the project name to the main view model. The main view model returns the context
+            // menu parameters as listed in the associations section
+            Messenger.Default.Send(new NotificationMessageAction<string>(this, subApplication.Name, (contextMenuParameters) =>
+            {
+                Class.ContextMenus.CreateContextMenus(contextMenuParameters, ref applicationContextMenus);
+            }));
+        }
+
+        private SubApplication GetSelectedApplication(string applicationName)
+        {
+            // Loops through each project & subproject to find a project with the same name
+            // as the project that has been right-clicked.
+            // Sets the project to active is changes the treeview's selecteditem property
+            foreach (SubApplication subApplication in ApplicationsCollection)
+            {
+                if (subApplication.Name == applicationName)
+                {
+                    subApplication.IsActive = true;
+                    return subApplication;
+                }
+
+                foreach (SubApplication subSubApplication in subApplication.SubApplications)
+                {
+                    if (subSubApplication.Name == applicationName)
+                    {
+                        subSubApplication.IsActive = true;
+                        return subSubApplication;
+                    }
+
+                    if (subSubApplication.SubApplications.Any())
+                    {
+                        DisplayContextMenus(subSubApplication.Name);
+                    }
+                }
+            }
+
+            return null;
         }
 
         //public void SelectApplications(bool isChecked, SPPIDApp selectedApp, MenuItem mi = null)

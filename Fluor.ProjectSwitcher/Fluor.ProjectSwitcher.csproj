@@ -86,9 +86,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Class\ApplicationBase.cs" />
+    <Compile Include="Class\Application.cs" />
     <Compile Include="Class\Association.cs" />
+    <Compile Include="Class\ContextMenus.cs" />
     <Compile Include="Class\Project.cs" />
+    <Compile Include="Class\ProjectSwitcherItem.cs" />
     <Compile Include="Class\SubApplication.cs" />
     <Compile Include="Message\MessageChangePlantName.cs" />
     <Compile Include="Message\MessageChangeSelectedProject.cs" />

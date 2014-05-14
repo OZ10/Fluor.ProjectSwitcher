@@ -9,15 +9,16 @@
         <TreeView Name="tvApps" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="0,2,0,2" Padding="0,5,0,0" ItemsSource="{Binding ApplicationsCollection}" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding SubApplications}">
-                    <CheckBox Name="chkApplication" Content="{Binding Name}" IsChecked="{Binding IsSelected}"/>
+                    <CheckBox Name="chkApplication" Content="{Binding Name}" IsChecked="{Binding IsSelected}" MouseRightButtonUp="chkApplication_MouseRightButtonUp"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
             <TreeView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Name="miSelectAll" Header="select all" Click="MenuItem_Click" Icon="{DynamicResource PlusIcon}"/>
-                    <MenuItem Name="miSelectNone" Header="select none" Click="MenuItem_Click" Icon="{DynamicResource MinusIcon}"/>
-                    <MenuItem Name="miSelectOnlyThis" Header="select only this" Click="MenuItem_Click" Icon="{DynamicResource SelectThisOnlyIcon}"/>
-                    <MenuItem Name="miSelectAllExceptThis" Header="select all except this" Click="MenuItem_Click" Icon="{DynamicResource SelectAllExceptThisIcon}"/>
+                <ContextMenu ItemsSource="{Binding ApplicationContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}">
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="muApplication_Click"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>

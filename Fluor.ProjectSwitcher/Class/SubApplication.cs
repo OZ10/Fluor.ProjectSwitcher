@@ -8,9 +8,9 @@ using System.Windows;
 
 namespace Fluor.ProjectSwitcher.Class
 {
-    public class SubApplication : Class.ApplicationBase
+    public class SubApplication : Class.Application
     {
-        public bool IsExpanded { get; set; }
+        //public bool IsExpanded { get; set; }
         public string Exe { get; set; }
 
         private bool isSelected;
@@ -32,6 +32,21 @@ namespace Fluor.ProjectSwitcher.Class
                 RaisePropertyChanged("IsSelected");
             }
         }
+
+        //private bool isActive;
+        //public bool IsActive
+        //{
+        //    get
+        //    {
+        //        return isActive;
+        //    }
+        //    set
+        //    {
+        //        isActive = value;
+        //        RaisePropertyChanged("IsActive");
+        //    }
+        //}
+
         public Visibility Visibility { get; set; }
 
         private bool isVisible;
@@ -84,7 +99,7 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public SubApplication(string applicationName, string installPath, bool isExpanded, string exe, bool isSelected, bool isVisible) : base(applicationName)
+        public SubApplication(string applicationName, string installPath, bool isExpanded, string exe, bool isSelected, bool isVisible, string contextMenu) : base(applicationName, contextMenu)
         {
             Name = applicationName;
             InstallPath = installPath;
@@ -92,6 +107,7 @@ namespace Fluor.ProjectSwitcher.Class
             Exe = exe;
             IsSelected = isSelected;
             IsVisible = isVisible;
+            ContextMenus = contextMenu;
         }
     }
 }

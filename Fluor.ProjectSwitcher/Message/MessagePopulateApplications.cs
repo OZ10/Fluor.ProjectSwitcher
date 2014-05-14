@@ -5,9 +5,9 @@ namespace Fluor.ProjectSwitcher.Message
 {
     public class MessagePopulateApplications
     {
-        public ObservableCollection<ApplicationBase> ApplicationsCollection { get; set; }
+        public ObservableCollection<Application> ApplicationsCollection { get; set; }
 
-        public MessagePopulateApplications(ObservableCollection<ApplicationBase> applicationsCollection)
+        public MessagePopulateApplications(ObservableCollection<Application> applicationsCollection)
         {
             ApplicationsCollection = applicationsCollection;
         }

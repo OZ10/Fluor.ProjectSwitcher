@@ -44,7 +44,7 @@ namespace Fluor.ProjectSwitcher.View
         {
             MenuItem mi = (MenuItem)sender;
 
-            vm.OpenFolder(mi.CommandParameter.ToString());
+            Class.ContextMenus.OpenFolder(mi.CommandParameter.ToString());
         }
     }
 }

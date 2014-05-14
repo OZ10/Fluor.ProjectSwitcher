@@ -13,15 +13,9 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
             <TreeView.ContextMenu>
-                <ContextMenu ItemsSource="{Binding ContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}">
-                    <!--<ContextMenu.ItemTemplate>
-                        <DataTemplate>
-                            <MenuItem Name="muProject"/>
-                        </DataTemplate>
-                    </ContextMenu.ItemTemplate>-->
+                <ContextMenu ItemsSource="{Binding ProjectContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}">
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
-                            <!--<Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>-->
                             <EventSetter Event="Click" Handler="muProject_Click"/>
                         </Style>
                     </ContextMenu.ItemContainerStyle>
