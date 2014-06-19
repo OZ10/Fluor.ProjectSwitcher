@@ -49,7 +49,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void MenuItemClicked(SubApplication selectedApp)
         {
-            foreach (SubApplication subApplication in selectedApp.SubApplications)
+            foreach (SubApplication subApplication in selectedApp.SubItems)
             {
                 subApplication.IsSelected = selectedApp.IsSelected;
             }
@@ -68,7 +68,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(this, subApplication.Name, (contextMenuParameters) =>
             {
-                Class.ContextMenus.CreateContextMenus(contextMenuParameters, ref applicationContextMenus);
+                subApplication.CreateContextMenus(contextMenuParameters, ref applicationContextMenus);
             }));
         }
 
@@ -85,7 +85,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     return subApplication;
                 }
 
-                foreach (SubApplication subSubApplication in subApplication.SubApplications)
+                foreach (SubApplication subSubApplication in subApplication.SubItems)
                 {
                     if (subSubApplication.Name == applicationName)
                     {
@@ -93,7 +93,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         return subSubApplication;
                     }
 
-                    if (subSubApplication.SubApplications.Any())
+                    if (subSubApplication.SubItems.Any())
                     {
                         DisplayContextMenus(subSubApplication.Name);
                     }

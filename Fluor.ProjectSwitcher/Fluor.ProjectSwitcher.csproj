@@ -86,12 +86,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Admin\Class\ParametersBase.cs" />
+    <Compile Include="Admin\ViewModel\ViewModelMain.cs" />
+    <Compile Include="Admin\View\ViewMain.xaml.cs">
+      <DependentUpon>ViewMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\View\ViewProjects.xaml.cs">
+      <DependentUpon>ViewProjects.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Class\Application.cs" />
     <Compile Include="Class\Association.cs" />
-    <Compile Include="Class\ContextMenus.cs" />
     <Compile Include="Class\Project.cs" />
     <Compile Include="Class\ProjectSwitcherItem.cs" />
     <Compile Include="Class\SubApplication.cs" />
+    <Compile Include="Class\Utilities.cs" />
     <Compile Include="Message\MessageChangePlantName.cs" />
     <Compile Include="Message\MessageChangeSelectedProject.cs" />
     <Compile Include="Message\MessagePopulateApplications.cs" />
@@ -112,6 +120,14 @@
       <DependentUpon>ViewStatusWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Page Include="Admin\View\ViewMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Admin\View\ViewProjects.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Style\AccentFluor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

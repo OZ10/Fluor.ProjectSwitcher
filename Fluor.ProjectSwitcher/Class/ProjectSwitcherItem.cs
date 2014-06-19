@@ -15,7 +15,9 @@ namespace Fluor.ProjectSwitcher.Class
         public string Name { get; set; }
         public string ID { get; set; }
         public bool IsExpanded { get; set; }
+        public ObservableCollection<ProjectSwitcherItem> SubItems { get; set; }
         public string ContextMenus { get; set; }
+        public string MiscText { get; set; }
 
         private bool isActive;
         public bool IsActive
@@ -28,6 +30,62 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 isActive = value;
                 RaisePropertyChanged("IsActive");
+            }
+        }
+
+        public ProjectSwitcherItem GetActiveSubItem()
+        {
+            ProjectSwitcherItem item = RecurseSubItems(SubItems);
+            return item;
+        }
+
+        private ProjectSwitcherItem RecurseSubItems(ObservableCollection<ProjectSwitcherItem> items)
+        {
+            foreach (ProjectSwitcherItem subItem in items)
+            {
+                if (subItem.IsActive)
+                {
+                    return subItem;
+                }
+
+                RecurseSubItems(subItem.SubItems);
+            }
+
+            return null;
+        }
+
+        //public ProjectSwitcherItem GetSubItemUsingName(string itemName)
+        //{
+        //    ProjectSwitcherItem item = RecurseSubItems(SubItems, itemName);
+        //    return item;
+        //}
+
+        //private ProjectSwitcherItem RecurseSubItems(ObservableCollection<ProjectSwitcherItem> items, string itemName)
+        //{
+        //    foreach (ProjectSwitcherItem subItem in SubItems)
+        //    {
+        //        if (itemName == subItem.Name)
+        //        {
+        //            return subItem;
+        //        }
+
+        //        RecurseSubItems(subItem.SubItems, itemName);
+        //    }
+
+        //    return null;
+        //}
+
+        public string GetContextMenuParameters()
+        {
+            ProjectSwitcherItem subItem = GetActiveSubItem();
+
+            if (subItem != null)
+            {
+                return subItem.ContextMenus;
+            }
+            else
+            {
+                return "";
             }
         }
 
@@ -115,15 +173,6 @@ namespace Fluor.ProjectSwitcher.Class
                     //RaisePropertyChanged("ContextMenus");
                 }
             }
-        }
-
-        public void OpenFolder(string folderPath)
-        {
-            // Open windows explorer
-            Process p = new Process();
-            p.StartInfo.FileName = "explorer.exe";
-            p.StartInfo.Arguments = folderPath;
-            p.Start();
         }
     }
 }

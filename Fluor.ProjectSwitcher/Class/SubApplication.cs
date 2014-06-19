@@ -13,8 +13,8 @@ namespace Fluor.ProjectSwitcher.Class
         //public bool IsExpanded { get; set; }
         public string Exe { get; set; }
 
-        private bool isSelected;
-        public bool IsSelected
+        private bool? isSelected;
+        public bool? IsSelected
         {
             get
             {
@@ -24,7 +24,7 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 isSelected = value;
 
-                foreach (SubApplication subApplication in SubApplications)
+                foreach (SubApplication subApplication in SubItems)
                 {
                     subApplication.IsSelected = value;
                 }

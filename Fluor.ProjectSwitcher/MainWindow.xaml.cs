@@ -105,5 +105,11 @@ namespace Fluor.ProjectSwitcher
         {
             flyAbout.IsOpen = false;
         }
+
+        private void miRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            vm.SetupEnvironment();
+            flySettings.IsOpen = false;
+        }
     }
 }

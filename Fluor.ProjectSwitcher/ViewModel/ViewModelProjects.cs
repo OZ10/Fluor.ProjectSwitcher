@@ -52,7 +52,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public void DisplayContextMenus(string projectName)
         {
             // Triggered by a right-click on a project. The treeview does not change the selecteditem when right-clicking
-            // so had to write  this routine to change the selected item
+            // so had to write this routine to change the selected item
 
             Class.Project project = GetSelectedProject(projectName);
 
@@ -62,7 +62,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(this, project.Name, (contextMenuParameters) =>
                 {
-                    Class.ContextMenus.CreateContextMenus(contextMenuParameters, ref projectContextMenus);
+                    project.CreateContextMenus(contextMenuParameters, ref projectContextMenus);
                 }));
         }
 
@@ -79,7 +79,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     return project;
                 }
 
-                foreach (Class.Project subProject in project.SubProjects)
+                foreach (Class.Project subProject in project.SubItems)
                 {
                     if (subProject.Name == projectName)
                     {
@@ -87,7 +87,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         return subProject;
                     }
 
-                    if (subProject.SubProjects.Any())
+                    if (subProject.SubItems.Any())
                     {
                         DisplayContextMenus(subProject.Name);
                     }

@@ -1,0 +1,41 @@
+﻿<Controls:MetroWindow x:Class="Fluor.ProjectSwitcher.Admin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:View="clr-namespace:Fluor.ProjectSwitcher.Admin.View"  
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
+        Title="MainWindow" Height="350" Width="525" DataContext="{Binding AdminMain, Mode=OneWay, Source={StaticResource Locator}}">
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Name="fly" IsOpen="True" Position="Bottom">
+                
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition MinWidth="250"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition />
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.ColumnSpan="4" Fill="{DynamicResource HighlightBrush}" />
+        <Label Content="Project Switcher Admin" Grid.Column="1" FontSize="20" Foreground="White"/>
+        <TabControl Grid.Row="2" Grid.Column="1">
+            <TabItem Header="Projects">
+                <View:ViewProjects/>
+            </TabItem>
+            <TabItem Header="Associations">
+
+            </TabItem>
+            <TabItem Header="Applications">
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>

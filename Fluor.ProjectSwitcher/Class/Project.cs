@@ -13,26 +13,7 @@ namespace Fluor.ProjectSwitcher.Class
 {
     public class Project : Class.ProjectSwitcherItem
     {
-        //public string Name { get; set; }
-        //public string ID { get; set; }
-        //public bool IsExpanded { get; set; }
-        //public string ContextMenus { get; set; }
         public SolidColorBrush HighLightColor { get; set; }
-        public ObservableCollection<Project> SubProjects { get; set; }
-
-        //private bool isActive;
-        //public bool IsActive
-        //{
-        //    get
-        //    {
-        //        return isActive;
-        //    }
-        //    set
-        //    {
-        //        isActive = value;
-        //        RaisePropertyChanged("IsActive");
-        //    }
-        //}
 
         private bool _isActiveProject;
         public bool IsActiveProject
@@ -58,18 +39,19 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public Project(string projectName, string projectID, bool isExpanded, string contextMenus)
+        public Project(string projectName, string projectID, bool isExpanded, string contextMenus, string miscText)
         {
             Name = projectName;
             ID = projectID;
             IsExpanded = isExpanded;
             ContextMenus = contextMenus;
+            MiscText = miscText;
             this.HighLightColor = new SolidColorBrush(Colors.Black);
 
-            SubProjects = new ObservableCollection<Project>();
+            SubItems = new ObservableCollection<ProjectSwitcherItem>();
         }
 
-        public void GetSubProjects(XElement xmlProject, string parentContextMenu)
+        public void CreateSubProjects(XElement xmlProject, string parentContextMenu)
         {
             if (xmlProject.Elements("SUBPROJECT").Any())
             {
@@ -92,18 +74,19 @@ namespace Fluor.ProjectSwitcher.Class
                     subProject = new Project(xmlSubProject.Attribute("NAME").Value,
                                              xmlSubProject.Attribute("ID").Value,
                                              (bool)xmlSubProject.Attribute("ISEXPANDED"),
-                                             contextMenu);
+                                             contextMenu,
+                                             xmlSubProject.Attribute("MISCTEXT").Value);
 
-                    SubProjects.Add(subProject);
+                    SubItems.Add(subProject);
 
-                    subProject.GetSubProjects(xmlSubProject, contextMenu);
+                    subProject.CreateSubProjects(xmlSubProject, contextMenu);
                 }
             } 
         }
 
         public void ChangeIsActiveForSubProjects(string selectedProjectName)
         {
-            foreach (Project subProject in SubProjects)
+            foreach (Project subProject in SubItems)
             {
                 if (subProject.Name != selectedProjectName)
                 {

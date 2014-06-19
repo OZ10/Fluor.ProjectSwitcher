@@ -8,7 +8,7 @@
     <Grid>
         <TreeView Name="tvProjects" BorderThickness="0,2,2,2" Padding="0,2,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ItemsSource="{Binding ProjectsCollection}" SelectedItemChanged="tvProjects_SelectedItemChanged" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding SubProjects}">
+                <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
                     <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14" MouseRightButtonUp="lblProject_MouseRightButtonUp"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

@@ -31,11 +31,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
     {
 
         // TODO Allow associations -- in one xml row -- between mulitple projects and one application. Required for applications which don't require project specific setup
-        //      i.e. notepad is just an exe. Defining a row per project is pointless and messy.
+        //      i.e. notepad is just an exe. Defining a row per project is pointless and messy
         // TODO Collapse all & expand all options
         // TODO Icons for menu items
         // TODO Seperators needs to be disabled
-        // TODO Application context menus - against association or application???
 
         public ObservableCollection<Class.Project> ProjectsCollection { get; set; }
         public ObservableCollection<Class.Application> ApplicationsCollection { get; set; }
@@ -61,10 +60,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            ProjectsCollection = new ObservableCollection<Class.Project>();
-            ApplicationsCollection = new ObservableCollection<Class.Application>();
-            Associations = new List<Class.Association>();
-            AssociatedApplicationCollection = new ObservableCollection<Class.Application>();
+            //ProjectsCollection = new ObservableCollection<Class.Project>();
+            //ApplicationsCollection = new ObservableCollection<Class.Application>();
+            //Associations = new List<Class.Association>();
+            //AssociatedApplicationCollection = new ObservableCollection<Class.Application>();
 
             Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
@@ -90,6 +89,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             try
             {
+                ProjectsCollection = new ObservableCollection<Class.Project>();
+
                 Class.Project project;
                 foreach (XElement xmlProjects in xmlDoc.Elements("PROJECTS"))
                 {
@@ -99,10 +100,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         project = new Class.Project(xmlProject.Attribute("NAME").Value,
                                                 xmlProject.Attribute("ID").Value,
                                                 (bool)xmlProject.Attribute("ISEXPANDED"),
-                                                xmlProject.Attribute("CONTEXTMENU").Value);
+                                                xmlProject.Attribute("CONTEXTMENU").Value,
+                                                xmlProject.Attribute("MISCTEXT").Value);
 
                         // Get any sub projects associated with this project
-                        project.GetSubProjects(xmlProject, project.ContextMenus);
+                        project.CreateSubProjects(xmlProject, project.ContextMenus);
 
                         ProjectsCollection.Add(project);
                     }
@@ -122,6 +124,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void PopulateAssociations(XElement xmlDoc)
         {
+            Associations = new List<Class.Association>();
+            AssociatedApplicationCollection = new ObservableCollection<Class.Application>();
+
             Class.Association association;
             foreach (XElement xmlAssociations in xmlDoc.Elements("ASSOCIATIONS"))
             {
@@ -138,12 +143,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void PopulateApplications(XElement xmlDoc)
         {
+            ApplicationsCollection = new ObservableCollection<Class.Application>();
+
             Class.Application application;
             foreach (XElement xmlApplication in xmlDoc.Elements("APPLICATION"))
             {
                 application = new Class.Application(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value);
 
-                application.GetSubApplications(xmlApplication, "", application.ContextMenus);
+                application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
 
                 ApplicationsCollection.Add(application);
             }
@@ -321,7 +328,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // Check if the application is already open
             foreach (Class.Application application in AssociatedApplicationCollection)
             {
-                foreach (Class.SubApplication subApplication in application.SubApplications)
+                foreach (Class.SubApplication subApplication in application.SubItems)
                 {
                     Process[] procs = Process.GetProcessesByName(subApplication.Exe.Replace(".exe", ""));
 
@@ -360,14 +367,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 int i = 0;
                 foreach (Class.SubApplication application in AssociatedApplicationCollection)
                 {
-                    if (application.IsSelected && application.Exe != "")
+                    if (application.IsSelected == true && application.Exe != "")
                     {
                         LaunchApplication(ref i, application);
                     }
 
-                    foreach (Class.SubApplication subApplication in application.SubApplications.Where(subapp => subapp.IsSelected == true))
+                    foreach (Class.SubApplication subApplication in application.SubItems)
                     {
-                        LaunchApplication(ref i, subApplication);
+                        if (subApplication.IsSelected == true)
+                        {
+                            LaunchApplication(ref i, subApplication);
+                        }
                     }
                     
                 }
@@ -411,7 +421,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 foreach (Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
                 {
-                    foreach (Class.Application subApplication in application.SubApplications)
+                    foreach (Class.Application subApplication in application.SubItems)
                     {
                         AssociatedApplicationCollection.Add(subApplication); 
                     }
@@ -423,6 +433,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void GetContextMenuParameters(NotificationMessageAction<string> getContextMenuMessage)
         {
+            // A message sent by either the projects or the applications view
+            // Gather all context menus depending on which view sent the message
+
             string contextMenus = "";
 
             // If the projects view is sending the message - get all context menus defined for the project and those applications specific menus associated with the project
@@ -430,74 +443,59 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 foreach (Class.Project project in ProjectsCollection)
                 {
-                    if (project.Name == getContextMenuMessage.Notification)
+                    // Check if the project is active (been selected)
+                    if (project.IsActive) //project.Name == getContextMenuMessage.Notification)
                     {
-                        if (contextMenus != "")
-                        {
-                            contextMenus = contextMenus + ";" + project.ContextMenus;
-                        }
-                        else
-                        {
-                            contextMenus = project.ContextMenus;
-                        }
+                        contextMenus = SetContextMenuValue(contextMenus, project.ContextMenus);
                     }
-
-                    foreach (Class.Project subProject in project.SubProjects.Where(proj => proj.Name == getContextMenuMessage.Notification))
-                    {
-                        if (contextMenus != "")
-                        {
-                            contextMenus = contextMenus + ";" + subProject.ContextMenus;
-                        }
-                        else
-                        {
-                            contextMenus = subProject.ContextMenus;
-                        }
-                    }
-                }
-
-                foreach (Class.Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
-                {
-                    if (contextMenus != "")
-                    {
-                        contextMenus = contextMenus + ";" + association.ContextMenus;
-                    }
+                    // Else search the project's sub-projects for the active project
                     else
                     {
-                        contextMenus = association.ContextMenus;
+                        contextMenus = SetContextMenuValue(contextMenus, project.GetContextMenuParameters());
                     }
                 }
+
+                // Get all associtions associated with the selected project
+                foreach (Class.Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
+                {
+                    contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
+                }
             }
+            // Else if the applications view is sending the message - get all context menus defined for that application
             else if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelApplications")
             {
                 foreach (Class.SubApplication subApplication in AssociatedApplicationCollection)
                 {
-                    if (subApplication.Name == getContextMenuMessage.Notification)
+                    // Check if the application is active (been selected)
+                    if (subApplication.IsActive)
                     {
-                        if (contextMenus != "")
-                        {
-                            contextMenus = contextMenus + ";" + subApplication.ContextMenus;
-                        }
-                        else
-                        {
-                            contextMenus = subApplication.ContextMenus;
-                        }
+                        contextMenus = SetContextMenuValue(contextMenus, subApplication.ContextMenus);
                     }
-
-                    foreach (Class.SubApplication subSubApplication in subApplication.SubApplications.Where(subApp => subApp.Name == getContextMenuMessage.Notification))
+                    // Else search the application's sub-applications for the active application
+                    else
                     {
-                        if (contextMenus != "")
-                        {
-                            contextMenus = contextMenus + ";" + subApplication.ContextMenus;
-                        }
-                        else
-                        {
-                            contextMenus = subApplication.ContextMenus;
-                        }
+                        contextMenus = SetContextMenuValue(contextMenus, subApplication.GetContextMenuParameters());
                     }
                 }
             }
 
             getContextMenuMessage.Execute(contextMenus);
+        }
+
+        private string SetContextMenuValue(string contextMenus, string value)
+        {
+            if (value != "")
+            {
+                if (contextMenus != "")
+                {
+                    return contextMenus + ";" + value;
+                }
+                else
+                {
+                    return value;
+                }
+            }
+            return contextMenus;
         }
     }
 }

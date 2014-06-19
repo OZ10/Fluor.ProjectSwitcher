@@ -8,8 +8,8 @@
     <Grid>
         <TreeView Name="tvApps" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="0,2,0,2" Padding="0,5,0,0" ItemsSource="{Binding ApplicationsCollection}" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding SubApplications}">
-                    <CheckBox Name="chkApplication" Content="{Binding Name}" IsChecked="{Binding IsSelected}" MouseRightButtonUp="chkApplication_MouseRightButtonUp"/>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
+                    <CheckBox Name="chkApplication" Content="{Binding Name}" IsChecked="{Binding IsSelected}" MouseRightButtonUp="chkApplication_MouseRightButtonUp" IsThreeState="True"/>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
             <TreeView.ContextMenu>
