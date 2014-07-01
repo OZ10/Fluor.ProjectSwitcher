@@ -13,8 +13,8 @@ namespace Fluor.ProjectSwitcher.Class
         //public bool IsExpanded { get; set; }
         public string Exe { get; set; }
 
-        private bool? isSelected;
-        public bool? IsSelected
+        private bool isSelected;
+        public bool IsSelected
         {
             get
             {

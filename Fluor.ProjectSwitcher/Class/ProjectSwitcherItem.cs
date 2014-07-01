@@ -7,6 +7,8 @@ using GalaSoft.MvvmLight;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace Fluor.ProjectSwitcher.Class
 {
@@ -89,7 +91,7 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public void CreateContextMenus(string contextMenuParameters, ref  ObservableCollection<MenuItem> contextMenus)
+        public void CreateContextMenus(string contextMenuParameters, ref ObservableCollection<MenuItem> contextMenus)
         {
             // Associations have a 'contextmenu' field. This field contains context menu entries that can be
             // associated with either the project or application.
@@ -168,11 +170,26 @@ namespace Fluor.ProjectSwitcher.Class
                     MenuItem contextMenu = new MenuItem();
                     contextMenu.Header = setting[0].TrimStart('(');
                     contextMenu.CommandParameter = setting[1].TrimEnd(')');
+                    contextMenu.Icon = CreateIcon();
 
                     contextMenus.Add(contextMenu);
                     //RaisePropertyChanged("ContextMenus");
                 }
             }
+        }
+
+        private static Path CreateIcon()
+        {
+            string folderIconPath = "F1 M 21,30.0001L 55.9999,30.0001L 55.9999,50L 21,50L 21,30.0001 Z M 52,28L 37,28C 38,25 39.4999,24.0001 39.4999,24.0001L 50.75,24C 51.3023,24 52,24.6977 52,25.25L 52,28 Z ";
+
+            Path path = new Path();
+            path.Stretch = System.Windows.Media.Stretch.Uniform;
+            path.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(00, 68, 125));
+            path.StrokeThickness = 2;
+            path.Height = 15;
+            path.Width = 15;
+            path.Data = Geometry.Parse(folderIconPath);
+            return path;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Fluor.ProjectSwitcher
             Messenger.Default.Register<Message.MessageStatusUpdate>(this, UpdateStatusWindow);
 
             lblVersion.Content = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
-
+            
             vm.SetupEnvironment();
         }
 

@@ -13,7 +13,7 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
             <TreeView.ContextMenu>
-                <ContextMenu ItemsSource="{Binding ProjectContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}">
+                <ContextMenu ItemsSource="{Binding ProjectContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <EventSetter Event="Click" Handler="muProject_Click"/>
