@@ -1,12 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using Fluor.ProjectSwitcher.Base.Class;
+using System.Collections.ObjectModel;
 
 namespace Fluor.ProjectSwitcher.Message
 {
     public class MessagePopulateProjects
     {
-        public ObservableCollection<Class.Project> ProjectsCollection { get; set; }
+        public ObservableCollection<Project> ProjectsCollection { get; set; }
 
-        public MessagePopulateProjects(ObservableCollection<Class.Project> projectsCollection)
+        public MessagePopulateProjects(ObservableCollection<Project> projectsCollection)
         {
             ProjectsCollection = projectsCollection;
         }

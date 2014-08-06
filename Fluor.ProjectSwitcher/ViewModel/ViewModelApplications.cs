@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
-using Fluor.ProjectSwitcher.Class;
+using Fluor.ProjectSwitcher.Base.Class;
 using System.Linq;
 
 namespace Fluor.ProjectSwitcher.ViewModel

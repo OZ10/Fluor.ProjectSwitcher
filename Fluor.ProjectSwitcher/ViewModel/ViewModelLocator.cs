@@ -24,7 +24,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
     public class ViewModelLocator
     {
         /// <summary>
-        /// Initializes a new instance of the ViewModelLocator class.
+        /// Initializes a new instance of the ViewModelLocator 
         /// </summary>
         public ViewModelLocator()
         {
@@ -33,7 +33,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ViewModelProjects>();
             SimpleIoc.Default.Register<ViewModelApplications>();
-            SimpleIoc.Default.Register<Admin.ViewModel.ViewModelMain>();
         }
 
         public MainViewModel Main
@@ -59,15 +58,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 return ServiceLocator.Current.GetInstance<ViewModelApplications>();
             }
         }
-
-        public Admin.ViewModel.ViewModelMain AdminMain
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<Admin.ViewModel.ViewModelMain>();
-            }
-        }
-        
+       
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

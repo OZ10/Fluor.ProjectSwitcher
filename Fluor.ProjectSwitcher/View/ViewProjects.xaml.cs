@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using Fluor.ProjectSwitcher.Base.Class;
+using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -44,7 +45,7 @@ namespace Fluor.ProjectSwitcher.View
         {
             MenuItem mi = (MenuItem)sender;
 
-             Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
+             Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
     }
 }

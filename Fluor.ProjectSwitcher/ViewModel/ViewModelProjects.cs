@@ -6,13 +6,14 @@ using System.Windows.Controls;
 using System.Linq;
 using System;
 using System.Windows.Input;
+using Fluor.ProjectSwitcher.Base.Class;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelProjects :ViewModelBase 
+    public class ViewModelProjects : ViewModelBase 
     {
-        private ObservableCollection<Class.Project> projectsCollection;
-        public ObservableCollection<Class.Project> ProjectsCollection
+        private ObservableCollection<Project> projectsCollection;
+        public ObservableCollection<Project> ProjectsCollection
         {
             get
             {
@@ -54,7 +55,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // Triggered by a right-click on a project. The treeview does not change the selecteditem when right-clicking
             // so had to write this routine to change the selected item
 
-            Class.Project project = GetSelectedProject(projectName);
+            Project project = GetSelectedProject(projectName);
 
             ProjectContextMenus = new ObservableCollection<MenuItem>();
 
@@ -66,12 +67,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 }));
         }
 
-        private Class.Project GetSelectedProject(string projectName)
+        private Project GetSelectedProject(string projectName)
         {
             // Loops through each project & subproject to find a project with the same name
             // as the project that has been right-clicked.
             // Sets the project to active is changes the treeview's selecteditem property
-            foreach (Class.Project project in projectsCollection)
+            foreach (Project project in projectsCollection)
             {
                 if (project.Name == projectName)
                 {
@@ -79,7 +80,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     return project;
                 }
 
-                foreach (Class.Project subProject in project.SubItems)
+                foreach (Project subProject in project.SubItems)
                 {
                     if (subProject.Name == projectName)
                     {
@@ -99,7 +100,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void ProjectChanged(TreeView tv)
         {
-            Class.Project project = (Class.Project)tv.SelectedItem;
+            Project project = (Project)tv.SelectedItem;
 
             if (project != null)
             {

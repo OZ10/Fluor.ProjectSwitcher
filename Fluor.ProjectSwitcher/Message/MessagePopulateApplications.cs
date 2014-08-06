@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Fluor.ProjectSwitcher.Class;
+using Fluor.ProjectSwitcher.Base.Class;
 
 namespace Fluor.ProjectSwitcher.Message
 {

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Fluor.ProjectSwitcher.Base.Class;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Fluor.ProjectSwitcher.View
@@ -25,7 +26,7 @@ namespace Fluor.ProjectSwitcher.View
         {
             MenuItem mi = (MenuItem)sender;
 
-            Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
+            Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
 
         private void chkApplication_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

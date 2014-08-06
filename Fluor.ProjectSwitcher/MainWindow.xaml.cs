@@ -20,7 +20,7 @@ namespace Fluor.ProjectSwitcher
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// Initializes a new instance of the <see cref="MainWindow"/> 
         /// </summary>
         public MainWindow()
         {
@@ -110,6 +110,13 @@ namespace Fluor.ProjectSwitcher
         {
             vm.SetupEnvironment();
             flySettings.IsOpen = false;
+        }
+
+        private void miAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            //Admin.View.Admin_ViewMain main = new Admin.View.Admin_ViewMain();
+            //main.Show();
+            vm.OpenAdminModule();
         }
     }
 }

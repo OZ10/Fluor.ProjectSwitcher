@@ -1,5 +1,5 @@
 ﻿
-using Fluor.ProjectSwitcher.Class;
+using Fluor.ProjectSwitcher.Base.Class;
 namespace Fluor.ProjectSwitcher.Message
 {
     public class MessageChangeSelectedProject

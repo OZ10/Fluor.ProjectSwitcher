@@ -55,7 +55,6 @@
                 <Setter Property="ListViewItem.Visibility" Value="{Binding IsVisible}" />
                 <Setter Property="ListViewItem.IsEnabled" Value="{Binding IsEnabled}" />
             </Style>-->
-        
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Fluor.ProjectSwitcher.ViewModel" />
         </ResourceDictionary>
     </Application.Resources>

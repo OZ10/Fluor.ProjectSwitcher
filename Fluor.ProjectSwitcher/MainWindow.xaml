@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:Fluor.ProjectSwitcher"          
         xmlns:View="clr-namespace:Fluor.ProjectSwitcher.View"      
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
-        Title="Project Switcher" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="380" MinWidth="520" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" >
+        Title="Project Switcher" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="380" MinWidth="520" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" BorderBrush="Black" >
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout Name="flySettings" Header="settings" Position="Bottom" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
@@ -16,6 +16,7 @@
                     <Rectangle Stroke="White" Height="Auto" Width="1" HorizontalAlignment="Left"/>
                     <StackPanel Grid.Column="1">
                         <MenuItem Name="miViewSettingsFile" Header="View Settings File" Icon="{DynamicResource SettingsWhiteIcon}" Click="miViewSettingsFile_Click" Foreground="White" FontSize="12"/>
+                        <MenuItem Name="miAdmin" Header="Open Admin Module" Icon="{DynamicResource SettingsWhiteIcon}" Foreground="White" FontSize="12" Click="miAdmin_Click"/>
                         <MenuItem Name="miRefresh" Header="Refresh After Changes" Icon="{DynamicResource RefreshIcon}" Foreground="White" FontSize="12" Click="miRefresh_Click"/>
                         <MenuItem Name="miCloseAllApps" Header="Close All Open Apps" Icon="{DynamicResource CloseIcon}" Click="miCloseAllApps_Click" Foreground="White" FontSize="12"/>
                         <MenuItem Name="miAbout" Header="About" Icon="{DynamicResource AboutIcon}" Click="miAbout_Click" Foreground="White" FontSize="12"/>
