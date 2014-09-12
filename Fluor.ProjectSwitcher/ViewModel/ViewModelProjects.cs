@@ -43,11 +43,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public ViewModelProjects()
         {
             Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdatedProjectsCollection);
+            Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenusMessage);
         }
 
         private void UpdatedProjectsCollection(Message.MessagePopulateProjects populateProjectsMessage)
         {
             ProjectsCollection = populateProjectsMessage.ProjectsCollection;
+        }
+
+        // TODO This needs a better name!
+        private void DisplayContextMenusMessage(NotificationMessage contextMenuMessage)
+        {
+            DisplayContextMenus(contextMenuMessage.Notification);
         }
 
         public void DisplayContextMenus(string projectName)

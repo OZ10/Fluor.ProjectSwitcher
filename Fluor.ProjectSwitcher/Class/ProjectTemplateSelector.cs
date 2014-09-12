@@ -1,21 +1,22 @@
-﻿using System.Windows;
+﻿using Fluor.ProjectSwitcher.Base.Class;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Fluor.ProjectSwitcher
 {
-    public class MenuItemTemplateSelector : DataTemplateSelector
+    public class ProjectTemplateSelector : DataTemplateSelector
     {
         public DataTemplate SeparatorTemplate { get; set; }
-        public DataTemplate MenuItemTemplate { get; set; }
+        public HierarchicalDataTemplate ProjectTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            MenuItem menuItem = (MenuItem)item;
+            Project proj = (Project)item;
             //MenuItem menuItem = item as MenuItem;
 
-            if (menuItem.Header != "")
+            if (proj.Name != "")
             {
-                return MenuItemTemplate;
+                return ProjectTemplate;
             }
             else
             {

@@ -37,8 +37,8 @@ namespace Fluor.ProjectSwitcher.View
 
         private void lblProject_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Label l = (Label)sender;
-            vm.DisplayContextMenus(l.Content.ToString());
+            //Label l = (Label)sender;
+            //vm.DisplayContextMenus(l.Content.ToString());
         }
 
         private void muProject_Click(object sender, RoutedEventArgs e)

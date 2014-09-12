@@ -95,6 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Class\ProjectTemplateSelector.cs" />
     <Compile Include="Class\MenuItemTemplateSelector.cs" />
     <Compile Include="Message\MessageChangePlantName.cs" />
     <Compile Include="Message\MessageChangeSelectedProject.cs" />

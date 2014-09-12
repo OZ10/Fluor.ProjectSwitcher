@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
 using Fluor.ProjectSwitcher.Base.Class;
+using System.ComponentModel;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -102,12 +103,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
                                                 xmlProject.Attribute("ID").Value,
                                                 (bool)xmlProject.Attribute("ISEXPANDED"),
                                                 xmlProject.Attribute("CONTEXTMENU").Value,
-                                                xmlProject.Attribute("MISCTEXT").Value);
+                                                xmlProject.Attribute("MISCTEXT").Value,
+                                                true);
 
                         // Get any sub projects associated with this project
                         project.CreateSubProjects(xmlProject, project.ContextMenus);
 
                         ProjectsCollection.Add(project);
+                        ProjectsCollection.Add(new Project("","", false,"","", false));
                     }
                 }
 
@@ -148,7 +151,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Fluor.ProjectSwitcher.Base.Class.Application application;
             foreach (XElement xmlApplication in xmlDoc.Elements("APPLICATION"))
             {
-                application = new Fluor.ProjectSwitcher.Base.Class.Application(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value);
+                application = new Fluor.ProjectSwitcher.Base.Class.Application(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value, true);
 
                 application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
 
@@ -236,7 +239,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     // Determine type
                     if (parameter.StartsWith("(INI)"))
                     {
-                        SetIni(parameter);
+                        SetIni(association, parameter);
                     }
                     else if (parameter.StartsWith("(REG)"))
                     {
@@ -246,14 +249,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void SetIni(string parameter)
+        private void SetIni(Association association, string parameter)
         {
             //TODO Check if ini file exists
 
-            Ini.IniFile ini;
+            Ini.IniFile ini = new IniFile("");
 
             // Split parameter into ini type & settings
-            string[] iniTypeSettings = Parameter.GetTypeAndSettings(parameter);
+            List<string> iniTypeSettings = Parameter.GetTypeAndSettings(parameter);
 
             // Array:
             // [0] = Ini type & location
@@ -266,6 +269,22 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 ini = new Ini.IniFile(Environment.ExpandEnvironmentVariables(iniTypeSettings[0]));
             }
+            else if (iniTypeSettings[0].Contains("*"))
+            {
+                foreach (Fluor.ProjectSwitcher.Base.Class.Application app in ApplicationsCollection.Where(a => a.Name == association.ApplicationName))
+                {
+                    SubApplication subApp = (SubApplication)app.SubItems[0];
+
+                    switch (iniTypeSettings[0])
+                    {
+                        case "*installpath*":
+                            ini = new Ini.IniFile(subApp.InstallPath + iniTypeSettings[1]);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
             else
             {
                 ini = new Ini.IniFile(iniTypeSettings[0]);
@@ -273,7 +292,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             // Groups of ini file settings are seperated by '( )'.
             // Split ini file settings by ')(' - i.e. the finish ')' and start of a new group '('
-            string[] iniSettings = Parameter.GetSettings(iniTypeSettings[1]); //.Split(new string[] { ")(" }, StringSplitOptions.None);
+            List<string> iniSettings = Parameter.GetSettings(iniTypeSettings[1]); //.Split(new string[] { ")(" }, StringSplitOptions.None);
 
             // Split each group
             foreach (string iniSetting in iniSettings)
@@ -282,9 +301,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // [0] = Section
                 // [1] = Key
                 // [2] = Value
-                // Note the 'trims' to remove left over '(' or ')'
-                string[] setting = Parameter.GetSettingValues(iniSetting); //.Split(',');
-                ini.IniWriteValue(setting[0].TrimStart('('), setting[1], setting[2].TrimEnd(')'));
+                List<string> setting = Parameter.GetSettingValues(iniSetting); //.Split(',');
+                ini.IniWriteValue(setting[0], setting[1], setting[2]);
             }
         }
 
@@ -295,7 +313,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             // Groups of registry settings are seperated by '( )'.
             // Split registry settings by ')(' - i.e. the finish ')' and start of a new group '('
-            string[] regSettings = Parameter.GetSettings(parameter); //.Split(new string[] { ")(" }, StringSplitOptions.None);
+            List<string> regSettings = Parameter.GetSettings(parameter); //.Split(new string[] { ")(" }, StringSplitOptions.None);
 
             // Split each group
             foreach (string regSetting in regSettings)
@@ -305,8 +323,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // [1] = ValueName
                 // [2] = Value
                 // Note the 'trims' to remove left over '(' or ')'
-                string[] setting = Parameter.GetSettingValues(regSetting); //.Split(',');
-                Registry.SetValue(setting[0].TrimStart('('), setting[1], setting[2].TrimEnd(')'));
+                List<string> setting = Parameter.GetSettingValues(regSetting); //.Split(',');
+                Registry.SetValue(setting[0], setting[1], setting[2]);
             }
         }
 
@@ -424,12 +442,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // Check if application is already open
             Process[] processName = Process.GetProcessesByName(subApplication.Exe.Replace(".exe", ""));
 
-            if (processName.Length == 0)
+            try
             {
-                p = new Process();
-                p.StartInfo.FileName = subApplication.InstallPath + subApplication.Exe;
-                p.Start();
-                i += 1;
+                if (processName.Length == 0)
+                {
+                    p = new Process();
+                    p.StartInfo.FileName = subApplication.InstallPath + subApplication.Exe;
+                    p.Start();
+                    i += 1;
+                }
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show(subApplication.Name + " could not be started.\n\n- Check that application is installed correctly.\n- Check that the 'install path' in the configuration XML file is valid.", "Check Installation", MessageBoxButton.OK, MessageBoxImage.Error);
+                //throw;
             }
         }
 

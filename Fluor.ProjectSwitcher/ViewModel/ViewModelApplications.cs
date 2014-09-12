@@ -74,9 +74,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private SubApplication GetSelectedApplication(string applicationName)
         {
-            // Loops through each project & subproject to find a project with the same name
-            // as the project that has been right-clicked.
-            // Sets the project to active is changes the treeview's selecteditem property
+            // Loops through each application & subapplication to find a application with the same name
+            // as the application that has been right-clicked.
+            // Sets the application to active is changes the treeview's selecteditem property
             foreach (SubApplication subApplication in ApplicationsCollection)
             {
                 if (subApplication.Name == applicationName)

@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Fluor.ProjectSwitcher
 {
@@ -13,5 +15,11 @@ namespace Fluor.ProjectSwitcher
     /// </summary>
     public partial class App : Application
     {
+        private void lblProject_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Label l = (Label)sender;
+            Messenger.Default.Send<NotificationMessage>(new NotificationMessage(l.Content.ToString()));
+            //vm.DisplayContextMenus(l.Content.ToString());
+        }
     }
 }
