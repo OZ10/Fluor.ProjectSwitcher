@@ -7,22 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Projects, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <TreeView Name="tvProjects" BorderThickness="0,2,2,2" Padding="0,2,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ItemsSource="{Binding ProjectsCollection}" SelectedItemChanged="tvProjects_SelectedItemChanged" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}" ItemTemplateSelector="{DynamicResource ProjectTemplateSelector}">
-            <!--<TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
-                    <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14" MouseRightButtonUp="lblProject_MouseRightButtonUp"/>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>-->
+        <ItemsControl Name="icProjects" ItemsSource="{Binding ProjectTreeViewCollection}"/>
+        <!--<TreeView Name="tvProjects" BorderThickness="0,2,2,2" Padding="0,2,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ItemsSource="{Binding ProjectsCollection}" SelectedItemChanged="tvProjects_SelectedItemChanged" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}" ItemTemplateSelector="{DynamicResource ProjectTemplateSelector}">
             <TreeView.ContextMenu>
                 <ContextMenu ItemsSource="{Binding ProjectContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <EventSetter Event="Click" Handler="muProject_Click"/>
-                            <!--<Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>-->
+                            <Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>
                         </Style>
                     </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
             </TreeView.ContextMenu>
-        </TreeView>
+        </TreeView>-->
     </Grid>
 </UserControl>

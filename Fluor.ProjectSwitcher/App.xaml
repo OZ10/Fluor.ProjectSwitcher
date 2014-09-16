@@ -27,19 +27,19 @@
             </DataTemplate>-->
 
             <HierarchicalDataTemplate x:Key="ProjectTemplate" ItemsSource="{Binding SubItems}">
-                <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14" MouseRightButtonUp="lblProject_MouseRightButtonUp"/>
+                <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" MouseRightButtonUp="lblProject_MouseRightButtonUp" FontSize="14" MouseLeftButtonUp="lblProject_MouseLeftButtonUp"/>
             </HierarchicalDataTemplate>
 
             <DataTemplate x:Key="ApplicationTemplate">
-                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Margin="5,0,0,0" FontSize="14" />
+                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Margin="5,0,0,0"/>
             </DataTemplate>
             
             <DataTemplate x:Key="SeparatorTemplate">
-                <Separator Background="{DynamicResource AccentColorBrush4}"/>
+                <Separator Background="{DynamicResource AccentColorBrush4}" IsEnabled="False"/>
             </DataTemplate>
             
             <DataTemplate x:Key="HeaderTemplate">
-                <Label Content="{Binding Name}" FontWeight="Bold" />
+                <Label Content="{Binding Name}"/>
             </DataTemplate>
 
             <DataTemplate x:Key="MenuItemTemplate">
@@ -48,6 +48,13 @@
 
             <local:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector" MenuItemTemplate="{StaticResource MenuItemTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>
             <local:ProjectTemplateSelector x:Key="ProjectTemplateSelector" ProjectTemplate="{StaticResource ProjectTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>
+            <local:ApplicationTemplateSelector x:Key="ApplicationTemplateSelector" ApplicationTemplate="{StaticResource ApplicationTemplate}" HeaderTemplate="{StaticResource HeaderTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>
+            
+            <Style x:Key="CustomTreeView" TargetType="{x:Type TreeView}">
+                <Setter Property="BorderThickness" Value="0,2,0,0"/>
+                <Setter Property="BorderBrush" Value="{StaticResource AccentColorBrush4}"/>
+                <Setter Property="ItemContainerStyle" Value="{DynamicResource MetroTreeViewItemCustom}"/>
+            </Style>
             
             <Style x:Key="MetroTreeViewItemCustom" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
                 <Setter Property="TreeViewItem.Visibility" Value="{Binding Visibility}"/>

@@ -9,8 +9,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class ViewModelApplications :ViewModelBase 
     {
-        private ObservableCollection<Application> applicationsCollection;
-        public ObservableCollection<Application> ApplicationsCollection
+        private ObservableCollection<ProjectSwitcherItem> applicationsCollection;
+        public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection
         {
             get
             {
@@ -37,6 +37,41 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        //ObservableCollection<ProjectSwitcherItem> filteredApplicationCollection;
+        //public ObservableCollection<ProjectSwitcherItem> FilteredApplicationCollection
+        //{
+        //    get
+        //    {
+        //        return filteredApplicationCollection;
+        //    }
+        //    set
+        //    {
+        //        filteredApplicationCollection = value;
+        //        RaisePropertyChanged("FilteredApplicationCollection");
+        //    }
+        //}
+
+        //Application selectedApplication;
+        //public Application SelectedApplication
+        //{
+        //    get
+        //    {
+        //        return selectedApplication;
+        //    }
+        //    set
+        //    {
+        //        selectedApplication = value;
+        //        RaisePropertyChanged("SelectedApplication");
+
+        //        if (check)
+        //        {
+        //            ChangeSelectedApplication(selectedApplication);
+        //        }
+        //    }
+        //}
+
+        private bool check;
+
         public ViewModelApplications()
         {
             Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
@@ -44,11 +79,34 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void UpdateApplicationsCollection(Message.MessagePopulateApplications populateApplicationsMessage)
         {
+            //check = false;
             ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
+            //FilteredApplicationCollection = ApplicationsCollection;
+            //SelectedApplication = null;
+            //check = true;
         }
+
+        //private void ChangeSelectedApplication(Application application)
+        //{
+        //    if (application.SubItems.Any())
+        //    {
+        //        check = false;
+
+        //        FilteredApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
+        //        FilteredApplicationCollection.Add(application);
+
+        //        foreach (var subApplication in application.SubItems)
+        //        {
+        //            FilteredApplicationCollection.Add(subApplication);
+        //        }
+
+        //        check = true;
+        //    }
+        //}
 
         public void MenuItemClicked(SubApplication selectedApp)
         {
+            //TODO Change this to be a property
             foreach (SubApplication subApplication in selectedApp.SubItems)
             {
                 subApplication.IsSelected = selectedApp.IsSelected;

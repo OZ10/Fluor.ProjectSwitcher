@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.Windows.Input;
 using Fluor.ProjectSwitcher.Base.Class;
+using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -40,15 +41,85 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        private ObservableCollection<TreeView> projectTreeViewCollection;
+        public ObservableCollection<TreeView> ProjectTreeViewCollection
+        {
+            get
+            {
+                return projectTreeViewCollection;
+            }
+            set
+            {
+                projectTreeViewCollection = value;
+                RaisePropertyChanged("ProjectTreeViewCollection");
+            }
+        }
+
+        private Project selectedProject;
+        public Project SelectedProject
+        {
+            get
+            {
+                return selectedProject;
+            }
+            set
+            {
+                selectedProject = value;
+                RaisePropertyChanged("SelectedProject");
+            }
+        }
+
         public ViewModelProjects()
         {
             Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdatedProjectsCollection);
             Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenusMessage);
+            Messenger.Default.Register<GenericMessage<Project>>(this, ChangedSelectedProject);
         }
 
         private void UpdatedProjectsCollection(Message.MessagePopulateProjects populateProjectsMessage)
         {
             ProjectsCollection = populateProjectsMessage.ProjectsCollection;
+
+            //TODO Refactor this
+            ProjectTreeViewCollection = new ObservableCollection<TreeView>();
+
+            foreach (Project project in ProjectsCollection)
+            {
+                ObservableCollection<Project> pc = new ObservableCollection<Project>();
+                pc.Add(project);
+
+                TreeView tvi = new TreeView();
+                tvi.Style = (Style)System.Windows.Application.Current.Resources["CustomTreeView"];
+                tvi.ItemTemplate = (DataTemplate)System.Windows.Application.Current.Resources["ProjectTemplate"];
+                tvi.DataContext = project;
+                tvi.ItemsSource = pc;
+
+                ProjectTreeViewCollection.Add(tvi);
+            }
+        }
+
+        private void ChangedSelectedProject(GenericMessage<Project> selectedProjectMessage)
+        {
+            Project selectedProject = (Project)selectedProjectMessage.Content;
+
+            //TODO This needs to be refactored & recursive
+            foreach (TreeView tv in projectTreeViewCollection)
+            {
+                Project project = (Project)tv.DataContext;
+
+                if (project.Name != selectedProject.Name)
+                {
+                    project.IsActive = false;
+                }
+
+                foreach (ProjectSwitcherItem subProject in project.SubItems)
+                {
+                    if (subProject.Name != selectedProject.Name)
+                    {
+                        subProject.IsActive = false;
+                    }
+                }
+            }
         }
 
         // TODO This needs a better name!

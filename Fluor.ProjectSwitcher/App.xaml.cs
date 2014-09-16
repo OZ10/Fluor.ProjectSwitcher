@@ -21,5 +21,12 @@ namespace Fluor.ProjectSwitcher
             Messenger.Default.Send<NotificationMessage>(new NotificationMessage(l.Content.ToString()));
             //vm.DisplayContextMenus(l.Content.ToString());
         }
+
+        private void lblProject_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Label l = (Label)sender;
+            Fluor.ProjectSwitcher.Base.Class.Project project = (Fluor.ProjectSwitcher.Base.Class.Project)l.DataContext;
+            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Project>>(new GenericMessage<Base.Class.Project>(project));
+        }
     }
 }

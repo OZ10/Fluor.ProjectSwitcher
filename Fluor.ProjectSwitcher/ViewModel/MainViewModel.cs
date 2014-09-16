@@ -14,6 +14,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Fluor.ProjectSwitcher.Base.Class;
 using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -39,9 +40,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Seperators needs to be disabled
 
         public ObservableCollection<Project> ProjectsCollection { get; set; }
-        public ObservableCollection<Fluor.ProjectSwitcher.Base.Class.Application> ApplicationsCollection { get; set; }
+        public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection { get; set; }
         public List<Association> Associations { get; set; }
-        public ObservableCollection<Fluor.ProjectSwitcher.Base.Class.Application> AssociatedApplicationCollection { get; set; }
+        public ObservableCollection<ProjectSwitcherItem> AssociatedApplicationCollection { get; set; }
 
         Project selectedProject;
         public Project SelectedProject
@@ -67,7 +68,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //Associations = new List<Association>();
             //AssociatedApplicationCollection = new ObservableCollection<Application>();
 
-            Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
+            //Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
+            Messenger.Default.Register<GenericMessage<Project>>(this, ChangeSelectedProject);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
         }
 
@@ -108,9 +110,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                         // Get any sub projects associated with this project
                         project.CreateSubProjects(xmlProject, project.ContextMenus);
-
+                        
                         ProjectsCollection.Add(project);
-                        ProjectsCollection.Add(new Project("","", false,"","", false));
+                        //ProjectsCollection.Add(new Project("","", false,"","", false));
                     }
                 }
 
@@ -119,7 +121,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
             catch (NullReferenceException)
             {
-                //TODO Error trapping
                 MessageBox.Show("The SPPIDProjects section of the configuration XML file contains errors.\n\nMandatory attributes are:\nNAME\nPLANTNAME\nINIFILE\nPIDPATH\nSPENGPATH",
                     "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
                 throw;
@@ -129,7 +130,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private void PopulateAssociations(XElement xmlDoc)
         {
             Associations = new List<Association>();
-            AssociatedApplicationCollection = new ObservableCollection<Fluor.ProjectSwitcher.Base.Class.Application>();
+            AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
 
             Association association;
             foreach (XElement xmlAssociations in xmlDoc.Elements("ASSOCIATIONS"))
@@ -146,7 +147,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void PopulateApplications(XElement xmlDoc)
         {
-            ApplicationsCollection = new ObservableCollection<Fluor.ProjectSwitcher.Base.Class.Application>();
+            ApplicationsCollection = new ObservableCollection<ProjectSwitcherItem>();
 
             Fluor.ProjectSwitcher.Base.Class.Application application;
             foreach (XElement xmlApplication in xmlDoc.Elements("APPLICATION"))
@@ -459,13 +460,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void ChangeSelectedProject(Message.MessageChangeSelectedProject changeSelectedProjectMessage)
+        private void ChangeSelectedProject(GenericMessage<Project> changeSelectedProjectMessage) //Message.MessageChangeSelectedProject changeSelectedProjectMessage)
         {
             // Collect all the applications that are associated with the newly selected project
 
-            AssociatedApplicationCollection = new ObservableCollection<Fluor.ProjectSwitcher.Base.Class.Application>();
+            AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
 
-            SelectedProject = changeSelectedProjectMessage.SelectedProject;
+            SelectedProject = (Project)changeSelectedProjectMessage.Content;
 
             // Get all the associations assoicated with the selected project
             foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))

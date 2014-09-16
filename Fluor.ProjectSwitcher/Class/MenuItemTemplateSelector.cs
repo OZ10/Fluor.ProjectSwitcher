@@ -13,7 +13,7 @@ namespace Fluor.ProjectSwitcher
             MenuItem menuItem = (MenuItem)item;
             //MenuItem menuItem = item as MenuItem;
 
-            if (menuItem.Header != "")
+            if (menuItem != null) //.Header != "")
             {
                 return MenuItemTemplate;
             }
