@@ -35,9 +35,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         // TODO Allow associations -- in one xml row -- between mulitple projects and one application. Required for applications which don't require project specific setup
         //      i.e. notepad is just an exe. Defining a row per project is pointless and messy
-        // TODO Collapse all & expand all options
-        // TODO Icons for menu items
-        // TODO Seperators needs to be disabled
+        // TODO Move settings icon to the title bar
+        // TODO When hovering over a tile, change the colour or border style & change the misc label
+        // TODO Create transitions between project & subproject (currently both are on the same tab)
+        // TODO Change 'back' button to include the project name text so circle button and/or text can be clicked
+        // TODO Implement tile colours. Each tile should have different colour
+        // TODO Create icons for applications
+        // TODO Have tile section for top level application - i.e. when you select a project with multiple associated applications, tile appear allowing the user to select which application they want to display
+        // TODO WHERE I WAS UP TO BEFORE GOING ON HOLIDAY -- ContextMenus for applications paths are not displaying. Selection options are displaying but have no code behind them
 
         public ObservableCollection<Project> ProjectsCollection { get; set; }
         public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection { get; set; }
@@ -58,6 +63,34 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        bool isProjectsTabSelected;
+        public bool IsProjectsTabSelected
+        {
+            get
+            {
+                return isProjectsTabSelected;
+            }
+            set
+            {
+                isProjectsTabSelected = value;
+                RaisePropertyChanged("IsProjectsTabSelected");
+            }
+        }
+
+        bool isApplicationsTabSelected;
+        public bool IsApplicationsTabSelected
+        {
+            get
+            {
+                return isApplicationsTabSelected;
+            }
+            set
+            {
+                isApplicationsTabSelected = value;
+                RaisePropertyChanged("IsApplicationsTabSelected");
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel 
         /// </summary>
@@ -67,6 +100,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //ApplicationsCollection = new ObservableCollection<Application>();
             //Associations = new List<Association>();
             //AssociatedApplicationCollection = new ObservableCollection<Application>();
+
+            IsProjectsTabSelected = true;
 
             //Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
             Messenger.Default.Register<GenericMessage<Project>>(this, ChangeSelectedProject);
@@ -106,7 +141,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                                                 (bool)xmlProject.Attribute("ISEXPANDED"),
                                                 xmlProject.Attribute("CONTEXTMENU").Value,
                                                 xmlProject.Attribute("MISCTEXT").Value,
-                                                true);
+                                                true,
+                                                null);
 
                         // Get any sub projects associated with this project
                         project.CreateSubProjects(xmlProject, project.ContextMenus);
@@ -468,19 +504,28 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             SelectedProject = (Project)changeSelectedProjectMessage.Content;
 
-            // Get all the associations assoicated with the selected project
-            foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+            if (SelectedProject != null)
             {
-                foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                // Get all the associations assoicated with the selected project
+                foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
                 {
-                    foreach (Fluor.ProjectSwitcher.Base.Class.Application subApplication in application.SubItems)
+                    foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
                     {
-                        AssociatedApplicationCollection.Add(subApplication); 
+                        foreach (Fluor.ProjectSwitcher.Base.Class.Application subApplication in application.SubItems)
+                        {
+                            AssociatedApplicationCollection.Add(subApplication); 
+                        }
                     }
                 }
+
+                if (AssociatedApplicationCollection.Any())
+                {
+                    // Send the associated applications to the Applications view
+                    Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
+
+                    IsApplicationsTabSelected = true;
+                }
             }
-            // Send the associated applications to the Applications view
-            Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
         }
 
         private void GetContextMenuParameters(NotificationMessageAction<string> getContextMenuMessage)
@@ -490,46 +535,59 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             string contextMenus = "";
 
-            // If the projects view is sending the message - get all context menus defined for the project and those applications specific menus associated with the project
-            if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelProjects")
-            {
-                foreach (Project project in ProjectsCollection)
-                {
-                    // Check if the project is active (been selected)
-                    if (project.IsActive) //project.Name == getContextMenuMessage.Notification)
-                    {
-                        contextMenus = SetContextMenuValue(contextMenus, project.ContextMenus);
-                    }
-                    // Else search the project's sub-projects for the active project
-                    else
-                    {
-                        contextMenus = SetContextMenuValue(contextMenus, project.GetContextMenuParameters());
-                    }
-                }
+            ProjectSwitcherItem project = (ProjectSwitcherItem)getContextMenuMessage.Sender;
+            contextMenus = SetContextMenuValue(contextMenus, project.ContextMenus);
 
-                // Get all associtions associated with the selected project
-                foreach (Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
-                {
-                    contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
-                }
-            }
-            // Else if the applications view is sending the message - get all context menus defined for that application
-            else if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelApplications")
+            // Get all associtions associated with the selected project
+            foreach (Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
             {
-                foreach (SubApplication subApplication in AssociatedApplicationCollection)
-                {
-                    // Check if the application is active (been selected)
-                    if (subApplication.IsActive)
-                    {
-                        contextMenus = SetContextMenuValue(contextMenus, subApplication.ContextMenus);
-                    }
-                    // Else search the application's sub-applications for the active application
-                    else
-                    {
-                        contextMenus = SetContextMenuValue(contextMenus, subApplication.GetContextMenuParameters());
-                    }
-                }
+                contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
             }
+
+
+            // If the projects view is sending the message - get all context menus defined for the project and those applications specific menus associated with the project
+            //if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelProjects")
+            //{
+            //    //foreach (Project project in ProjectsCollection)
+            //    //{
+            //    //    // Check if the project is active (been selected)
+            //    //    if (project.IsActive) //project.Name == getContextMenuMessage.Notification)
+            //    //    {
+            //    //        contextMenus = SetContextMenuValue(contextMenus, project.ContextMenus);
+            //    //    }
+            //    //    // Else search the project's sub-projects for the active project
+            //    //    else
+            //    //    {
+            //    //        contextMenus = SetContextMenuValue(contextMenus, project.GetContextMenuParameters());
+            //    //    }
+            //    //}
+
+            //    Project project = (Project)getContextMenuMessage.Sender;
+            //    contextMenus = SetContextMenuValue(contextMenus, project.ContextMenus);
+
+            //    // Get all associtions associated with the selected project
+            //    foreach (Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
+            //    {
+            //        contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
+            //    }
+            //}
+            //// Else if the applications view is sending the message - get all context menus defined for that application
+            //else if (getContextMenuMessage.Sender.ToString() == "Fluor.ProjectSwitcher.ViewModel.ViewModelApplications")
+            //{
+            //    foreach (SubApplication subApplication in AssociatedApplicationCollection)
+            //    {
+            //        // Check if the application is active (been selected)
+            //        if (subApplication.IsActive)
+            //        {
+            //            contextMenus = SetContextMenuValue(contextMenus, subApplication.ContextMenus);
+            //        }
+            //        // Else search the application's sub-applications for the active application
+            //        else
+            //        {
+            //            contextMenus = SetContextMenuValue(contextMenus, subApplication.GetContextMenuParameters());
+            //        }
+            //    }
+            //}
 
             getContextMenuMessage.Execute(contextMenus);
         }
@@ -553,6 +611,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public void OpenAdminModule()
         {
             Fluor.ProjectSwitcher.Admin.Class.Run adminModule = new Admin.Class.Run(ProjectsCollection, ApplicationsCollection, Associations);
+        }
+
+        public void GoBackToParent()
+        {
+            SelectedProject = SelectedProject.ParentProject;
+            Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(SelectedProject));
         }
     }
 }

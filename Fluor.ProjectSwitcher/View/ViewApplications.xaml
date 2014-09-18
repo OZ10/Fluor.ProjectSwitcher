@@ -6,8 +6,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Applications, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <!--<ListBox IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding FilteredApplicationCollection}" SelectedItem="{Binding SelectedApplication}" ItemTemplateSelector="{Binding Mode=OneWay, Source={StaticResource ApplicationTemplateSelector}}" />-->
-        <TreeView Name="tvApps" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="0,2,0,2" Padding="0,5,0,0" ItemsSource="{Binding ApplicationsCollection}" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
+        <ItemsControl Name="icApplications" ItemsSource="{Binding ActiveApplicationCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <!--<TreeView Name="tvApps" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="0,2,0,2" Padding="0,5,0,0" ItemsSource="{Binding ApplicationsCollection}" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
                     <CheckBox Name="chkApplication" Content="{Binding Name}" IsChecked="{Binding IsSelected}" MouseRightButtonUp="chkApplication_MouseRightButtonUp" />
@@ -22,6 +28,6 @@
                     </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
             </TreeView.ContextMenu>
-        </TreeView>
+        </TreeView>-->
     </Grid>
 </UserControl>

@@ -37,6 +37,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        private ObservableCollection<ListBox> activeApplicationCollection;
+        public ObservableCollection<ListBox> ActiveApplicationCollection
+        {
+            get
+            {
+                return activeApplicationCollection;
+            }
+            set
+            {
+                activeApplicationCollection = value;
+                RaisePropertyChanged("ActiveApplicationCollection");
+            }
+        }
+
         //ObservableCollection<ProjectSwitcherItem> filteredApplicationCollection;
         //public ObservableCollection<ProjectSwitcherItem> FilteredApplicationCollection
         //{
@@ -81,6 +95,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             //check = false;
             ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
+
+            ActiveApplicationCollection = new ObservableCollection<ListBox>();
+
+            foreach (Application application in ApplicationsCollection)
+            {
+                ListBox lb = new ListBox();
+                lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
+                lb.DataContext = application;
+
+                ActiveApplicationCollection.Add(lb);
+            }
+           
             //FilteredApplicationCollection = ApplicationsCollection;
             //SelectedApplication = null;
             //check = true;
@@ -113,21 +139,25 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public void DisplayContextMenus(string applicationName)
+        public void DisplayContextMenus(object sender)
         {
             // Triggered by a right-click on an application. The treeview does not change the selecteditem when right-clicking
             // so had to write  this routine to change the selected item
 
-            SubApplication subApplication = GetSelectedApplication(applicationName);
+            TextBlock tb = (TextBlock)sender;
+
+            SubApplication subApplication = (SubApplication)tb.DataContext;  //GetSelectedApplication(applicationName);
 
             ApplicationContextMenus = new ObservableCollection<MenuItem>();
 
             // Send a message containing the project name to the main view model. The main view model returns the context
             // menu parameters as listed in the associations section
-            Messenger.Default.Send(new NotificationMessageAction<string>(this, subApplication.Name, (contextMenuParameters) =>
+            Messenger.Default.Send(new NotificationMessageAction<string>(subApplication, subApplication.Name, (contextMenuParameters) =>
             {
                 subApplication.CreateContextMenus(contextMenuParameters, ref applicationContextMenus);
             }));
+
+            tb.ContextMenu.ItemsSource = ApplicationContextMenus;
         }
 
         private SubApplication GetSelectedApplication(string applicationName)

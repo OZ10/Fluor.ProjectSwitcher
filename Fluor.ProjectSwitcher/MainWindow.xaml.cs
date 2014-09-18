@@ -118,5 +118,11 @@ namespace Fluor.ProjectSwitcher
             //main.Show();
             vm.OpenAdminModule();
         }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            tbiProject.IsSelected = true;
+            vm.GoBackToParent();
+        }
     }
 }

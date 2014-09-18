@@ -8,6 +8,8 @@ using System;
 using System.Windows.Input;
 using Fluor.ProjectSwitcher.Base.Class;
 using System.Windows;
+using MahApps.Metro.Controls;
+using System.Windows.Media;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -41,17 +43,31 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<TreeView> projectTreeViewCollection;
-        public ObservableCollection<TreeView> ProjectTreeViewCollection
+        private ObservableCollection<Tile> topLevelProjectTileCollection;
+        public ObservableCollection<Tile> TopLevelProjectTileCollection
         {
             get
             {
-                return projectTreeViewCollection;
+                return topLevelProjectTileCollection;
             }
             set
             {
-                projectTreeViewCollection = value;
-                RaisePropertyChanged("ProjectTreeViewCollection");
+                topLevelProjectTileCollection = value;
+                RaisePropertyChanged("TopLevelProjectTileCollection");
+            }
+        }
+
+        private ObservableCollection<Tile> activeProjectTileCollection;
+        public ObservableCollection<Tile> ActiveProjectTileCollection
+        {
+            get
+            {
+                return activeProjectTileCollection;
+            }
+            set
+            {
+                activeProjectTileCollection = value;
+                RaisePropertyChanged("ActiveProjectTileCollection");
             }
         }
 
@@ -73,108 +89,142 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdatedProjectsCollection);
             Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenusMessage);
-            Messenger.Default.Register<GenericMessage<Project>>(this, ChangedSelectedProject);
+            Messenger.Default.Register<GenericMessage<Project>>(this, GoBackToParent);
         }
 
         private void UpdatedProjectsCollection(Message.MessagePopulateProjects populateProjectsMessage)
         {
             ProjectsCollection = populateProjectsMessage.ProjectsCollection;
 
-            //TODO Refactor this
-            ProjectTreeViewCollection = new ObservableCollection<TreeView>();
+            TopLevelProjectTileCollection = new ObservableCollection<Tile>();
+            ActiveProjectTileCollection = new ObservableCollection<Tile>();
 
             foreach (Project project in ProjectsCollection)
             {
-                ObservableCollection<Project> pc = new ObservableCollection<Project>();
-                pc.Add(project);
+                Tile tile = CreateTile(project);
 
-                TreeView tvi = new TreeView();
-                tvi.Style = (Style)System.Windows.Application.Current.Resources["CustomTreeView"];
-                tvi.ItemTemplate = (DataTemplate)System.Windows.Application.Current.Resources["ProjectTemplate"];
-                tvi.DataContext = project;
-                tvi.ItemsSource = pc;
-
-                ProjectTreeViewCollection.Add(tvi);
+                TopLevelProjectTileCollection.Add(tile);
             }
+
+            ActiveProjectTileCollection = TopLevelProjectTileCollection;
         }
 
-        private void ChangedSelectedProject(GenericMessage<Project> selectedProjectMessage)
+        private Tile CreateTile(ProjectSwitcherItem project)
         {
-            Project selectedProject = (Project)selectedProjectMessage.Content;
+            Tile tile = new Tile();
+            //tvi.Content = System.Windows.Application.Current.Resources["ProjectIcon"];
+            //tvi.Title = project.Name;
+            tile.Click += new RoutedEventHandler(Project_Clicked);
+            tile.DataContext = project;
+            tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ProjectTileTemplate"];
+            //tile.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["WindowTitleColorBrush"];
+            return tile;
+        }
 
-            //TODO This needs to be refactored & recursive
-            foreach (TreeView tv in projectTreeViewCollection)
+        private void Project_Clicked(object sender, RoutedEventArgs e)
+        {
+            Tile tile = (Tile)sender;
+            Project project = (Project)tile.DataContext;
+
+            //SelectedProject = project;
+
+            if (project.SubItems.Any())
             {
-                Project project = (Project)tv.DataContext;
-
-                if (project.Name != selectedProject.Name)
-                {
-                    project.IsActive = false;
-                }
+                ActiveProjectTileCollection = new ObservableCollection<Tile>();
 
                 foreach (ProjectSwitcherItem subProject in project.SubItems)
                 {
-                    if (subProject.Name != selectedProject.Name)
-                    {
-                        subProject.IsActive = false;
-                    }
+                    Tile tvi = CreateTile(subProject);
+
+                    ActiveProjectTileCollection.Add(tvi);
                 }
             }
+
+            SelectedProject = project;
+            Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(project));
         }
+
+        //private void ChangedSelectedProject(GenericMessage<Project> selectedProjectMessage)
+        //{
+        //    Project selectedProject = (Project)selectedProjectMessage.Content;
+
+        //    //TODO This needs to be refactored & recursive
+        //    foreach (Tile tv in topLevelProjectTileCollection)
+        //    {
+        //        Project project = (Project)tv.DataContext;
+
+        //        if (project.Name != selectedProject.Name)
+        //        {
+        //            project.IsActive = false;
+        //        }
+
+        //        foreach (ProjectSwitcherItem subProject in project.SubItems)
+        //        {
+        //            if (subProject.Name != selectedProject.Name)
+        //            {
+        //                subProject.IsActive = false;
+        //            }
+        //        }
+        //    }
+        //}
 
         // TODO This needs a better name!
         private void DisplayContextMenusMessage(NotificationMessage contextMenuMessage)
         {
-            DisplayContextMenus(contextMenuMessage.Notification);
+            DisplayContextMenus(contextMenuMessage.Sender);
         }
 
-        public void DisplayContextMenus(string projectName)
+        public void DisplayContextMenus(object sender)
         {
             // Triggered by a right-click on a project. The treeview does not change the selecteditem when right-clicking
             // so had to write this routine to change the selected item
 
-            Project project = GetSelectedProject(projectName);
+            Tile tile = (Tile)sender;
+
+            Project project = (Project)tile.DataContext; // GetSelectedProject(projectName);
 
             ProjectContextMenus = new ObservableCollection<MenuItem>();
 
             // Send a message containing the project name to the main view model. The main view model returns the context
             // menu parameters as listed in the associations section
-            Messenger.Default.Send(new NotificationMessageAction<string>(this, project.Name, (contextMenuParameters) =>
+            Messenger.Default.Send(new NotificationMessageAction<string>(project, project.Name, (contextMenuParameters) =>
                 {
                     project.CreateContextMenus(contextMenuParameters, ref projectContextMenus);
                 }));
+
+            tile.ContextMenu.ItemsSource = projectContextMenus;
         }
 
-        private Project GetSelectedProject(string projectName)
-        {
-            // Loops through each project & subproject to find a project with the same name
-            // as the project that has been right-clicked.
-            // Sets the project to active is changes the treeview's selecteditem property
-            foreach (Project project in projectsCollection)
-            {
-                if (project.Name == projectName)
-                {
-                    project.IsActive = true;
-                    return project;
-                }
+        //private Project GetSelectedProject(string projectName)
+        //{
+        //    // Loops through each project & subproject to find a project with the same name
+        //    // as the project that has been right-clicked.
+        //    // Sets the project to active is changes the treeview's selecteditem property
+        //    foreach (Project project in projectsCollection)
+        //    {
+        //        if (project.Name == projectName)
+        //        {
+        //            project.IsActive = true;
+        //            return project;
+        //        }
 
-                foreach (Project subProject in project.SubItems)
-                {
-                    if (subProject.Name == projectName)
-                    {
-                        subProject.IsActive = true;
-                        return subProject;
-                    }
+        //        foreach (Project subProject in project.SubItems)
+        //        {
+        //            if (subProject.Name == projectName)
+        //            {
+        //                subProject.IsActive = true;
+        //                return subProject;
+        //            }
 
-                    if (subProject.SubItems.Any())
-                    {
-                        DisplayContextMenus(subProject.Name);
-                    }
-                }
-            }
+        //            if (subProject.SubItems.Any())
+        //            {
+        //                DisplayContextMenus(null);
+        //            }
+        //        }
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public void ProjectChanged(TreeView tv)
         {
@@ -185,6 +235,30 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Project has changed. Send a message to the main view model to set the active project.
                 Messenger.Default.Send(new Message.MessageChangeSelectedProject(project));
             }
+        }
+
+        public void GoBackToParent(GenericMessage<Project> message)
+        {
+            if (message.Content == null)
+            {
+                // Selected project had no parent. Reset to top level projects
+                ActiveProjectTileCollection = TopLevelProjectTileCollection;
+                SelectedProject = null;
+            }
+            else
+            {
+                // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
+                ActiveProjectTileCollection = new ObservableCollection<Tile>();
+
+                Project project = (Project)message.Content;
+                foreach (Project subProject in project.SubItems)
+                {
+                    Tile tile = CreateTile(subProject);
+                    ActiveProjectTileCollection.Add(tile);
+                }
+                SelectedProject = project;
+            }
+            //Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(null));
         }
     }
 }

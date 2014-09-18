@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 
 namespace Fluor.ProjectSwitcher
 {
@@ -27,6 +28,29 @@ namespace Fluor.ProjectSwitcher
             Label l = (Label)sender;
             Fluor.ProjectSwitcher.Base.Class.Project project = (Fluor.ProjectSwitcher.Base.Class.Project)l.DataContext;
             Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Project>>(new GenericMessage<Base.Class.Project>(project));
+        }
+
+        private void tileProject_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Tile tile = (Tile)sender;
+            Messenger.Default.Send<NotificationMessage>(new NotificationMessage(tile, "PROJ", tile.Title.ToString()));
+        }
+
+        private void muProject_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
+
+            Fluor.ProjectSwitcher.Base.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
+        }
+
+        private void tbApplicationName_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            TextBlock tb = (TextBlock)sender;
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
         }
     }
 }
