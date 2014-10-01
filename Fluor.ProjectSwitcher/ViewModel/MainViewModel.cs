@@ -511,10 +511,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 {
                     foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
                     {
-                        foreach (Fluor.ProjectSwitcher.Base.Class.Application subApplication in application.SubItems)
-                        {
-                            AssociatedApplicationCollection.Add(subApplication); 
-                        }
+                        AssociatedApplicationCollection.Add(application); 
+
+                        //foreach (Fluor.ProjectSwitcher.Base.Class.Application subApplication in application.SubItems)
+                        //{
+                        //    AssociatedApplicationCollection.Add(subApplication); 
+                        //}
                     }
                 }
 

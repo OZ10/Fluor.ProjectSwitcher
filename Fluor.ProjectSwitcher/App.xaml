@@ -28,9 +28,9 @@
                 <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14"/>
             </DataTemplate>-->
 
-            <HierarchicalDataTemplate x:Key="ProjectTemplate" ItemsSource="{Binding SubItems}">
+            <!--<HierarchicalDataTemplate x:Key="ProjectTemplate" ItemsSource="{Binding SubItems}">
                 <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" MouseRightButtonUp="lblProject_MouseRightButtonUp" FontSize="14" MouseLeftButtonUp="lblProject_MouseLeftButtonUp"/>
-            </HierarchicalDataTemplate>
+            </HierarchicalDataTemplate>-->
 
             <DataTemplate x:Key="ApplicationTemplate">
                 <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Margin="5,0,0,0"/>
@@ -48,10 +48,10 @@
                 <MenuItem Name="muProject" Header="{Binding Name}" IsEnabled="False"/>
             </DataTemplate>
             
-            <ControlTemplate x:Key="ProjectTileTemplate">
-                <Controls:Tile Name="tileProject" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tileProject_MouseRightButtonUp" Background="{Binding TileColor}">
+            <ControlTemplate x:Key="TileTemplate">
+                <Controls:Tile Name="tile" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tile_MouseRightButtonUp" Background="{Binding TileColor}">
                     <Controls:Tile.ContextMenu>
-                        <ContextMenu ItemsSource="{Binding ProjectContextMenus}" > <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
+                        <ContextMenu ItemsSource="{Binding ContextMenus}" > <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
                             <ContextMenu.ItemContainerStyle>
                                 <Style TargetType="MenuItem">
                                     <EventSetter Event="Click" Handler="muProject_Click"/>
@@ -86,9 +86,9 @@
                 </StackPanel>
             </ControlTemplate>
 
-            <local:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector" MenuItemTemplate="{StaticResource MenuItemTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>
-            <local:ProjectTemplateSelector x:Key="ProjectTemplateSelector" ProjectTemplate="{StaticResource ProjectTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>
-            <local:ApplicationTemplateSelector x:Key="ApplicationTemplateSelector" ApplicationTemplate="{StaticResource ApplicationTemplate}" HeaderTemplate="{StaticResource HeaderTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>
+            <!--<local:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector" MenuItemTemplate="{StaticResource MenuItemTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>-->
+            <!--<local:ProjectTemplateSelector x:Key="ProjectTemplateSelector" ProjectTemplate="{StaticResource ProjectTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>-->
+            <!--<local:ApplicationTemplateSelector x:Key="ApplicationTemplateSelector" ApplicationTemplate="{StaticResource ApplicationTemplate}" HeaderTemplate="{StaticResource HeaderTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>-->
             
             <Style x:Key="CustomTreeView" TargetType="{x:Type TreeView}">
                 <Setter Property="BorderThickness" Value="0,2,0,0"/>

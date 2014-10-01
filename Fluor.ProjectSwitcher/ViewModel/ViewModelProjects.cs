@@ -29,17 +29,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<MenuItem> projectContextMenus;
-        public ObservableCollection<MenuItem> ProjectContextMenus
+        private ObservableCollection<MenuItem> contextMenus;
+        public ObservableCollection<MenuItem> ContextMenus
         {
             get
             {
-                return projectContextMenus;
+                return contextMenus;
             }
             set
             {
-                projectContextMenus = value;
-                RaisePropertyChanged("ProjectContextMenus");
+                contextMenus = value;
+                RaisePropertyChanged("ContextMenus");
             }
         }
 
@@ -112,12 +112,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private Tile CreateTile(ProjectSwitcherItem project)
         {
             Tile tile = new Tile();
-            //tvi.Content = System.Windows.Application.Current.Resources["ProjectIcon"];
-            //tvi.Title = project.Name;
             tile.Click += new RoutedEventHandler(Project_Clicked);
             tile.DataContext = project;
-            tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ProjectTileTemplate"];
-            //tile.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["WindowTitleColorBrush"];
+            tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
+
             return tile;
         }
 
@@ -183,16 +181,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             Project project = (Project)tile.DataContext; // GetSelectedProject(projectName);
 
-            ProjectContextMenus = new ObservableCollection<MenuItem>();
+            ContextMenus = new ObservableCollection<MenuItem>();
 
             // Send a message containing the project name to the main view model. The main view model returns the context
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(project, project.Name, (contextMenuParameters) =>
                 {
-                    project.CreateContextMenus(contextMenuParameters, ref projectContextMenus);
+                    project.CreateContextMenus(contextMenuParameters, ref contextMenus);
                 }));
 
-            tile.ContextMenu.ItemsSource = projectContextMenus;
+            tile.ContextMenu.ItemsSource = contextMenus;
         }
 
         //private Project GetSelectedProject(string projectName)

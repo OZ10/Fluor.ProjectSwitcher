@@ -65,7 +65,7 @@
                 <View:ProjectsUC Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Name="tbiApplications" Header="Apps" IsSelected="{Binding IsApplicationsTabSelected}" Visibility="Collapsed">
-                <View:ApplicationsUC Grid.Row="1" Grid.Column="2" Margin="0,10,0,0"/>
+                <View:ApplicationsUC Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
         </TabControl>
         <!--<Rectangle Grid.Row="1" Grid.Column="1" Width="1" HorizontalAlignment="Right" Stroke="{DynamicResource AccentColorBrush4}"/>-->

@@ -4,6 +4,8 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
 using Fluor.ProjectSwitcher.Base.Class;
 using System.Linq;
+using MahApps.Metro.Controls;
+using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -37,8 +39,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<ListBox> activeApplicationCollection;
-        public ObservableCollection<ListBox> ActiveApplicationCollection
+        private ObservableCollection<Tile> activeApplicationCollection;
+        public ObservableCollection<Tile> ActiveApplicationCollection
         {
             get
             {
@@ -48,6 +50,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 activeApplicationCollection = value;
                 RaisePropertyChanged("ActiveApplicationCollection");
+            }
+        }
+
+        private ObservableCollection<ListBox> activeSubApplicationCollection;
+        public ObservableCollection<ListBox> ActiveSubApplicationCollection
+        {
+            get
+            {
+                return activeSubApplicationCollection;
+            }
+            set
+            {
+                activeSubApplicationCollection = value;
+                RaisePropertyChanged("ActiveSubApplicationCollection");
             }
         }
 
@@ -96,20 +112,55 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //check = false;
             ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
 
-            ActiveApplicationCollection = new ObservableCollection<ListBox>();
+            ActiveApplicationCollection = new ObservableCollection<Tile>();
 
-            foreach (Application application in ApplicationsCollection)
+            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection)
             {
-                ListBox lb = new ListBox();
-                lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
-                lb.DataContext = application;
+                //ListBox lb = new ListBox();
+                //lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
+                //lb.DataContext = application;
 
-                ActiveApplicationCollection.Add(lb);
+                Tile tile = CreateTile(application);
+
+                ActiveApplicationCollection.Add(tile);
             }
            
             //FilteredApplicationCollection = ApplicationsCollection;
             //SelectedApplication = null;
             //check = true;
+        }
+
+        private Tile CreateTile(ProjectSwitcherItem application)
+        {
+            Tile tile = new Tile();
+            tile.Click += new RoutedEventHandler(Application_Clicked);
+            tile.DataContext = application;
+            tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
+
+            return tile;
+        }
+
+        private void Application_Clicked(object sender, RoutedEventArgs e)
+        {
+            //Tile tile = (Tile)sender;
+            //Project project = (Project)tile.DataContext;
+
+            ////SelectedProject = project;
+
+            //if (project.SubItems.Any())
+            //{
+            //    ActiveProjectTileCollection = new ObservableCollection<Tile>();
+
+            //    foreach (ProjectSwitcherItem subProject in project.SubItems)
+            //    {
+            //        Tile tvi = CreateTile(subProject);
+
+            //        ActiveProjectTileCollection.Add(tvi);
+            //    }
+            //}
+
+            //SelectedProject = project;
+            //Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(project));
         }
 
         //private void ChangeSelectedApplication(Application application)

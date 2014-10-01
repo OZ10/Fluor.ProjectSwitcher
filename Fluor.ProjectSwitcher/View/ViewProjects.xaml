@@ -16,7 +16,7 @@
         </ItemsControl>
         <!--<TreeView Name="tvProjects" BorderThickness="0,2,2,2" Padding="0,2,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ItemsSource="{Binding ProjectsCollection}" SelectedItemChanged="tvProjects_SelectedItemChanged" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}" ItemTemplateSelector="{DynamicResource ProjectTemplateSelector}">
             <TreeView.ContextMenu>
-                <ContextMenu ItemsSource="{Binding ProjectContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >
+                <ContextMenu ItemsSource="{Binding contextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <EventSetter Event="Click" Handler="muProject_Click"/>
