@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Projects, Mode=OneWay, Source={StaticResource Locator}}">
     <Grid>
-        <ItemsControl Name="icProjects" ItemsSource="{Binding ActiveProjectTileCollection}">
+        <ItemsControl Name="icProjects" ItemsSource="{Binding ActiveTileCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>

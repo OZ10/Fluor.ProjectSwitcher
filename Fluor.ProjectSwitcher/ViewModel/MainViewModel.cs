@@ -106,6 +106,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
             Messenger.Default.Register<GenericMessage<Project>>(this, ChangeSelectedProject);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
+            Messenger.Default.Register<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(this, UpdateApplicationsCollection);
         }
 
         /// <summary>
@@ -429,16 +430,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
             try
             {
                 int i = 0;
-                foreach (SubApplication application in AssociatedApplicationCollection)
+                foreach (Fluor.ProjectSwitcher.Base.Class.Application application in AssociatedApplicationCollection)
                 {
-                    if (application.IsSelected == true && application.Exe != "")
+                    foreach (SubApplication subApplication in application.SubItems)
                     {
-                        LaunchApplication(ref i, application);
-                    }
+                        if (subApplication.IsSelected == true && subApplication.Exe != "")
+                        {
+                            LaunchApplication(ref i, subApplication);
+                        }
 
-                    OpeningSubApplications(i, application);
+                        OpeningSubApplications(i, subApplication);
+                    }
+                    System.Threading.Thread.Sleep(2000 * i);
                 }
-                System.Threading.Thread.Sleep(2000 * i);
                 return true;
             }
             catch (Exception)
@@ -498,34 +502,43 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void ChangeSelectedProject(GenericMessage<Project> changeSelectedProjectMessage) //Message.MessageChangeSelectedProject changeSelectedProjectMessage)
         {
-            // Collect all the applications that are associated with the newly selected project
-
-            AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
-
-            SelectedProject = (Project)changeSelectedProjectMessage.Content;
-
-            if (SelectedProject != null)
+            if (changeSelectedProjectMessage.Sender is ViewModelProjects)
             {
-                // Get all the associations assoicated with the selected project
-                foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+                // Collect all the applications that are associated with the newly selected project
+
+                AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
+
+                SelectedProject = (Project)changeSelectedProjectMessage.Content;
+
+                if (SelectedProject != null)
                 {
-                    foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                    // Get all the associations assoicated with the selected project
+                    foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
                     {
-                        AssociatedApplicationCollection.Add(application); 
+                        foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                        {
+                            AssociatedApplicationCollection.Add(application); 
 
-                        //foreach (Fluor.ProjectSwitcher.Base.Class.Application subApplication in application.SubItems)
-                        //{
-                        //    AssociatedApplicationCollection.Add(subApplication); 
-                        //}
+                            //foreach (Fluor.ProjectSwitcher.Base.Class.Application subApplication in application.SubItems)
+                            //{
+                            //    AssociatedApplicationCollection.Add(subApplication); 
+                            //}
+                        }
                     }
-                }
 
-                if (AssociatedApplicationCollection.Any())
-                {
-                    // Send the associated applications to the Applications view
-                    Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
-
-                    IsApplicationsTabSelected = true;
+                    if (AssociatedApplicationCollection.Any())
+                    {
+                        if (AssociatedApplicationCollection.Count == 1)
+                        {
+                            Fluor.ProjectSwitcher.Base.Class.Application application = AssociatedApplicationCollection[0] as Fluor.ProjectSwitcher.Base.Class.Application;
+                            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(new GenericMessage<Base.Class.Application>(application));
+                        }
+                        else
+                        {
+                            // Send the associated applications to the Tile view
+                            Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
+                        }
+                    }
                 }
             }
         }
@@ -617,8 +630,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void GoBackToParent()
         {
-            SelectedProject = SelectedProject.ParentProject;
-            Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(SelectedProject));
+            if (SelectedProject != null)
+            {
+                SelectedProject = SelectedProject.ParentProject;
+                Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this,SelectedProject));
+            }
+        }
+
+        private void UpdateApplicationsCollection(GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application> message)
+        {
+            IsApplicationsTabSelected = true;
         }
     }
 }

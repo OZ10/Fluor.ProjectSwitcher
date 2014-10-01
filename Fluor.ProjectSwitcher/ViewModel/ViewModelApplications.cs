@@ -39,8 +39,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Tile> activeApplicationCollection;
-        public ObservableCollection<Tile> ActiveApplicationCollection
+        private ObservableCollection<ListBox> activeApplicationCollection;
+        public ObservableCollection<ListBox> ActiveApplicationCollection
         {
             get
             {
@@ -50,20 +50,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 activeApplicationCollection = value;
                 RaisePropertyChanged("ActiveApplicationCollection");
-            }
-        }
-
-        private ObservableCollection<ListBox> activeSubApplicationCollection;
-        public ObservableCollection<ListBox> ActiveSubApplicationCollection
-        {
-            get
-            {
-                return activeSubApplicationCollection;
-            }
-            set
-            {
-                activeSubApplicationCollection = value;
-                RaisePropertyChanged("ActiveSubApplicationCollection");
             }
         }
 
@@ -104,40 +90,28 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public ViewModelApplications()
         {
-            Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
+            Messenger.Default.Register<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(this, UpdateApplicationsCollection);
         }
 
-        private void UpdateApplicationsCollection(Message.MessagePopulateApplications populateApplicationsMessage)
+        private void UpdateApplicationsCollection(GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application> message)
         {
             //check = false;
-            ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
+            ApplicationsCollection = message.Content.SubItems;
 
-            ActiveApplicationCollection = new ObservableCollection<Tile>();
+            ActiveApplicationCollection = new ObservableCollection<ListBox>();
 
             foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection)
             {
-                //ListBox lb = new ListBox();
-                //lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
-                //lb.DataContext = application;
+                ListBox lb = new ListBox();
+                lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
+                lb.DataContext = application;
 
-                Tile tile = CreateTile(application);
-
-                ActiveApplicationCollection.Add(tile);
+                ActiveApplicationCollection.Add(lb);
             }
            
             //FilteredApplicationCollection = ApplicationsCollection;
             //SelectedApplication = null;
             //check = true;
-        }
-
-        private Tile CreateTile(ProjectSwitcherItem application)
-        {
-            Tile tile = new Tile();
-            tile.Click += new RoutedEventHandler(Application_Clicked);
-            tile.DataContext = application;
-            tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
-
-            return tile;
         }
 
         private void Application_Clicked(object sender, RoutedEventArgs e)

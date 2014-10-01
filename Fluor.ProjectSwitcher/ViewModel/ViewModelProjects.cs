@@ -29,6 +29,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        private ObservableCollection<ProjectSwitcherItem> applicationsCollection;
+        public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection
+        {
+            get
+            {
+                return applicationsCollection;
+            }
+            set
+            {
+                applicationsCollection = value;
+                RaisePropertyChanged("ApplicationsCollection");
+            }
+        }
+
         private ObservableCollection<MenuItem> contextMenus;
         public ObservableCollection<MenuItem> ContextMenus
         {
@@ -43,31 +57,31 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Tile> topLevelProjectTileCollection;
-        public ObservableCollection<Tile> TopLevelProjectTileCollection
+        private ObservableCollection<Tile> topLevelTileCollection;
+        public ObservableCollection<Tile> TopLevelTileCollection
         {
             get
             {
-                return topLevelProjectTileCollection;
+                return topLevelTileCollection;
             }
             set
             {
-                topLevelProjectTileCollection = value;
+                topLevelTileCollection = value;
                 RaisePropertyChanged("TopLevelProjectTileCollection");
             }
         }
 
-        private ObservableCollection<Tile> activeProjectTileCollection;
-        public ObservableCollection<Tile> ActiveProjectTileCollection
+        private ObservableCollection<Tile> activeTileCollection;
+        public ObservableCollection<Tile> ActiveTileCollection
         {
             get
             {
-                return activeProjectTileCollection;
+                return activeTileCollection;
             }
             set
             {
-                activeProjectTileCollection = value;
-                RaisePropertyChanged("ActiveProjectTileCollection");
+                activeTileCollection = value;
+                RaisePropertyChanged("ActiveTileCollection");
             }
         }
 
@@ -90,23 +104,47 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdatedProjectsCollection);
             Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenusMessage);
             Messenger.Default.Register<GenericMessage<Project>>(this, GoBackToParent);
+            Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
         }
 
         private void UpdatedProjectsCollection(Message.MessagePopulateProjects populateProjectsMessage)
         {
             ProjectsCollection = populateProjectsMessage.ProjectsCollection;
 
-            TopLevelProjectTileCollection = new ObservableCollection<Tile>();
-            ActiveProjectTileCollection = new ObservableCollection<Tile>();
+            TopLevelTileCollection = new ObservableCollection<Tile>();
+            ActiveTileCollection = new ObservableCollection<Tile>();
 
             foreach (Project project in ProjectsCollection)
             {
                 Tile tile = CreateTile(project);
 
-                TopLevelProjectTileCollection.Add(tile);
+                TopLevelTileCollection.Add(tile);
             }
 
-            ActiveProjectTileCollection = TopLevelProjectTileCollection;
+            ActiveTileCollection = TopLevelTileCollection;
+        }
+
+        private void UpdateApplicationsCollection(Message.MessagePopulateApplications populateApplicationsMessage)
+        {
+            //check = false;
+            ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
+
+            ActiveTileCollection = new ObservableCollection<Tile>();
+
+            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection)
+            {
+                //ListBox lb = new ListBox();
+                //lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
+                //lb.DataContext = application;
+
+                Tile tile = CreateTile(application);
+
+                ActiveTileCollection.Add(tile);
+            }
+
+            //FilteredApplicationCollection = ApplicationsCollection;
+            //SelectedApplication = null;
+            //check = true;
         }
 
         private Tile CreateTile(ProjectSwitcherItem project)
@@ -122,24 +160,34 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private void Project_Clicked(object sender, RoutedEventArgs e)
         {
             Tile tile = (Tile)sender;
-            Project project = (Project)tile.DataContext;
+            ProjectSwitcherItem psItem = (ProjectSwitcherItem)tile.DataContext;
 
             //SelectedProject = project;
 
-            if (project.SubItems.Any())
+            Project project = psItem as Project;
+
+            if (project != null)
             {
-                ActiveProjectTileCollection = new ObservableCollection<Tile>();
-
-                foreach (ProjectSwitcherItem subProject in project.SubItems)
+                if (project.SubItems.Any())
                 {
-                    Tile tvi = CreateTile(subProject);
+                    ActiveTileCollection = new ObservableCollection<Tile>();
 
-                    ActiveProjectTileCollection.Add(tvi);
+                    foreach (ProjectSwitcherItem subProject in project.SubItems)
+                    {
+                        Tile tvi = CreateTile(subProject);
+
+                        ActiveTileCollection.Add(tvi);
+                    }
                 }
-            }
 
-            SelectedProject = project;
-            Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(project));
+                SelectedProject = project;
+                Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this, project));
+            }
+            else
+            {
+                Fluor.ProjectSwitcher.Base.Class.Application application = psItem as Fluor.ProjectSwitcher.Base.Class.Application;
+                Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(new GenericMessage<Base.Class.Application>(this, application));
+            }
         }
 
         //private void ChangedSelectedProject(GenericMessage<Project> selectedProjectMessage)
@@ -179,15 +227,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             Tile tile = (Tile)sender;
 
-            Project project = (Project)tile.DataContext; // GetSelectedProject(projectName);
+            ProjectSwitcherItem psItem = (ProjectSwitcherItem)tile.DataContext; // GetSelectedProject(projectName);
 
             ContextMenus = new ObservableCollection<MenuItem>();
 
             // Send a message containing the project name to the main view model. The main view model returns the context
             // menu parameters as listed in the associations section
-            Messenger.Default.Send(new NotificationMessageAction<string>(project, project.Name, (contextMenuParameters) =>
+            Messenger.Default.Send(new NotificationMessageAction<string>(psItem, psItem.Name, (contextMenuParameters) =>
                 {
-                    project.CreateContextMenus(contextMenuParameters, ref contextMenus);
+                    psItem.CreateContextMenus(contextMenuParameters, ref contextMenus);
                 }));
 
             tile.ContextMenu.ItemsSource = contextMenus;
@@ -237,26 +285,30 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void GoBackToParent(GenericMessage<Project> message)
         {
-            if (message.Content == null)
+            if (message.Sender is MainViewModel)
             {
-                // Selected project had no parent. Reset to top level projects
-                ActiveProjectTileCollection = TopLevelProjectTileCollection;
-                SelectedProject = null;
-            }
-            else
-            {
-                // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
-                ActiveProjectTileCollection = new ObservableCollection<Tile>();
-
-                Project project = (Project)message.Content;
-                foreach (Project subProject in project.SubItems)
+                if (message.Content == null)
                 {
-                    Tile tile = CreateTile(subProject);
-                    ActiveProjectTileCollection.Add(tile);
+                    // Selected project had no parent. Reset to top level projects
+                    ActiveTileCollection = TopLevelTileCollection;
+                    SelectedProject = null;
                 }
-                SelectedProject = project;
+                else
+                {
+                    // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
+                    ActiveTileCollection = new ObservableCollection<Tile>();
+
+                    Project project = (Project)message.Content;
+                    foreach (Project subProject in project.SubItems)
+                    {
+                        Tile tile = CreateTile(subProject);
+                        ActiveTileCollection.Add(tile);
+                    }
+                    SelectedProject = project;
+                }
+                //Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(null));
             }
-            //Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(null));
+            
         }
     }
 }
