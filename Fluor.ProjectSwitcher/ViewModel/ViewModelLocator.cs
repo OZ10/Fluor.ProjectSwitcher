@@ -31,7 +31,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<ViewModelProjects>();
+            SimpleIoc.Default.Register<ViewModelTiles>();
             SimpleIoc.Default.Register<ViewModelApplications>();
         }
 
@@ -43,11 +43,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public ViewModelProjects Projects
+        public ViewModelTiles Projects
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<ViewModelProjects>();
+                return ServiceLocator.Current.GetInstance<ViewModelTiles>();
             }
         }
 

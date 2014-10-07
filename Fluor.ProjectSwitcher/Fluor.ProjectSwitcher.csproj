@@ -95,22 +95,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Class\ApplicationTemplateSelector.cs" />
-    <Compile Include="Class\ProjectTemplateSelector.cs" />
-    <Compile Include="Class\MenuItemTemplateSelector.cs" />
-    <Compile Include="Message\MessageChangePlantName.cs" />
     <Compile Include="Message\MessageChangeSelectedProject.cs" />
     <Compile Include="Message\MessagePopulateApplications.cs" />
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />
     <Compile Include="ViewModel\ViewModelApplications.cs" />
-    <Compile Include="ViewModel\ViewModelProjects.cs" />
+    <Compile Include="ViewModel\ViewModelTiles.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\ViewApplications.xaml.cs">
       <DependentUpon>ViewApplications.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewProjects.xaml.cs">
-      <DependentUpon>ViewProjects.xaml</DependentUpon>
+    <Compile Include="View\ViewTiles.xaml.cs">
+      <DependentUpon>ViewTiles.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewStatusWindow.xaml.cs">
       <DependentUpon>ViewStatusWindow.xaml</DependentUpon>
@@ -132,11 +128,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Style\AccentFluor_New.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\ViewApplications.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ViewProjects.xaml">
+    <Page Include="View\ViewTiles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

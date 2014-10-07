@@ -41,7 +41,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Change 'back' button to include the project name text so circle button and/or text can be clicked
         // TODO Implement tile colours. Each tile should have different colour
         // TODO Create icons for applications
-        // TODO Have tile section for top level application - i.e. when you select a project with multiple associated applications, tile appear allowing the user to select which application they want to display
         // TODO WHERE I WAS UP TO BEFORE GOING ON HOLIDAY -- ContextMenus for applications paths are not displaying. Selection options are displaying but have no code behind them
 
         public ObservableCollection<Project> ProjectsCollection { get; set; }
@@ -502,7 +501,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void ChangeSelectedProject(GenericMessage<Project> changeSelectedProjectMessage) //Message.MessageChangeSelectedProject changeSelectedProjectMessage)
         {
-            if (changeSelectedProjectMessage.Sender is ViewModelProjects)
+            if (changeSelectedProjectMessage.Sender is ViewModelTiles)
             {
                 // Collect all the applications that are associated with the newly selected project
 

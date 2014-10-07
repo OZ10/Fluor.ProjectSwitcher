@@ -1,17 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!--ACCENT COLORS-->
-    <!--<Color x:Key="HighlightColor">#FF00457D</Color>-->
-    <Color x:Key="HighlightColor">#FF00457D</Color>
+    <Color x:Key="HighlightColor">#FF0288d1</Color>
 
     <!--80%-->
-    <Color x:Key="AccentColor">#CC00457D</Color>
+    <Color x:Key="AccentColor">#FF03a9f4</Color>
     <!--60%-->
-    <Color x:Key="AccentColor2">#9900457D</Color>
+    <Color x:Key="AccentColor2">#FF29b6f6</Color>
     <!--40%-->
-    <Color x:Key="AccentColor3">#6600457D</Color>
+    <Color x:Key="AccentColor3">#FF81d4fa</Color>
     <!--20%-->
-    <Color x:Key="AccentColor4">#FFeeeeee</Color>
+    <Color x:Key="AccentColor4">#FFb3e5fc</Color>
 
     <Color x:Key="SubColor">#FFffab40</Color>
 
@@ -35,4 +34,5 @@
 
     <SolidColorBrush x:Key="CheckmarkFill" Color="{StaticResource AccentColor}" />
     <SolidColorBrush x:Key="RightArrowFill" Color="{StaticResource AccentColor}" />
+    
 </ResourceDictionary>

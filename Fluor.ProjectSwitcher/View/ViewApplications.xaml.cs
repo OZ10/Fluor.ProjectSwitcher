@@ -7,7 +7,7 @@ namespace Fluor.ProjectSwitcher.View
     /// <summary>
     /// Interaction logic for ApplicationsUC.xaml
     /// </summary>
-    public partial class ApplicationsUC : UserControl
+    public partial class ViewApplications : UserControl
     {
         public ViewModel.ViewModelApplications vm
         {
@@ -17,7 +17,7 @@ namespace Fluor.ProjectSwitcher.View
             }
         }
 
-        public ApplicationsUC()
+        public ViewApplications()
         {
             InitializeComponent();
         }

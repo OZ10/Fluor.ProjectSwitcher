@@ -13,8 +13,9 @@ using System.Windows.Media;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelProjects : ViewModelBase 
+    public class ViewModelTiles : ViewModelBase 
     {
+        // TODO Is this property required?
         private ObservableCollection<Project> projectsCollection;
         public ObservableCollection<Project> ProjectsCollection
         {
@@ -29,6 +30,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        // TODO Is this property required?
         private ObservableCollection<ProjectSwitcherItem> applicationsCollection;
         public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection
         {
@@ -85,6 +87,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        // TODO Is this property required?
         private Project selectedProject;
         public Project SelectedProject
         {
@@ -99,10 +102,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public ViewModelProjects()
+        public ViewModelTiles()
         {
             Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdatedProjectsCollection);
-            Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenusMessage);
+            Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenus);
             Messenger.Default.Register<GenericMessage<Project>>(this, GoBackToParent);
             Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
         }
@@ -126,43 +129,34 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void UpdateApplicationsCollection(Message.MessagePopulateApplications populateApplicationsMessage)
         {
-            //check = false;
             ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
 
             ActiveTileCollection = new ObservableCollection<Tile>();
 
             foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection)
             {
-                //ListBox lb = new ListBox();
-                //lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
-                //lb.DataContext = application;
-
                 Tile tile = CreateTile(application);
 
                 ActiveTileCollection.Add(tile);
             }
-
-            //FilteredApplicationCollection = ApplicationsCollection;
-            //SelectedApplication = null;
-            //check = true;
         }
 
         private Tile CreateTile(ProjectSwitcherItem project)
         {
             Tile tile = new Tile();
-            tile.Click += new RoutedEventHandler(Project_Clicked);
+            tile.Click += new RoutedEventHandler(Tile_Clicked);
             tile.DataContext = project;
+            //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileControlTemplate1"];
             tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
+            //tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom"];
 
             return tile;
         }
 
-        private void Project_Clicked(object sender, RoutedEventArgs e)
+        private void Tile_Clicked(object sender, RoutedEventArgs e)
         {
             Tile tile = (Tile)sender;
             ProjectSwitcherItem psItem = (ProjectSwitcherItem)tile.DataContext;
-
-            //SelectedProject = project;
 
             Project project = psItem as Project;
 
@@ -190,42 +184,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        //private void ChangedSelectedProject(GenericMessage<Project> selectedProjectMessage)
-        //{
-        //    Project selectedProject = (Project)selectedProjectMessage.Content;
-
-        //    //TODO This needs to be refactored & recursive
-        //    foreach (Tile tv in topLevelProjectTileCollection)
-        //    {
-        //        Project project = (Project)tv.DataContext;
-
-        //        if (project.Name != selectedProject.Name)
-        //        {
-        //            project.IsActive = false;
-        //        }
-
-        //        foreach (ProjectSwitcherItem subProject in project.SubItems)
-        //        {
-        //            if (subProject.Name != selectedProject.Name)
-        //            {
-        //                subProject.IsActive = false;
-        //            }
-        //        }
-        //    }
-        //}
-
-        // TODO This needs a better name!
-        private void DisplayContextMenusMessage(NotificationMessage contextMenuMessage)
-        {
-            DisplayContextMenus(contextMenuMessage.Sender);
-        }
-
-        public void DisplayContextMenus(object sender)
+        public void DisplayContextMenus(NotificationMessage contextMenuMessage)
         {
             // Triggered by a right-click on a project. The treeview does not change the selecteditem when right-clicking
             // so had to write this routine to change the selected item
 
-            Tile tile = (Tile)sender;
+            Tile tile = (Tile)contextMenuMessage.Sender;
 
             ProjectSwitcherItem psItem = (ProjectSwitcherItem)tile.DataContext; // GetSelectedProject(projectName);
 
@@ -239,48 +203,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 }));
 
             tile.ContextMenu.ItemsSource = contextMenus;
-        }
-
-        //private Project GetSelectedProject(string projectName)
-        //{
-        //    // Loops through each project & subproject to find a project with the same name
-        //    // as the project that has been right-clicked.
-        //    // Sets the project to active is changes the treeview's selecteditem property
-        //    foreach (Project project in projectsCollection)
-        //    {
-        //        if (project.Name == projectName)
-        //        {
-        //            project.IsActive = true;
-        //            return project;
-        //        }
-
-        //        foreach (Project subProject in project.SubItems)
-        //        {
-        //            if (subProject.Name == projectName)
-        //            {
-        //                subProject.IsActive = true;
-        //                return subProject;
-        //            }
-
-        //            if (subProject.SubItems.Any())
-        //            {
-        //                DisplayContextMenus(null);
-        //            }
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        public void ProjectChanged(TreeView tv)
-        {
-            Project project = (Project)tv.SelectedItem;
-
-            if (project != null)
-            {
-                // Project has changed. Send a message to the main view model to set the active project.
-                Messenger.Default.Send(new Message.MessageChangeSelectedProject(project));
-            }
         }
 
         public void GoBackToParent(GenericMessage<Project> message)
@@ -306,7 +228,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     }
                     SelectedProject = project;
                 }
-                //Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(null));
             }
             
         }

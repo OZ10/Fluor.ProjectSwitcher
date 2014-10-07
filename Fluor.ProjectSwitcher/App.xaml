@@ -16,40 +16,17 @@
             <Path x:Key="MinusIcon" Fill="{DynamicResource HighlightBrush}" Width="15" Height="15" Stretch="Uniform" Data="F1 M 19,38L 57,38L 57,44L 19,44L 19,38 Z " />
             <Path x:Key="SelectThisOnlyIcon" Fill="{DynamicResource HighlightBrush}" Width="15" Height="15" Stretch="Uniform" Data="F1 M 19,25L 27,25L 27,33L 19,33L 19,25 Z M 19,36L 27,36L 27,44L 19,44L 19,36 Z M 31,25L 57,25L 57,33L 31,33L 31,25 Z M 19,47L 27,47L 27,55L 19,55L 19,47 Z " />
             <Path x:Key="SelectAllExceptThisIcon" Fill="{DynamicResource HighlightBrush}" Width="15" Height="15" Stretch="Uniform" Data="F1 M 19,34.0001L 20,34.0001L 20,35.0001L 19,35.0001L 19,34.0001 Z M 18.9999,36.0002L 19.9999,36.0002L 19.9999,37.0002L 18.9999,37.0002L 18.9999,36.0002 Z M 18.9999,38.0002L 19.9999,38.0002L 19.9999,39.0002L 18.9999,39.0002L 18.9999,38.0002 Z M 18.9999,40.0002L 19.9999,40.0002L 19.9999,41.0002L 20.9999,41.0002L 20.9999,42.0002L 19.9999,42.0002L 19.9999,41.0002L 18.9999,41.0002L 18.9999,40.0002 Z M 20.9999,35.0002L 20.9999,34.0002L 21.9998,34.0002L 21.9998,35.0002L 20.9999,35.0002 Z M 22.9998,35.0002L 22.9998,34.0002L 23.9998,34.0002L 23.9998,35.0002L 22.9998,35.0002 Z M 24.9998,35.0002L 24.9998,34.0002L 25.9998,34.0002L 25.9998,35.0002L 26.9998,35.0002L 26.9998,36.0002L 25.9998,36.0002L 25.9998,35.0002L 24.9998,35.0002 Z M 25.9999,37.0002L 26.9999,37.0002L 26.9999,38.0002L 25.9999,38.0002L 25.9999,37.0002 Z M 25.9999,39.0002L 26.9999,39.0002L 26.9999,40.0002L 25.9999,40.0002L 25.9999,39.0002 Z M 25.9999,41.0002L 26.9999,41.0002L 26.9999,42.0002L 25.9999,42.0002L 25.9999,41.0002 Z M 24.9999,42.0002L 23.9999,42.0002L 23.9999,41.0002L 24.9999,41.0002L 24.9999,42.0002 Z M 22.9999,42.0002L 21.9999,42.0002L 21.9999,41.0002L 22.9999,41.0002L 22.9999,42.0002 Z M 30.9999,34.0002L 31.9999,34.0002L 31.9999,35.0002L 30.9999,35.0002L 30.9999,34.0002 Z M 30.9999,36.0002L 31.9999,36.0002L 31.9999,37.0002L 30.9999,37.0002L 30.9999,36.0002 Z M 30.9999,38.0001L 31.9999,38.0001L 31.9999,39.0001L 30.9999,39.0001L 30.9999,38.0001 Z M 30.9999,40.0001L 31.9999,40.0001L 31.9999,41.0001L 32.9999,41.0001L 32.9999,42.0001L 31.9999,42.0001L 31.9999,41.0001L 30.9999,41.0001L 30.9999,40.0001 Z M 32.9999,35.0001L 32.9999,34.0001L 33.9999,34.0001L 33.9999,35.0001L 32.9999,35.0001 Z M 34.9999,35.0001L 34.9999,34.0001L 35.9999,34.0001L 35.9999,35.0001L 34.9999,35.0001 Z M 36.9999,35.0001L 36.9999,34.0001L 37.9999,34.0001L 37.9999,35.0001L 36.9999,35.0001 Z M 56.9998,35.0001L 56.9998,36.0001L 55.9998,36.0001L 55.9998,35.0001L 54.9999,35.0001L 54.9999,34.0001L 55.9999,34.0001L 55.9999,35.0001L 56.9998,35.0001 Z M 55.9998,37.0001L 56.9998,37.0001L 56.9998,38.0001L 55.9998,38.0001L 55.9998,37.0001 Z M 55.9998,39.0001L 56.9998,39.0001L 56.9998,40.0001L 55.9998,40.0001L 55.9998,39.0001 Z M 37.9999,41.0001L 38.9999,41.0001L 38.9999,42.0001L 37.9999,42.0001L 37.9999,41.0001 Z M 36.9999,42.0001L 35.9999,42.0001L 35.9999,41.0001L 36.9999,41.0001L 36.9999,42.0001 Z M 34.9999,42.0001L 33.9999,42.0001L 33.9999,41.0001L 34.9999,41.0001L 34.9999,42.0001 Z M 40,42.0001L 40,41.0001L 41,41.0001L 41,42.0001L 40,42.0001 Z M 41,35.0001L 41,34.0001L 42,34.0001L 42,35.0001L 41,35.0001 Z M 42.9999,35.0001L 42.9999,34.0001L 43.9999,34.0001L 43.9999,35.0001L 42.9999,35.0001 Z M 44.9999,35.0001L 44.9999,34.0001L 45.9999,34.0001L 45.9999,35.0001L 44.9999,35.0001 Z M 45.9999,41.0001L 46.9999,41.0001L 46.9999,42.0001L 45.9999,42.0001L 45.9999,41.0001 Z M 44.9999,42.0001L 43.9999,42.0001L 43.9999,41.0001L 44.9999,41.0001L 44.9999,42.0001 Z M 42.9999,42.0001L 42,42.0001L 42,41.0001L 42.9999,41.0001L 42.9999,42.0001 Z M 39,35L 39,34L 40,34L 40,35L 39,35 Z M 47.9999,41L 48.9999,41L 48.9999,42L 47.9999,42L 47.9999,41 Z M 50,42L 50,41L 51,41L 51,42L 50,42 Z M 56,41L 57,41L 57,42L 56,42L 56,41 Z M 55,42L 54,42L 54,41L 55,41L 55,42 Z M 53,42L 52,42L 52,41L 53,41L 53,42 Z M 47,35L 47,34L 48,34L 48,35L 47,35 Z M 51,35L 51,34L 52,34L 52,35L 51,35 Z M 53,35L 53,34L 54,34L 54,35L 53,35 Z M 49,35L 49,34L 50,34L 50,35L 49,35 Z M 19,23L 27,23L 27,31L 19,31L 19,23 Z M 30.9999,23.0003L 56.9997,23.0003L 56.9997,31.0003L 30.9999,31.0003L 30.9999,23.0003 Z M 19,45.0001L 26.9999,45.0001L 26.9999,53.0001L 19,53.0001L 19,45.0001 Z M 30.9999,45.0001L 56.9998,45.0001L 56.9998,53.0001L 30.9999,53.0001L 30.9999,45.0001 Z " />
-            <Path x:Key="SwitchProjectIcon" Fill="{DynamicResource HighlightBrush}" Stretch="Uniform" Data="M 80 91.734368 80 84 66.5 84 53 84 53 75 53 66 66.45619 66 79.912381 66 80.20619 58.978175 80.5 51.956349 92.250306 63.743501 104.00061 75.530653 92.000306 87.499695 80 99.468736 80 91.734368 z M 36.515972 65.021667 24.531944 53.000682 35.99966 41.500341 C 42.306904 35.175153 47.812216 30 48.233688 30 48.65516 30 49 33.15 49 37 l 0 7 13 0 13 0 0 9 0 9 -12.957936 0 -12.957935 0 -0.292065 7.521326 L 48.5 77.042652 36.515972 65.021667 z " />
+            <Path x:Key="SwitchProjectIcon" Fill="White" Width="30" Height="30" Stretch="Uniform" Data="M 80 91.734368 80 84 66.5 84 53 84 53 75 53 66 66.45619 66 79.912381 66 80.20619 58.978175 80.5 51.956349 92.250306 63.743501 104.00061 75.530653 92.000306 87.499695 80 99.468736 80 91.734368 z M 36.515972 65.021667 24.531944 53.000682 35.99966 41.500341 C 42.306904 35.175153 47.812216 30 48.233688 30 48.65516 30 49 33.15 49 37 l 0 7 13 0 13 0 0 9 0 9 -12.957936 0 -12.957935 0 -0.292065 7.521326 L 48.5 77.042652 36.515972 65.021667 z " />
             <Path x:Key="SettingsIcon" Fill="{DynamicResource HighlightBrush}" Stretch="Uniform" Data="F1 M 38,23.5C 38.8643,23.5 39.7109,23.5756 40.5337,23.7206L 42.6275,18.5381L 48.1901,20.787L 46.0964,25.9692C 47.6473,27.0149 48.9851,28.3527 50.0308,29.9036L 55.213,27.8099L 57.4619,33.3725L 52.2794,35.4664C 52.4244,36.2891 52.5,37.1357 52.5,38C 52.5,38.8643 52.4244,39.7109 52.2794,40.5337L 57.4619,42.6275L 55.213,48.1901L 50.0308,46.0964C 49.0795,47.5073 47.8865,48.7418 46.5112,49.7405L 48.7844,54.8462L 43.3041,57.2891L 41.0307,52.1828C 40.0533,52.3906 39.0394,52.5 38,52.5C 37.1357,52.5 36.2891,52.4244 35.4664,52.2794L 33.3725,57.462L 27.8099,55.213L 29.9036,50.0309C 28.3527,48.9851 27.0149,47.6473 25.9691,46.0964L 20.787,48.1901L 18.538,42.6275L 23.7206,40.5336C 23.5756,39.7109 23.5,38.8643 23.5,38C 23.5,37.1357 23.5756,36.2891 23.7206,35.4664L 18.538,33.3725L 20.787,27.8099L 25.9691,29.9036C 26.9205,28.4927 28.1135,27.2582 29.4889,26.2594L 27.2157,21.1537L 32.6959,18.7109L 34.9694,23.8172C 35.9468,23.6094 36.9606,23.5 38,23.5 Z M 38,28C 32.4771,28 28,32.4772 28,38C 28,43.5229 32.4771,48 38,48C 43.5228,48 48,43.5229 48,38C 48,32.4772 43.5228,28 38,28 Z " />
-            <Path x:Key="SettingsWhiteIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 38,23.5C 38.8643,23.5 39.7109,23.5756 40.5337,23.7206L 42.6275,18.5381L 48.1901,20.787L 46.0964,25.9692C 47.6473,27.0149 48.9851,28.3527 50.0308,29.9036L 55.213,27.8099L 57.4619,33.3725L 52.2794,35.4664C 52.4244,36.2891 52.5,37.1357 52.5,38C 52.5,38.8643 52.4244,39.7109 52.2794,40.5337L 57.4619,42.6275L 55.213,48.1901L 50.0308,46.0964C 49.0795,47.5073 47.8865,48.7418 46.5112,49.7405L 48.7844,54.8462L 43.3041,57.2891L 41.0307,52.1828C 40.0533,52.3906 39.0394,52.5 38,52.5C 37.1357,52.5 36.2891,52.4244 35.4664,52.2794L 33.3725,57.462L 27.8099,55.213L 29.9036,50.0309C 28.3527,48.9851 27.0149,47.6473 25.9691,46.0964L 20.787,48.1901L 18.538,42.6275L 23.7206,40.5336C 23.5756,39.7109 23.5,38.8643 23.5,38C 23.5,37.1357 23.5756,36.2891 23.7206,35.4664L 18.538,33.3725L 20.787,27.8099L 25.9691,29.9036C 26.9205,28.4927 28.1135,27.2582 29.4889,26.2594L 27.2157,21.1537L 32.6959,18.7109L 34.9694,23.8172C 35.9468,23.6094 36.9606,23.5 38,23.5 Z M 38,28C 32.4771,28 28,32.4772 28,38C 28,43.5229 32.4771,48 38,48C 43.5228,48 48,43.5229 48,38C 48,32.4772 43.5228,28 38,28 Z " />
+            <Path x:Key="SettingsWhiteIcon" Fill="White" Width="15" Height="15" x:Shared="False" Stretch="Uniform" Data="F1 M 38,23.5C 38.8643,23.5 39.7109,23.5756 40.5337,23.7206L 42.6275,18.5381L 48.1901,20.787L 46.0964,25.9692C 47.6473,27.0149 48.9851,28.3527 50.0308,29.9036L 55.213,27.8099L 57.4619,33.3725L 52.2794,35.4664C 52.4244,36.2891 52.5,37.1357 52.5,38C 52.5,38.8643 52.4244,39.7109 52.2794,40.5337L 57.4619,42.6275L 55.213,48.1901L 50.0308,46.0964C 49.0795,47.5073 47.8865,48.7418 46.5112,49.7405L 48.7844,54.8462L 43.3041,57.2891L 41.0307,52.1828C 40.0533,52.3906 39.0394,52.5 38,52.5C 37.1357,52.5 36.2891,52.4244 35.4664,52.2794L 33.3725,57.462L 27.8099,55.213L 29.9036,50.0309C 28.3527,48.9851 27.0149,47.6473 25.9691,46.0964L 20.787,48.1901L 18.538,42.6275L 23.7206,40.5336C 23.5756,39.7109 23.5,38.8643 23.5,38C 23.5,37.1357 23.5756,36.2891 23.7206,35.4664L 18.538,33.3725L 20.787,27.8099L 25.9691,29.9036C 26.9205,28.4927 28.1135,27.2582 29.4889,26.2594L 27.2157,21.1537L 32.6959,18.7109L 34.9694,23.8172C 35.9468,23.6094 36.9606,23.5 38,23.5 Z M 38,28C 32.4771,28 28,32.4772 28,38C 28,43.5229 32.4771,48 38,48C 43.5228,48 48,43.5229 48,38C 48,32.4772 43.5228,28 38,28 Z " />
             <Path x:Key="CloseIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z " />
             <Path x:Key="AboutIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 37.2083,49.0833C 39.3945,49.0833 41.1667,50.8555 41.1667,53.0417C 41.1667,55.2278 39.3945,57 37.2083,57C 35.0222,57 33.25,55.2278 33.25,53.0417C 33.25,50.8555 35.0222,49.0833 37.2083,49.0833 Z M 38,17.4167C 44.9956,17.4167 50.6666,21.9416 50.6666,28.5C 50.6666,30.875 49.0833,34.8333 45.9167,36.4167C 42.75,38 41.1667,40.1267 41.1667,42.75L 41.1667,45.9167L 33.25,45.9167L 33.25,43.5417C 33.25,38.1571 38,34.8333 39.5833,33.25C 42.75,30.0833 42.75,29.644 42.75,28.5C 42.75,25.8767 40.6233,23.75 38,23.75C 35.3766,23.75 33.25,25.8767 33.25,28.5L 33.25,30.875L 25.3333,30.875L 25.3333,29.2917C 25.3333,22.7333 31.0044,17.4167 38,17.4167 Z " />
             <Path x:Key="RefreshIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z "/>
             <Path x:Key="ProjectIcon" Fill="White" Stretch="Uniform" x:Shared="False" Data="F1 M 28.5,20.5833L 47.5,20.5833L 47.5,23.75L 28.5,23.75L 28.5,20.5833 Z M 49.0833,31.6667L 64.9166,31.6667L 64.9166,34.8334L 49.0833,34.8334L 49.0833,31.6667 Z M 28.5,25.3334L 34.8333,25.3334L 41.1666,25.3334L 47.5,25.3334L 47.5,52.25L 41.1666,52.25L 41.1666,42.75L 34.8333,42.75L 34.8333,52.25L 28.5,52.25L 28.5,25.3334 Z M 49.0833,52.25L 49.0833,36.4167L 53.8333,36.4167L 60.1666,36.4167L 64.9166,36.4167L 64.9166,52.25L 60.1666,52.25L 60.1666,44.3333L 53.8333,44.3333L 53.8333,52.25L 49.0833,52.25 Z M 11.0833,52.25L 11.0833,44.3333L 11.0833,41.1667L 19.7917,34.8334L 26.9167,41.1667L 26.9167,44.3333L 26.9167,52.25L 22.1667,52.25L 22.1667,44.3333L 15.8333,44.3333L 15.8333,52.25L 11.0833,52.25 Z M 19.7916,29.6875L 26.9166,36.0209L 26.9166,39.1875L 19.7916,32.8542L 9.49999,40.375L 9.49999,37.2084L 19.7916,29.6875 Z "/>
             <Path x:Key="BackIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 35.8724,37.6042L 39.0391,40.7708L 50.5182,51.8542L 40.2266,51.8542L 25.1849,37.6041L 40.2266,23.3542L 50.5182,23.3542L 39.0391,34.4375L 35.8724,37.6042 Z "/>
-            <!--<DataTemplate x:Key="ProjectTemplate">
-                <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" FontSize="14"/>
-            </DataTemplate>-->
 
-            <!--<HierarchicalDataTemplate x:Key="ProjectTemplate" ItemsSource="{Binding SubItems}">
-                <Label Name="lblProject" Content="{Binding Name}" Foreground="{Binding HighLightColor}" MouseRightButtonUp="lblProject_MouseRightButtonUp" FontSize="14" MouseLeftButtonUp="lblProject_MouseLeftButtonUp"/>
-            </HierarchicalDataTemplate>-->
-
-            <DataTemplate x:Key="ApplicationTemplate">
-                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Margin="5,0,0,0"/>
-            </DataTemplate>
-            
-            <DataTemplate x:Key="SeparatorTemplate">
-                <Separator Background="{DynamicResource AccentColorBrush4}" IsEnabled="False"/>
-            </DataTemplate>
-            
-            <DataTemplate x:Key="HeaderTemplate">
-                <Label Content="{Binding Name}"/>
-            </DataTemplate>
-
-            <DataTemplate x:Key="MenuItemTemplate">
-                <MenuItem Name="muProject" Header="{Binding Name}" IsEnabled="False"/>
-            </DataTemplate>
-            
-            <ControlTemplate x:Key="TileTemplate">
-                <Controls:Tile Name="tile" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tile_MouseRightButtonUp" Background="{Binding TileColor}">
+            <ControlTemplate x:Key="TileTemplate" TargetType="{x:Type Controls:Tile}">
+                <Controls:Tile Name="tile" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tile_MouseRightButtonUp"> <!-- Background="{Binding TileColor}"> -->
                     <Controls:Tile.ContextMenu>
                         <ContextMenu ItemsSource="{Binding ContextMenus}" > <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
                             <ContextMenu.ItemContainerStyle>
@@ -62,10 +39,34 @@
                     </Controls:Tile.ContextMenu>
                 </Controls:Tile>
             </ControlTemplate>
-            
+
+            <ControlTemplate x:Key="TileControlTemplate1" TargetType="{x:Type Controls:Tile}">
+                <Grid Background="{TemplateBinding Background}">
+                    <StackPanel HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Orientation="Horizontal" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{DynamicResource ProjectIcon}" ContentStringFormat="{TemplateBinding ContentStringFormat}" RecognizesAccessKey="True"/>
+                        <TextBlock FontSize="{Binding CountFontSize, RelativeSource={RelativeSource TemplatedParent}}" Text="{TemplateBinding Count}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Label Grid.ColumnSpan="2" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <AccessText Foreground="{TemplateBinding Foreground}" FontSize="16" Margin="3" TextWrapping="Wrap" Text="{Binding Name}" FontWeight="Medium"/>
+                    </Label>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.98" ScaleX="0.98"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
             <ControlTemplate x:Key="ApplicationListTemplate">
                 <StackPanel Margin="0,0,10,0">
-                    <TextBlock Name="tbApplicationName" Text="{Binding Name}" Height="30" VerticalAlignment="Center" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" />
+                    <TextBlock Name="tbApplicationName" Text="{Binding Name}" VerticalAlignment="Center" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" />
                     <ListBox ItemsSource="{Binding SubItems}" BorderBrush="{DynamicResource AccentColorBrush4}" BorderThickness="1,0,0,0" Background="{DynamicResource AccentColorBrush4}" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -86,21 +87,34 @@
                 </StackPanel>
             </ControlTemplate>
 
-            <!--<local:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector" MenuItemTemplate="{StaticResource MenuItemTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>-->
-            <!--<local:ProjectTemplateSelector x:Key="ProjectTemplateSelector" ProjectTemplate="{StaticResource ProjectTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>-->
-            <!--<local:ApplicationTemplateSelector x:Key="ApplicationTemplateSelector" ApplicationTemplate="{StaticResource ApplicationTemplate}" HeaderTemplate="{StaticResource HeaderTemplate}" SeparatorTemplate="{StaticResource SeparatorTemplate}"/>-->
-            
-            <Style x:Key="CustomTreeView" TargetType="{x:Type TreeView}">
-                <Setter Property="BorderThickness" Value="0,2,0,0"/>
-                <Setter Property="BorderBrush" Value="{StaticResource AccentColorBrush4}"/>
-                <Setter Property="ItemContainerStyle" Value="{DynamicResource MetroTreeViewItemCustom}"/>
-            </Style>
-            
-            <Style x:Key="MetroTreeViewItemCustom" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
-                <Setter Property="TreeViewItem.Visibility" Value="{Binding Visibility}"/>
-                <Setter Property="TreeViewItem.IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
-                <Setter Property="TreeViewItem.IsSelected" Value="{Binding IsActive}"/>
-                <Setter Property="TreeViewItem.IsEnabled" Value="{Binding IsEnabled}"/>
+            <Style x:Key="MetroTileCustom" TargetType="{x:Type Controls:Tile}" BasedOn="{StaticResource {x:Type Controls:Tile}}">
+                
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Controls:Tile">
+
+                            <Controls:Tile Name="tile" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tile_MouseRightButtonUp" Background="{Binding TileColor}">
+                                <Controls:Tile.ContextMenu>
+                                    <ContextMenu ItemsSource="{Binding ContextMenus}" >
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style TargetType="MenuItem">
+                                                <EventSetter Event="Click" Handler="muProject_Click"/>
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu>
+                                </Controls:Tile.ContextMenu>
+                            </Controls:Tile>
+
+
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Aqua"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <Style x:Key="MetroListboxItemCustom" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MetroListBoxItem}">
@@ -109,10 +123,6 @@
                 <Setter Property="ListBoxItem.IsEnabled" Value="{Binding IsEnabled}"/>
             </Style>
             
-            <!--<Style x:Key="MetroListViewItemCustom" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MetroListViewItem}">
-                <Setter Property="ListViewItem.Visibility" Value="{Binding IsVisible}" />
-                <Setter Property="ListViewItem.IsEnabled" Value="{Binding IsEnabled}" />
-            </Style>-->
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:Fluor.ProjectSwitcher.ViewModel" />
         </ResourceDictionary>
     </Application.Resources>

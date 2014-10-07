@@ -53,41 +53,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        //ObservableCollection<ProjectSwitcherItem> filteredApplicationCollection;
-        //public ObservableCollection<ProjectSwitcherItem> FilteredApplicationCollection
-        //{
-        //    get
-        //    {
-        //        return filteredApplicationCollection;
-        //    }
-        //    set
-        //    {
-        //        filteredApplicationCollection = value;
-        //        RaisePropertyChanged("FilteredApplicationCollection");
-        //    }
-        //}
-
-        //Application selectedApplication;
-        //public Application SelectedApplication
-        //{
-        //    get
-        //    {
-        //        return selectedApplication;
-        //    }
-        //    set
-        //    {
-        //        selectedApplication = value;
-        //        RaisePropertyChanged("SelectedApplication");
-
-        //        if (check)
-        //        {
-        //            ChangeSelectedApplication(selectedApplication);
-        //        }
-        //    }
-        //}
-
-        private bool check;
-
         public ViewModelApplications()
         {
             Messenger.Default.Register<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(this, UpdateApplicationsCollection);
