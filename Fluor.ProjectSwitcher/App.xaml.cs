@@ -8,18 +8,20 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
+using Fluor.ProjectSwitcher.Base.Class;
 
 namespace Fluor.ProjectSwitcher
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         private void tile_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Tile tile = (Tile)sender;
-            Messenger.Default.Send<NotificationMessage>(new NotificationMessage(tile, "PROJ", tile.Title.ToString()));
+            Grid grid = (Grid)sender;
+            //Tile tile = (Tile)sender;
+            Messenger.Default.Send<GenericMessage<Grid>>(new GenericMessage<Grid>(grid));
         }
 
         private void muProject_Click(object sender, RoutedEventArgs e)

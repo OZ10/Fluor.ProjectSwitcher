@@ -22,47 +22,60 @@
             <Path x:Key="CloseIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z " />
             <Path x:Key="AboutIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 37.2083,49.0833C 39.3945,49.0833 41.1667,50.8555 41.1667,53.0417C 41.1667,55.2278 39.3945,57 37.2083,57C 35.0222,57 33.25,55.2278 33.25,53.0417C 33.25,50.8555 35.0222,49.0833 37.2083,49.0833 Z M 38,17.4167C 44.9956,17.4167 50.6666,21.9416 50.6666,28.5C 50.6666,30.875 49.0833,34.8333 45.9167,36.4167C 42.75,38 41.1667,40.1267 41.1667,42.75L 41.1667,45.9167L 33.25,45.9167L 33.25,43.5417C 33.25,38.1571 38,34.8333 39.5833,33.25C 42.75,30.0833 42.75,29.644 42.75,28.5C 42.75,25.8767 40.6233,23.75 38,23.75C 35.3766,23.75 33.25,25.8767 33.25,28.5L 33.25,30.875L 25.3333,30.875L 25.3333,29.2917C 25.3333,22.7333 31.0044,17.4167 38,17.4167 Z " />
             <Path x:Key="RefreshIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z "/>
-            <Path x:Key="ProjectIcon" Fill="White" Stretch="Uniform" x:Shared="False" Data="F1 M 28.5,20.5833L 47.5,20.5833L 47.5,23.75L 28.5,23.75L 28.5,20.5833 Z M 49.0833,31.6667L 64.9166,31.6667L 64.9166,34.8334L 49.0833,34.8334L 49.0833,31.6667 Z M 28.5,25.3334L 34.8333,25.3334L 41.1666,25.3334L 47.5,25.3334L 47.5,52.25L 41.1666,52.25L 41.1666,42.75L 34.8333,42.75L 34.8333,52.25L 28.5,52.25L 28.5,25.3334 Z M 49.0833,52.25L 49.0833,36.4167L 53.8333,36.4167L 60.1666,36.4167L 64.9166,36.4167L 64.9166,52.25L 60.1666,52.25L 60.1666,44.3333L 53.8333,44.3333L 53.8333,52.25L 49.0833,52.25 Z M 11.0833,52.25L 11.0833,44.3333L 11.0833,41.1667L 19.7917,34.8334L 26.9167,41.1667L 26.9167,44.3333L 26.9167,52.25L 22.1667,52.25L 22.1667,44.3333L 15.8333,44.3333L 15.8333,52.25L 11.0833,52.25 Z M 19.7916,29.6875L 26.9166,36.0209L 26.9166,39.1875L 19.7916,32.8542L 9.49999,40.375L 9.49999,37.2084L 19.7916,29.6875 Z "/>
+            <Path x:Key="ProjectIcon" Fill="#89FFFFFF" Stretch="Uniform" x:Shared="False" Data="F1 M 28.5,20.5833L 47.5,20.5833L 47.5,23.75L 28.5,23.75L 28.5,20.5833 Z M 49.0833,31.6667L 64.9166,31.6667L 64.9166,34.8334L 49.0833,34.8334L 49.0833,31.6667 Z M 28.5,25.3334L 34.8333,25.3334L 41.1666,25.3334L 47.5,25.3334L 47.5,52.25L 41.1666,52.25L 41.1666,42.75L 34.8333,42.75L 34.8333,52.25L 28.5,52.25L 28.5,25.3334 Z M 49.0833,52.25L 49.0833,36.4167L 53.8333,36.4167L 60.1666,36.4167L 64.9166,36.4167L 64.9166,52.25L 60.1666,52.25L 60.1666,44.3333L 53.8333,44.3333L 53.8333,52.25L 49.0833,52.25 Z M 11.0833,52.25L 11.0833,44.3333L 11.0833,41.1667L 19.7917,34.8334L 26.9167,41.1667L 26.9167,44.3333L 26.9167,52.25L 22.1667,52.25L 22.1667,44.3333L 15.8333,44.3333L 15.8333,52.25L 11.0833,52.25 Z M 19.7916,29.6875L 26.9166,36.0209L 26.9166,39.1875L 19.7916,32.8542L 9.49999,40.375L 9.49999,37.2084L 19.7916,29.6875 Z "/>
             <Path x:Key="BackIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 35.8724,37.6042L 39.0391,40.7708L 50.5182,51.8542L 40.2266,51.8542L 25.1849,37.6041L 40.2266,23.3542L 50.5182,23.3542L 39.0391,34.4375L 35.8724,37.6042 Z "/>
 
-            <ControlTemplate x:Key="TileTemplate" TargetType="{x:Type Controls:Tile}">
-                <Controls:Tile Name="tile" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tile_MouseRightButtonUp"> <!-- Background="{Binding TileColor}"> -->
-                    <Controls:Tile.ContextMenu>
-                        <ContextMenu ItemsSource="{Binding ContextMenus}" > <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
-                            <ContextMenu.ItemContainerStyle>
-                                <Style TargetType="MenuItem">
-                                    <EventSetter Event="Click" Handler="muProject_Click"/>
-                                    <!--<Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>-->
-                                </Style>
-                            </ContextMenu.ItemContainerStyle>
-                        </ContextMenu>
-                    </Controls:Tile.ContextMenu>
-                </Controls:Tile>
-            </ControlTemplate>
+            <Style x:Key="MetroTileCustom1" TargetType="{x:Type Button}">  <!--BasedOn="{StaticResource {x:Type Button}}">-->
+                <!--<Setter Property="Background" Value="Aqua"/>-->
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid Margin="0,0,0,10" Width="350" MouseRightButtonUp="tile_MouseRightButtonUp">  <!--Background="{TemplateBinding Background}">-->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
 
-            <ControlTemplate x:Key="TileControlTemplate1" TargetType="{x:Type Controls:Tile}">
-                <Grid Background="{TemplateBinding Background}">
-                    <StackPanel HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Orientation="Horizontal" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{DynamicResource ProjectIcon}" ContentStringFormat="{TemplateBinding ContentStringFormat}" RecognizesAccessKey="True"/>
-                        <TextBlock FontSize="{Binding CountFontSize, RelativeSource={RelativeSource TemplatedParent}}" Text="{TemplateBinding Count}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <Label Grid.ColumnSpan="2" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                        <AccessText Foreground="{TemplateBinding Foreground}" FontSize="16" Margin="3" TextWrapping="Wrap" Text="{Binding Name}" FontWeight="Medium"/>
-                    </Label>
-                </Grid>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="RenderTransform">
-                            <Setter.Value>
-                                <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.98" ScaleX="0.98"/>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
+                                <Rectangle x:Name="rec1" Fill="{DynamicResource AccentColorBrush}" Grid.RowSpan="2"/>
+                                <ContentPresenter Content="{DynamicResource ProjectIcon}" Margin="5" Grid.RowSpan="2"/>
+                                <Rectangle Fill="{DynamicResource AccentColorBrush}" Margin="2,0,0,0" Grid.Column="1" Grid.RowSpan="2"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Normal" FontSize="20" Foreground="#DDFFFFFF" />
+                                    <TextBlock Text="{Binding MiscText}" VerticalAlignment="Center" Margin="10,4,0,4" FontWeight="Normal" FontSize="12" Foreground="#89FFFFFF" Visibility="{Binding MiscTextVisibility}"/>
+                                </StackPanel>
+                                
+                                <Grid.ContextMenu>
+                                    <ContextMenu ItemsSource="{Binding ContextMenus}" >
+                                        <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style TargetType="MenuItem">
+                                                <EventSetter Event="Click" Handler="muProject_Click"/>
+                                                <!--<Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>-->
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleY="0.98" ScaleX="0.98"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="rec1" Property="Fill" Value="{DynamicResource SubColorBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <ControlTemplate x:Key="ApplicationListTemplate">
                 <StackPanel Margin="0,0,10,0">
@@ -86,36 +99,6 @@
                     </ListBox>
                 </StackPanel>
             </ControlTemplate>
-
-            <Style x:Key="MetroTileCustom" TargetType="{x:Type Controls:Tile}" BasedOn="{StaticResource {x:Type Controls:Tile}}">
-                
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Controls:Tile">
-
-                            <Controls:Tile Name="tile" Title="{Binding Name}" Content="{DynamicResource ProjectIcon}" MouseRightButtonUp="tile_MouseRightButtonUp" Background="{Binding TileColor}">
-                                <Controls:Tile.ContextMenu>
-                                    <ContextMenu ItemsSource="{Binding ContextMenus}" >
-                                        <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType="MenuItem">
-                                                <EventSetter Event="Click" Handler="muProject_Click"/>
-                                            </Style>
-                                        </ContextMenu.ItemContainerStyle>
-                                    </ContextMenu>
-                                </Controls:Tile.ContextMenu>
-                            </Controls:Tile>
-
-
-
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Aqua"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
 
             <Style x:Key="MetroListboxItemCustom" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MetroListBoxItem}">
                 <Setter Property="ListBoxItem.Visibility" Value="{Binding Visibility}"/>

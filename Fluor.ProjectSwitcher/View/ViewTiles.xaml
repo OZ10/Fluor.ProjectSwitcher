@@ -10,7 +10,7 @@
         <ItemsControl Name="icProjects" ItemsSource="{Binding ActiveTileCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel/>
+                    <StackPanel/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>

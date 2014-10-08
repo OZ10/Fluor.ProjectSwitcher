@@ -59,8 +59,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Tile> topLevelTileCollection;
-        public ObservableCollection<Tile> TopLevelTileCollection
+        private ObservableCollection<Button> topLevelTileCollection;
+        public ObservableCollection<Button> TopLevelTileCollection
         {
             get
             {
@@ -73,8 +73,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Tile> activeTileCollection;
-        public ObservableCollection<Tile> ActiveTileCollection
+        private ObservableCollection<Button> activeTileCollection;
+        public ObservableCollection<Button> ActiveTileCollection
         {
             get
             {
@@ -105,7 +105,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public ViewModelTiles()
         {
             Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdatedProjectsCollection);
-            Messenger.Default.Register<NotificationMessage>(this, DisplayContextMenus);
+            Messenger.Default.Register<GenericMessage<Grid>>(this, DisplayContextMenus);
             Messenger.Default.Register<GenericMessage<Project>>(this, GoBackToParent);
             Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
         }
@@ -114,12 +114,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             ProjectsCollection = populateProjectsMessage.ProjectsCollection;
 
-            TopLevelTileCollection = new ObservableCollection<Tile>();
-            ActiveTileCollection = new ObservableCollection<Tile>();
+            TopLevelTileCollection = new ObservableCollection<Button>();
+            ActiveTileCollection = new ObservableCollection<Button>();
 
             foreach (Project project in ProjectsCollection)
             {
-                Tile tile = CreateTile(project);
+                Button tile = CreateTile(project);
 
                 TopLevelTileCollection.Add(tile);
             }
@@ -131,23 +131,26 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             ApplicationsCollection = populateApplicationsMessage.ApplicationsCollection;
 
-            ActiveTileCollection = new ObservableCollection<Tile>();
+            ActiveTileCollection = new ObservableCollection<Button>();
 
             foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection)
             {
-                Tile tile = CreateTile(application);
+                Button tile = CreateTile(application);
 
                 ActiveTileCollection.Add(tile);
             }
         }
 
-        private Tile CreateTile(ProjectSwitcherItem project)
+        private Button CreateTile(ProjectSwitcherItem project)
         {
-            Tile tile = new Tile();
+            Button tile = new Button();
             tile.Click += new RoutedEventHandler(Tile_Clicked);
             tile.DataContext = project;
             //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileControlTemplate1"];
-            tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
+            //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
+            //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ButtonTile"];
+            tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom1"];
+            
             //tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom"];
 
             return tile;
@@ -155,7 +158,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void Tile_Clicked(object sender, RoutedEventArgs e)
         {
-            Tile tile = (Tile)sender;
+            Button tile = (Button)sender;
             ProjectSwitcherItem psItem = (ProjectSwitcherItem)tile.DataContext;
 
             Project project = psItem as Project;
@@ -164,11 +167,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 if (project.SubItems.Any())
                 {
-                    ActiveTileCollection = new ObservableCollection<Tile>();
+                    ActiveTileCollection = new ObservableCollection<Button>();
 
                     foreach (ProjectSwitcherItem subProject in project.SubItems)
                     {
-                        Tile tvi = CreateTile(subProject);
+                        Button tvi = CreateTile(subProject);
 
                         ActiveTileCollection.Add(tvi);
                     }
@@ -184,14 +187,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public void DisplayContextMenus(NotificationMessage contextMenuMessage)
+        public void DisplayContextMenus(GenericMessage<Grid> contextMenuMessage)
         {
             // Triggered by a right-click on a project. The treeview does not change the selecteditem when right-clicking
             // so had to write this routine to change the selected item
 
-            Tile tile = (Tile)contextMenuMessage.Sender;
+            Grid grid = (Grid)contextMenuMessage.Content;
 
-            ProjectSwitcherItem psItem = (ProjectSwitcherItem)tile.DataContext; // GetSelectedProject(projectName);
+            ProjectSwitcherItem psItem = (ProjectSwitcherItem)grid.DataContext; // GetSelectedProject(projectName);
 
             ContextMenus = new ObservableCollection<MenuItem>();
 
@@ -202,7 +205,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     psItem.CreateContextMenus(contextMenuParameters, ref contextMenus);
                 }));
 
-            tile.ContextMenu.ItemsSource = contextMenus;
+            grid.ContextMenu.ItemsSource = contextMenus;
         }
 
         public void GoBackToParent(GenericMessage<Project> message)
@@ -218,12 +221,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 else
                 {
                     // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
-                    ActiveTileCollection = new ObservableCollection<Tile>();
+                    ActiveTileCollection = new ObservableCollection<Button>();
 
                     Project project = (Project)message.Content;
                     foreach (Project subProject in project.SubItems)
                     {
-                        Tile tile = CreateTile(subProject);
+                        Button tile = CreateTile(subProject);
                         ActiveTileCollection.Add(tile);
                     }
                     SelectedProject = project;
