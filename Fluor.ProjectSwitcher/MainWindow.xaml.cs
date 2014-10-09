@@ -124,5 +124,10 @@ namespace Fluor.ProjectSwitcher
             tbiProject.IsSelected = true;
             vm.GoBackToParent();
         }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

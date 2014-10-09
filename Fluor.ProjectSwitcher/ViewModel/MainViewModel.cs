@@ -35,13 +35,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         // TODO Allow associations -- in one xml row -- between mulitple projects and one application. Required for applications which don't require project specific setup
         //      i.e. notepad is just an exe. Defining a row per project is pointless and messy
-        // TODO Move settings icon to the title bar
-        // TODO When hovering over a tile, change the colour or border style & change the misc label
         // TODO Create transitions between project & subproject (currently both are on the same tab)
         // TODO Change 'back' button to include the project name text so circle button and/or text can be clicked
-        // TODO Implement tile colours. Each tile should have different colour
         // TODO Create icons for applications
         // TODO WHERE I WAS UP TO BEFORE GOING ON HOLIDAY -- ContextMenus for applications paths are not displaying. Selection options are displaying but have no code behind them
+        // TODO Create close & min/max buttons
+        // TODO Bind the selected project's context menus to the project name label on the main window
 
         public ObservableCollection<Project> ProjectsCollection { get; set; }
         public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection { get; set; }

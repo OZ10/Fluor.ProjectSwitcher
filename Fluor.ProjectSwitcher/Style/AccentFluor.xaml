@@ -35,4 +35,13 @@
 
     <SolidColorBrush x:Key="CheckmarkFill" Color="{StaticResource AccentColor}" />
     <SolidColorBrush x:Key="RightArrowFill" Color="{StaticResource AccentColor}" />
+    
+    <!-- Text Colours -->
+    <Color x:Key="TextBlackMain">Black</Color>
+    <Color x:Key="TextBlack87">#DD1E1E1E</Color>
+    <Color x:Key="TextBlack54">#891E1E1E</Color>
+
+    <SolidColorBrush x:Key="TextBlackMainBrush" Color="{StaticResource TextBlackMain}"/>
+    <SolidColorBrush x:Key="TextBlack87Brush" Color="{StaticResource TextBlack87}"/>
+    <SolidColorBrush x:Key="TextBlack54Brush" Color="{StaticResource TextBlack54}"/>
 </ResourceDictionary>
