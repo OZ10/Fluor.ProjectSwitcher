@@ -40,12 +40,6 @@
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
     <Grid>
-        <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition MinWidth="250"/>
-            <ColumnDefinition MinWidth="250"/>
-            <ColumnDefinition Width="10"/>
-        </Grid.ColumnDefinitions>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition />
@@ -65,7 +59,17 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Name="btnBack" Height="35" Width="35" Content="{Binding Mode=OneWay, Source={StaticResource BackIcon}}" Click="btnBack_Click"  Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}"/>
-            <TextBlock Foreground="#DDFFFFFF" Text="{Binding SelectedProject.Name}" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="1"/>
+            <TextBlock Foreground="#DDFFFFFF" Text="{Binding SelectedProject.Name}" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="1">
+                <TextBlock.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenus}">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
             <Button Name="btnSettings" Height="35" Width="35" VerticalAlignment="Center" Click="btnSettings_Click" Content="{DynamicResource SettingsWhiteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="2"/>
             <Button Name="btnClose" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" Click="btnClose_Click"/>
         </Grid>

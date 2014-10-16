@@ -146,13 +146,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Button tile = new Button();
             tile.Click += new RoutedEventHandler(Tile_Clicked);
             tile.DataContext = project;
-            //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileControlTemplate1"];
-            //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["TileTemplate"];
-            //tile.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ButtonTile"];
-            tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom1"];
+            tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom"];
             
-            //tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom"];
-
             return tile;
         }
 
@@ -179,6 +174,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                 SelectedProject = project;
                 Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this, project));
+
+                GetContextMenus(psItem);
+                Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(contextMenus));
             }
             else
             {
@@ -189,23 +187,26 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void DisplayContextMenus(GenericMessage<Grid> contextMenuMessage)
         {
-            // Triggered by a right-click on a project. The treeview does not change the selecteditem when right-clicking
-            // so had to write this routine to change the selected item
+            // Triggered by a right-click on a project.
 
             Grid grid = (Grid)contextMenuMessage.Content;
 
             ProjectSwitcherItem psItem = (ProjectSwitcherItem)grid.DataContext; // GetSelectedProject(projectName);
 
+            GetContextMenus(psItem);
+            grid.ContextMenu.ItemsSource = contextMenus;
+        }
+
+        private void GetContextMenus(ProjectSwitcherItem psItem)
+        {
             ContextMenus = new ObservableCollection<MenuItem>();
 
             // Send a message containing the project name to the main view model. The main view model returns the context
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(psItem, psItem.Name, (contextMenuParameters) =>
-                {
-                    psItem.CreateContextMenus(contextMenuParameters, ref contextMenus);
-                }));
-
-            grid.ContextMenu.ItemsSource = contextMenus;
+            {
+                psItem.CreateContextMenus(contextMenuParameters, ref contextMenus);
+            }));
         }
 
         public void GoBackToParent(GenericMessage<Project> message)

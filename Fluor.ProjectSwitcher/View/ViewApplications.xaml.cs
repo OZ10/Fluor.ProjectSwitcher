@@ -28,12 +28,5 @@ namespace Fluor.ProjectSwitcher.View
 
             Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
-
-        private void chkApplication_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            CheckBox cb = (CheckBox)sender;
-
-            vm.DisplayContextMenus(cb.Content.ToString());
-        }
     }
 }

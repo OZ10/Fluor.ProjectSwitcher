@@ -3,6 +3,7 @@ using System.Diagnostics;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Input;
 using System;
+using System.Windows.Controls;
 
 namespace Fluor.ProjectSwitcher
 {
@@ -128,6 +129,13 @@ namespace Fluor.ProjectSwitcher
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void muProject_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
+
+            Fluor.ProjectSwitcher.Base.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
     }
 }
