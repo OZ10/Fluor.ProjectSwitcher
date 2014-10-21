@@ -58,7 +58,15 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Name="btnBack" Height="35" Width="35" Content="{Binding Mode=OneWay, Source={StaticResource BackIcon}}" Click="btnBack_Click"  Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}"/>
+            <Button Name="btnHome" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource HomeIcon}" Height="35" Width="35" Click="btnHome_Click" />
+            <ItemsControl ItemsSource="{Binding BackButtonCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="1">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <!--<Button Name="btnBack" Height="35" Width="35" Content="{Binding Mode=OneWay, Source={StaticResource BackIcon}}" Click="btnBack_Click"  Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}"/>
             <TextBlock Foreground="#DDFFFFFF" Text="{Binding SelectedProject.Name}" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="1">
                 <TextBlock.ContextMenu>
                     <ContextMenu ItemsSource="{Binding ContextMenus}">
@@ -69,7 +77,7 @@
                         </ContextMenu.ItemContainerStyle>
                     </ContextMenu>
                 </TextBlock.ContextMenu>
-            </TextBlock>
+            </TextBlock>-->
             <Button Name="btnSettings" Height="35" Width="35" VerticalAlignment="Center" Click="btnSettings_Click" Content="{DynamicResource SettingsWhiteIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="2"/>
             <Button Name="btnClose" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}" Background="{x:Null}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" Click="btnClose_Click"/>
         </Grid>

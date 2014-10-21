@@ -103,12 +103,27 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        private ObservableCollection<Button> backButtonCollection;
+        public ObservableCollection<Button> BackButtonCollection
+        {
+            get
+            {
+                return backButtonCollection;
+            }
+            set
+            {
+                backButtonCollection = value;
+                RaisePropertyChanged("BackButtonCollection");
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel 
         /// </summary>
         public MainViewModel()
         {
             IsProjectsTabSelected = true;
+            BackButtonCollection = new ObservableCollection<Button>();
 
             //Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
             Messenger.Default.Register<GenericMessage<Project>>(this, ChangeSelectedProject);
@@ -516,34 +531,79 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                 AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
 
+                IsProjectsTabSelected = true;
+
                 SelectedProject = (Project)changeSelectedProjectMessage.Content;
 
                 if (SelectedProject != null)
                 {
-                    // Get all the associations associated with the selected project
-                    foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
-                    {
-                        foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
-                        {
-                            AssociatedApplicationCollection.Add(application); 
-                        }
-                    }
 
-                    if (AssociatedApplicationCollection.Any())
+                    PopulateBreadCrumb();
+
+
+                    //if (SelectedProject != null)
+                    //{
+                        // Get all the associations associated with the selected project
+                        foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+                        {
+                            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                            {
+                                AssociatedApplicationCollection.Add(application);
+                            }
+                        }
+
+                        if (AssociatedApplicationCollection.Any())
+                        {
+                            if (AssociatedApplicationCollection.Count == 1)
+                            {
+                                Fluor.ProjectSwitcher.Base.Class.Application application = AssociatedApplicationCollection[0] as Fluor.ProjectSwitcher.Base.Class.Application;
+                                Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(new GenericMessage<Base.Class.Application>(application));
+                            }
+                            else
+                            {
+                                // Send the associated applications to the Tile view
+                                Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
+                            }
+                        }
+                    //}
+                }
+                else
+                {
+                    BackButtonCollection = new ObservableCollection<Button>();
+                }
+
+
+                
+            }
+        }
+
+        private void PopulateBreadCrumb()
+        {
+            Button btn = new Button();
+            btn.Style = (Style)System.Windows.Application.Current.Resources["MetroBreadCrumbButtonStyle"];
+            btn.DataContext = SelectedProject;
+            btn.ToolTip = SelectedProject.Name;
+
+            if (BackButtonCollection.Any())
+            {
+                ObservableCollection<Button> tempCollection = new ObservableCollection<Button>();
+
+                foreach (Button b in BackButtonCollection)
+                {
+                    if (b.DataContext != btn.DataContext)
                     {
-                        if (AssociatedApplicationCollection.Count == 1)
-                        {
-                            Fluor.ProjectSwitcher.Base.Class.Application application = AssociatedApplicationCollection[0] as Fluor.ProjectSwitcher.Base.Class.Application;
-                            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(new GenericMessage<Base.Class.Application>(application));
-                        }
-                        else
-                        {
-                            // Send the associated applications to the Tile view
-                            Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
-                        }
+                        tempCollection.Add(b);
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
+
+                BackButtonCollection = tempCollection;
             }
+
+            BackButtonCollection.Add(btn);
         }
 
         private void GetContextMenuParameters(NotificationMessageAction<string> getContextMenuMessage)

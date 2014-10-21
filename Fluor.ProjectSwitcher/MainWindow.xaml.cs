@@ -137,5 +137,10 @@ namespace Fluor.ProjectSwitcher
 
             Fluor.ProjectSwitcher.Base.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
+
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Project>>(new GenericMessage<Fluor.ProjectSwitcher.Base.Class.Project>(this, null));
+        }
     }
 }

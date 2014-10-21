@@ -99,6 +99,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 selectedProject = value;
                 RaisePropertyChanged("SelectedProject");
+
+                Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this, selectedProject));
             }
         }
 
@@ -173,7 +175,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 }
 
                 SelectedProject = project;
-                Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this, project));
+                //Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this, project));
 
                 GetContextMenus(psItem);
                 Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(contextMenus));
@@ -211,9 +213,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void GoBackToParent(GenericMessage<Project> message)
         {
-            if (message.Sender is MainViewModel)
+            //if (message.Sender is MainViewModel)
+            if (message.Sender is Fluor.ProjectSwitcher.App | message.Sender is MainWindow)
             {
-                if (message.Content == null)
+                Project project = (Project)message.Content;
+                
+                if (project == null)
                 {
                     // Selected project had no parent. Reset to top level projects
                     ActiveTileCollection = TopLevelTileCollection;
@@ -224,7 +229,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
                     ActiveTileCollection = new ObservableCollection<Button>();
 
-                    Project project = (Project)message.Content;
+//                    Project project = (Project)message.Content;
                     foreach (Project subProject in project.SubItems)
                     {
                         Button tile = CreateTile(subProject);
