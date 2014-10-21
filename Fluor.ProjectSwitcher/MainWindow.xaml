@@ -59,7 +59,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button Name="btnHome" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource HomeIcon}" Height="35" Width="35" Click="btnHome_Click" />
-            <ItemsControl ItemsSource="{Binding BackButtonCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="1">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -84,7 +84,7 @@
 
         <Rectangle Grid.Row="1" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>
         <TabControl Grid.Row="1">
-            <TabItem Name="tbiProject" Header="Projects" IsSelected="{Binding IsProjectsTabSelected}" Visibility="Collapsed">
+            <TabItem Name="tbiTiles" Header="Tiles" IsSelected="{Binding IsTileTabSelected}" Visibility="Collapsed">
                 <View:ViewTiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Name="tbiApplications" Header="Apps" IsSelected="{Binding IsApplicationsTabSelected}" Visibility="Collapsed">

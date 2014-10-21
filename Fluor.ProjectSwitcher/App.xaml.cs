@@ -46,8 +46,8 @@ namespace Fluor.ProjectSwitcher
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            Project selectedProject = (Project)btn.DataContext;
-            Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this, selectedProject));
+            SwitcherItem selectedProject = (SwitcherItem)btn.DataContext;
+            Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedProject));
         }
     }
 }

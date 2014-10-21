@@ -120,12 +120,6 @@ namespace Fluor.ProjectSwitcher
             vm.OpenAdminModule();
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            tbiProject.IsSelected = true;
-            vm.GoBackToParent();
-        }
-
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -140,7 +134,7 @@ namespace Fluor.ProjectSwitcher
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Project>>(new GenericMessage<Fluor.ProjectSwitcher.Base.Class.Project>(this, null));
+            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Base.Class.SwitcherItem>(this, null));
         }
     }
 }

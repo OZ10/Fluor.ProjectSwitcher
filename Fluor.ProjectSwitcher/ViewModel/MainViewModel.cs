@@ -36,27 +36,26 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Allow associations -- in one xml row -- between mulitple projects and one application. Required for applications which don't require project specific setup
         //      i.e. notepad is just an exe. Defining a row per project is pointless and messy
         // TODO Create transitions between project & subproject (currently both are on the same tab)
-        // TODO Change 'back' button to include the project name text so circle button and/or text can be clicked
         // TODO Create icons for applications
         // TODO Create close & min/max buttons
-        // TODO Rename the base class 'Application' so it does not clash with System.Application
-        // TDOO 'Back' button needs to go back to applications list if project is associated with more than one application.
+        // TODO Add code to deal with applications with only one sub application to run - i.e. notepad
+        // TODO Fix bug where selected sub apps will launch even if they are not currently displayed - i.e. even with SPEL selected, Drawing Manager will launch because it's selected by default
 
         public ObservableCollection<Project> ProjectsCollection { get; set; }
-        public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection { get; set; }
+        public ObservableCollection<SwitcherItem> ApplicationsCollection { get; set; }
         public List<Association> Associations { get; set; }
-        public ObservableCollection<ProjectSwitcherItem> AssociatedApplicationCollection { get; set; }
+        public ObservableCollection<SwitcherItem> AssociatedApplicationCollection { get; set; }
 
-        Project selectedProject;
-        public Project SelectedProject
+        SwitcherItem selectedTile;
+        public SwitcherItem SelectedTile
         {
             get
             {
-                return selectedProject;
+                return selectedTile;
             }
             set
             {
-                selectedProject = value;
+                selectedTile = value;
                 RaisePropertyChanged("SelectedProject");
             }
         }
@@ -75,17 +74,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        bool isProjectsTabSelected;
-        public bool IsProjectsTabSelected
+        bool isTileTabSelected;
+        public bool IsTileTabSelected
         {
             get
             {
-                return isProjectsTabSelected;
+                return isTileTabSelected;
             }
             set
             {
-                isProjectsTabSelected = value;
-                RaisePropertyChanged("IsProjectsTabSelected");
+                isTileTabSelected = value;
+                RaisePropertyChanged("IsTileTabSelected");
             }
         }
 
@@ -103,17 +102,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Button> backButtonCollection;
-        public ObservableCollection<Button> BackButtonCollection
+        private ObservableCollection<Button> breadcrumbCollection;
+        public ObservableCollection<Button> BreadcrumbCollection
         {
             get
             {
-                return backButtonCollection;
+                return breadcrumbCollection;
             }
             set
             {
-                backButtonCollection = value;
-                RaisePropertyChanged("BackButtonCollection");
+                breadcrumbCollection = value;
+                RaisePropertyChanged("BreadcrumbCollection");
             }
         }
 
@@ -122,13 +121,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            IsProjectsTabSelected = true;
-            BackButtonCollection = new ObservableCollection<Button>();
+            IsTileTabSelected = true;
+            BreadcrumbCollection = new ObservableCollection<Button>();
 
             //Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
-            Messenger.Default.Register<GenericMessage<Project>>(this, ChangeSelectedProject);
+            Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
-            Messenger.Default.Register<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(this, UpdateApplicationsCollection);
+            Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
         }
 
@@ -187,10 +186,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        /// <summary>
+        /// Reads the association details from the xml file and populates the associations collection.
+        /// </summary>
+        /// <param name="xmlDoc">The XML document.</param>
         private void PopulateAssociations(XElement xmlDoc)
         {
             Associations = new List<Association>();
-            AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
+            AssociatedApplicationCollection = new ObservableCollection<SwitcherItem>();
 
             Association association;
             foreach (XElement xmlAssociations in xmlDoc.Elements("ASSOCIATIONS"))
@@ -205,14 +208,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }   
         }
 
+        /// <summary>
+        /// Reads the application details from the xml file and populates the applications collection.
+        /// </summary>
+        /// <param name="xmlDoc">The XML document.</param>
         private void PopulateApplications(XElement xmlDoc)
         {
-            ApplicationsCollection = new ObservableCollection<ProjectSwitcherItem>();
+            ApplicationsCollection = new ObservableCollection<SwitcherItem>();
 
-            Fluor.ProjectSwitcher.Base.Class.Application application;
+            TopApplication application;
             foreach (XElement xmlApplication in xmlDoc.Elements("APPLICATION"))
             {
-                application = new Fluor.ProjectSwitcher.Base.Class.Application(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value, true);
+                application = new TopApplication(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value, true);
 
                 application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
 
@@ -229,7 +236,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible));
 
             // Only close open applcations if the selected project is not the active project
-            if (SelectedProject.IsActiveProject != true)
+            if (SelectedTile.IsActiveProject != true)
             {
                 Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "closing applications"));
                 bool closeResult = await CloseApplicationsAsync();
@@ -249,17 +256,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Hidden));
         }
 
+        /// <summary>
+        /// Changes the active project.
+        /// </summary>
         private void ChangeActiveProject()
         {
-            if (SelectedProject.IsActiveProject == false)
+            if (SelectedTile.IsActiveProject == false)
             {
-                SelectedProject.IsActiveProject = true;
+                SelectedTile.IsActiveProject = true;
 
                 // Unselect all other projects
-                foreach (Project project in ProjectsCollection.Where(proj => proj.Name != SelectedProject.Name))
+                foreach (Project project in ProjectsCollection.Where(proj => proj.Name != SelectedTile.Name))
                 {
                     project.IsActiveProject = false;
-                    project.ChangeIsActiveForSubProjects(SelectedProject.Name);
+                    project.ChangeIsActiveForSubProjects(SelectedTile.Name);
                 }
 
                 // Selected project is now active so set project specific settings for each selected application
@@ -270,7 +280,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public void SetProjectSpecificSettings()
         {
             // For all associations associated with the selected project
-            foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+            foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedTile.Name))
             {
                 // Associations have a 'parameters' field. This field contains project & application specific settings which need to be set.
                 // This could be an ini file setting(s), registry setting(s) or something else (as long as code as been written to deal with it).
@@ -332,7 +342,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
             else if (iniTypeSettings[0].Contains("*"))
             {
-                foreach (Fluor.ProjectSwitcher.Base.Class.Application app in ApplicationsCollection.Where(a => a.Name == association.ApplicationName))
+                foreach (TopApplication app in ApplicationsCollection.Where(a => a.Name == association.ApplicationName))
                 {
                     SubApplication subApp = (SubApplication)app.SubItems[0];
 
@@ -405,14 +415,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private bool ClosingApplications()
         {
             // Check if the application is already open
-            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in AssociatedApplicationCollection)
+            foreach (TopApplication application in AssociatedApplicationCollection)
             {
                 CloseSubApplications(application);
             }
             return true;
         }
 
-        private static void CloseSubApplications(Fluor.ProjectSwitcher.Base.Class.Application application)
+        private static void CloseSubApplications(TopApplication application)
         {
             foreach (SubApplication subApplication in application.SubItems)
             {
@@ -453,7 +463,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             try
             {
                 int i = 0;
-                foreach (Fluor.ProjectSwitcher.Base.Class.Application application in AssociatedApplicationCollection)
+                foreach (TopApplication application in AssociatedApplicationCollection)
                 {
                     foreach (SubApplication subApplication in application.SubItems)
                     {
@@ -523,72 +533,78 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void ChangeSelectedProject(GenericMessage<Project> changeSelectedProjectMessage) //Message.MessageChangeSelectedProject changeSelectedProjectMessage)
+        /// <summary>
+        /// Changes the selected tile.
+        /// </summary>
+        /// <param name="msg">Message containing the selected item.</param>
+        private void ChangeSelectedTile(GenericMessage<SwitcherItem> msg)
         {
-            if (changeSelectedProjectMessage.Sender is ViewModelTiles)
+            if (msg.Sender is ViewModelTiles)
             {
-                // Collect all the applications that are associated with the newly selected project
+                // Collect all the applications that are associated with the newly selected item
+                AssociatedApplicationCollection = new ObservableCollection<SwitcherItem>();
 
-                AssociatedApplicationCollection = new ObservableCollection<ProjectSwitcherItem>();
+                // A tile has been selected so display the tile tab
+                IsTileTabSelected = true;
 
-                IsProjectsTabSelected = true;
+                SelectedTile = (SwitcherItem)msg.Content;
 
-                SelectedProject = (Project)changeSelectedProjectMessage.Content;
-
-                if (SelectedProject != null)
+                if (SelectedTile != null)
                 {
+                    // Change the breadcrumb (title bar) to reflect the newly selected item
+                    PopulateBreadCrumb(SelectedTile);
 
-                    PopulateBreadCrumb();
-
-
-                    //if (SelectedProject != null)
-                    //{
-                        // Get all the associations associated with the selected project
-                        foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedProject.Name))
+                    // Get all the associations associated with the selected item
+                    foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedTile.Name))
+                    {
+                        foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
                         {
-                            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
-                            {
-                                AssociatedApplicationCollection.Add(application);
-                            }
+                            AssociatedApplicationCollection.Add(application);
                         }
+                    }
 
-                        if (AssociatedApplicationCollection.Any())
+                    if (AssociatedApplicationCollection.Any())
+                    {
+                        if (AssociatedApplicationCollection.Count == 1)
                         {
-                            if (AssociatedApplicationCollection.Count == 1)
-                            {
-                                Fluor.ProjectSwitcher.Base.Class.Application application = AssociatedApplicationCollection[0] as Fluor.ProjectSwitcher.Base.Class.Application;
-                                Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(new GenericMessage<Base.Class.Application>(application));
-                            }
-                            else
-                            {
-                                // Send the associated applications to the Tile view
-                                Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
-                            }
+                            // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
+                            TopApplication application = AssociatedApplicationCollection[0] as TopApplication;
+                            Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
                         }
-                    //}
+                        else
+                        {
+                            // Send the associated applications to the Tile view
+                            Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
+                        }
+                    }
                 }
                 else
                 {
-                    BackButtonCollection = new ObservableCollection<Button>();
+                    // Selected tile was null (home button selected), reset the breadcrumb collection.
+                    BreadcrumbCollection = new ObservableCollection<Button>();
                 }
-
-
-                
             }
         }
 
-        private void PopulateBreadCrumb()
+        /// <summary>
+        /// Populates the breadcrumb in the title bar.
+        /// </summary>
+        /// <param name="switcherItem">The switcher item to be added.</param>
+        private void PopulateBreadCrumb(SwitcherItem switcherItem)
         {
             Button btn = new Button();
             btn.Style = (Style)System.Windows.Application.Current.Resources["MetroBreadCrumbButtonStyle"];
-            btn.DataContext = SelectedProject;
-            btn.ToolTip = SelectedProject.Name;
+            btn.DataContext = switcherItem;
+            btn.ToolTip = switcherItem.MiscText;
 
-            if (BackButtonCollection.Any())
+            // Check if the breadcrumb collection already has items
+            // Method: Add each item one by one to a new temp collection until the item which has been select (passed in) is found
+            // Then overwrite the Breadcrumb collection with the temp collection - therefore any item after the selected item will be removed.
+            if (BreadcrumbCollection.Any())
             {
                 ObservableCollection<Button> tempCollection = new ObservableCollection<Button>();
 
-                foreach (Button b in BackButtonCollection)
+                foreach (Button b in BreadcrumbCollection)
                 {
                     if (b.DataContext != btn.DataContext)
                     {
@@ -600,31 +616,41 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     }
                 }
 
-                BackButtonCollection = tempCollection;
+                BreadcrumbCollection = tempCollection;
             }
 
-            BackButtonCollection.Add(btn);
+            BreadcrumbCollection.Add(btn);
         }
 
-        private void GetContextMenuParameters(NotificationMessageAction<string> getContextMenuMessage)
+        /// <summary>
+        /// Gather & returns all context menus associated with the selected item.
+        /// </summary>
+        /// <param name="getContextMenuMessage">The get context menu message.</param>
+        private void GetContextMenuParameters(NotificationMessageAction<string> msg)
         {
-            // A message sent by either the projects or the applications view
-            // Gather all context menus depending on which view sent the message
+            // Message sent by either the projects or the applications view
 
             string contextMenus = "";
 
-            ProjectSwitcherItem project = (ProjectSwitcherItem)getContextMenuMessage.Sender;
-            contextMenus = SetContextMenuValue(contextMenus, project.ContextMenus);
+            SwitcherItem switcherItem = (SwitcherItem)msg.Sender;
+            contextMenus = SetContextMenuValue(contextMenus, switcherItem.ContextMenus);
 
-            // Get all associtions associated with the selected project
-            foreach (Association association in Associations.Where(ass => ass.ProjectName == getContextMenuMessage.Notification))
+            // Get all associtions associated with the selected item
+            foreach (Association association in Associations.Where(ass => ass.ProjectName == msg.Notification))
             {
                 contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
             }
 
-            getContextMenuMessage.Execute(contextMenus);
+            // Return contextmenus to sender
+            msg.Execute(contextMenus);
         }
 
+        /// <summary>
+        /// Combines context menu values (strings) into one string.
+        /// </summary>
+        /// <param name="contextMenus">Current context menus string.</param>
+        /// <param name="value">Value to add.</param>
+        /// <returns></returns>
         private string SetContextMenuValue(string contextMenus, string value)
         {
             if (value != "")
@@ -641,21 +667,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
             return contextMenus;
         }
 
+        /// <summary>
+        /// Opens the admin module.
+        /// </summary>
         public void OpenAdminModule()
         {
             Fluor.ProjectSwitcher.Admin.Class.Run adminModule = new Admin.Class.Run(ProjectsCollection, ApplicationsCollection, Associations);
         }
 
-        public void GoBackToParent()
-        {
-            if (SelectedProject != null)
-            {
-                SelectedProject = (Project)SelectedProject.ParentItem;
-                Messenger.Default.Send<GenericMessage<Project>>(new GenericMessage<Project>(this,SelectedProject));
-            }
-        }
-
-        private void UpdateApplicationsCollection(GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application> message)
+        private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)
         {
             IsApplicationsTabSelected = true;
         }

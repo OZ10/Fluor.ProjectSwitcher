@@ -11,8 +11,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class ViewModelApplications :ViewModelBase 
     {
-        private ObservableCollection<ProjectSwitcherItem> applicationsCollection;
-        public ObservableCollection<ProjectSwitcherItem> ApplicationsCollection
+        private ObservableCollection<SwitcherItem> applicationsCollection;
+        public ObservableCollection<SwitcherItem> ApplicationsCollection
         {
             get
             {
@@ -22,20 +22,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 applicationsCollection = value;
                 RaisePropertyChanged("ApplicationsCollection");
-            }
-        }
-
-        private ObservableCollection<MenuItem> applicationContextMenus;
-        public ObservableCollection<MenuItem> ApplicationContextMenus
-        {
-            get
-            {
-                return applicationContextMenus;
-            }
-            set
-            {
-                applicationContextMenus = value;
-                RaisePropertyChanged("ApplicationContextMenus");
             }
         }
 
@@ -55,19 +41,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public ViewModelApplications()
         {
-            Messenger.Default.Register<GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application>>(this, UpdateApplicationsCollection);
+            Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<MenuItem>>(this, SelectApplications);
             Messenger.Default.Register<GenericMessage<TextBlock>>(this, DisplayContextMenus);
         }
 
-        private void UpdateApplicationsCollection(GenericMessage<Fluor.ProjectSwitcher.Base.Class.Application> message)
+        private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)
         {
             //check = false;
             ApplicationsCollection = message.Content.SubItems;
 
             ActiveApplicationCollection = new ObservableCollection<ListBox>();
 
-            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection)
+            foreach (TopApplication application in ApplicationsCollection)
             {
                 ListBox lb = new ListBox();
                 lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
@@ -85,24 +71,24 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             SubApplication subApplication = (SubApplication)tb.DataContext;  //GetSelectedApplication(applicationName);
 
-            ApplicationContextMenus = new ObservableCollection<MenuItem>();
+            //ApplicationContextMenus = new ObservableCollection<MenuItem>();
 
             // Send a message containing the project name to the main view model. The main view model returns the context
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(subApplication, subApplication.Name, (contextMenuParameters) =>
             {
-                subApplication.CreateContextMenus(contextMenuParameters, ref applicationContextMenus);
+                subApplication.CreateContextMenus(contextMenuParameters);
             }));
 
-            tb.ContextMenu.ItemsSource = ApplicationContextMenus;
+            tb.ContextMenu.ItemsSource = subApplication.ContextMenuCollection;
         }
 
         public void SelectApplications(GenericMessage<MenuItem> msg)
         {
-            ProjectSwitcherItem selectedApp = (ProjectSwitcherItem)msg.Content.DataContext;
+            SwitcherItem selectedApp = (SwitcherItem)msg.Content.DataContext;
             string selectedMenuItem = msg.Content.Header.ToString();
 
-            foreach (Fluor.ProjectSwitcher.Base.Class.Application application in ApplicationsCollection.Where(sa => sa == selectedApp.ParentItem))
+            foreach (TopApplication application in ApplicationsCollection.Where(sa => sa == selectedApp.ParentItem))
             {
                 foreach (SubApplication subApp in application.SubItems)
                 {

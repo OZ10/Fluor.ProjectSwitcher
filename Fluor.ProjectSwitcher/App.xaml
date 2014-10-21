@@ -26,21 +26,6 @@
             <Path x:Key="BackIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 35.8724,37.6042L 39.0391,40.7708L 50.5182,51.8542L 40.2266,51.8542L 25.1849,37.6041L 40.2266,23.3542L 50.5182,23.3542L 39.0391,34.4375L 35.8724,37.6042 Z "/>
             <Path x:Key="HomeIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 24.0033,56.0078L 24.0033,38.0053L 22.0031,40.0056L 19.0027,35.0049L 38.0053,20.0028L 45.0063,25.5299L 45.0063,21.753L 49.0068,21.0029L 49.0068,28.6882L 57.008,35.0049L 54.0075,40.0056L 52.0073,38.0053L 52.0073,56.0078L 24.0033,56.0078 Z M 38.0053,26.9204L 27.0038,36.005L 27.0038,53.0074L 33.0046,53.0074L 33.0046,42.006L 43.006,42.006L 43.006,53.0074L 49.0068,53.0074L 49.0068,36.005L 38.0053,26.9204 Z "/>
 
-            <!--<Style x:Key="SquareButtonStyleCustom" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content, Converter={Custom:ToLowerConverter}}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" OpacityMask="{x:Null}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>-->
-
             <Style x:Key="MetroTileCustom" TargetType="{x:Type Button}">
                 <!--BasedOn="{StaticResource {x:Type Button}}">-->
                 <!--<Setter Property="Background" Value="Aqua"/>-->
@@ -125,7 +110,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Margin="0,0,0,5" Padding="5" Background="White" FontSize="18" FontWeight="Normal" Foreground="Black">
                         <TextBlock.ContextMenu>
-                            <ContextMenu>
+                            <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
                                 <ContextMenu.ItemContainerStyle>
                                     <Style TargetType="{x:Type MenuItem}">
                                         <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
@@ -195,22 +180,6 @@
                                 <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Grid>
                             <ControlTemplate.Triggers>
-                                <!--<Trigger Property="IsPressed" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.5" To="0.7" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>-->
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Trigger.EnterActions>
                                         <BeginStoryboard>
@@ -227,12 +196,6 @@
                                         </BeginStoryboard>
                                     </Trigger.ExitActions>
                                 </Trigger>
-                                <!--<Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="1"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="False">
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="0"/>
-                                </Trigger>-->
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
                                     <Setter Property="Opacity" TargetName="ellipsebg" Value="0.3"/>
@@ -244,19 +207,6 @@
             </Style>
             
             <Style x:Key="MetroBreadCrumbButtonStyle" TargetType="{x:Type Button}">
-                <!--<Setter Property="FocusVisualStyle">
-                    <Setter.Value>
-                        <Style>
-                            <Setter Property="Control.Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Control}">
-                                        <Ellipse Margin="8" SnapsToDevicePixels="True" Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" StrokeDashArray="2 2"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Setter.Value>
-                </Setter>-->
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush3}"/>
@@ -273,115 +223,42 @@
                                 </Grid.ColumnDefinitions>
                                 
                                 <Border BorderBrush="White" BorderThickness="2,0,0,0" Margin="4"/>
-                                <Rectangle x:Name="ellipsebg" Fill="{DynamicResource SubColorBrush}" Opacity="0" StrokeThickness="0" Grid.Column="1"/>
+                                <Rectangle x:Name="rectanglebg" Fill="{DynamicResource SubColorBrush}" Opacity="0" StrokeThickness="0" Grid.Column="1" RadiusX="2" RadiusY="2"/>
                                 <!--<Ellipse x:Name="ellipse" Margin="4" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{Binding BorderThickness.Left, RelativeSource={RelativeSource TemplatedParent}}"/>-->
                                 <TextBlock Foreground="#DDFFFFFF" Text="{Binding Name}" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="1"/>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                                <!--<Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="1"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="False">
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="0"/>
-                                </Trigger>-->
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="0.3"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <EventSetter Event="Click" Handler="btnBack_Click"/>
-            </Style>
-            
-            <Style x:Key="BackButton" TargetType="{x:Type Button}">
-                <Setter Property="FocusVisualStyle">
-                    <Setter.Value>
-                        <Style>
-                            <Setter Property="Control.Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Control}">
-                                        <Ellipse Margin="8" SnapsToDevicePixels="True" Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" StrokeDashArray="2 2"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush3}"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="1"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="35"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="35"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Ellipse Fill="{TemplateBinding Background}" Margin="4" Opacity="0.7" StrokeThickness="0"/>
-                                <Ellipse x:Name="ellipsebg" Fill="{DynamicResource SubColorBrush}" Margin="4" Opacity="0" StrokeThickness="0"/>
-                                <!--<Ellipse x:Name="ellipse" Margin="4" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{Binding BorderThickness.Left, RelativeSource={RelativeSource TemplatedParent}}"/>-->
                                 
-                                <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{DynamicResource BackIcon}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                <TextBlock Foreground="#DDFFFFFF" Text="{Binding Name}" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="1">
-                                    <!--<TextBlock.ContextMenu>
-                                        <ContextMenu ItemsSource="{Binding ContextMenus}">
-                                            <ContextMenu.ItemContainerStyle>
-                                                <Style TargetType="{x:Type MenuItem}">
-                                                    <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
-                                                </Style>
-                                            </ContextMenu.ItemContainerStyle>
-                                        </ContextMenu>
-                                    </TextBlock.ContextMenu>-->
-                                </TextBlock>
+                                <Grid.ContextMenu>
+                                    <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style TargetType="{x:Type MenuItem}">
+                                                <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu> 
+                                </Grid.ContextMenu>
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Trigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
+                                                <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="rectanglebg"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </Trigger.EnterActions>
                                     <Trigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
+                                                <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="rectanglebg"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </Trigger.ExitActions>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="0.3"/>
+                                    <Setter Property="Opacity" TargetName="rectanglebg" Value="0.3"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
-                            
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
