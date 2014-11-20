@@ -13,7 +13,7 @@
     <!--20%-->
     <Color x:Key="AccentColor4">#FFeeeeee</Color>
 
-    <Color x:Key="SubColor">#FFffab40</Color>
+    <Color x:Key="SubColor">#FFC27000</Color>
 
     <!-- re-set brushes too -->
     <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />

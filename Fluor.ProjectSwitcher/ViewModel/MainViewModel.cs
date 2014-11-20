@@ -4,10 +4,8 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml;
 using GalaSoft.MvvmLight.Messaging;
 using System.Xml.Linq;
 using System.Linq;
@@ -37,7 +35,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         //      i.e. notepad is just an exe. Defining a row per project is pointless and messy
         // TODO Create transitions between project & subproject (currently both are on the same tab)
         // TODO Create icons for applications
-        // TODO Create close & min/max buttons
         // TODO Add code to deal with applications with only one sub application to run - i.e. notepad
         // TODO Fix bug where selected sub apps will launch even if they are not currently displayed - i.e. even with SPEL selected, Drawing Manager will launch because it's selected by default
 
@@ -232,28 +229,31 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public async void CloseAndOpenApplications()
         {
-            // Show status grid which overs all controls
-            Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible));
-
-            // Only close open applcations if the selected project is not the active project
-            if (SelectedTile.IsActiveProject != true)
+            if (SelectedTile != null)
             {
-                Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "closing applications"));
-                bool closeResult = await CloseApplicationsAsync();
+                // Show status grid which overs all controls
+                Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible));
+
+                // Only close open applcations if the selected project is not the active project
+                if (SelectedTile.IsActiveProject != true)
+                {
+                    Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "closing applications"));
+                    bool closeResult = await CloseApplicationsAsync();
+                }
+
+                // Change the active project and setup any project specific settings
+                ChangeActiveProject();
+
+                // Update status window
+                Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "opening applications"));
+
+                // Open new applications
+                System.Threading.Thread.Sleep(1000);
+                bool openResult = await OpenApplicationsAsync();
+
+                // Hide the status grid
+                Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Hidden));
             }
-
-            // Change the active project and setup any project specific settings
-            ChangeActiveProject();
-
-            // Update status window
-            Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "opening applications"));
-
-            // Open new applications
-            System.Threading.Thread.Sleep(1000);
-            bool openResult = await OpenApplicationsAsync();
-
-            // Hide the status grid
-            Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Hidden));
         }
 
         /// <summary>
@@ -595,7 +595,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Button btn = new Button();
             btn.Style = (Style)System.Windows.Application.Current.Resources["MetroBreadCrumbButtonStyle"];
             btn.DataContext = switcherItem;
-            btn.ToolTip = switcherItem.MiscText;
 
             // Check if the breadcrumb collection already has items
             // Method: Add each item one by one to a new temp collection until the item which has been select (passed in) is found

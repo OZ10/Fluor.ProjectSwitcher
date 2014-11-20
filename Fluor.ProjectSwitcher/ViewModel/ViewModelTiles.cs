@@ -1,15 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Controls;
 using System.Linq;
-using System;
-using System.Windows.Input;
 using Fluor.ProjectSwitcher.Base.Class;
 using System.Windows;
-using MahApps.Metro.Controls;
-using System.Windows.Media;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
