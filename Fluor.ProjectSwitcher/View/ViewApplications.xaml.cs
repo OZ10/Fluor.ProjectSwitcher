@@ -1,4 +1,4 @@
-﻿using Fluor.ProjectSwitcher.Base.Class;
+﻿using Fluor.ProjectSwitcher.Class;
 using System.Windows;
 using System.Windows.Controls;
 

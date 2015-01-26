@@ -33,6 +33,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ViewModelTiles>();
             SimpleIoc.Default.Register<ViewModelApplications>();
+            SimpleIoc.Default.Register<ViewModelAddNew>();
         }
 
         public MainViewModel Main
@@ -56,6 +57,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ViewModelApplications>();
+            }
+        }
+
+        public ViewModelAddNew AddNew
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModelAddNew>();
             }
         }
        

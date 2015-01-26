@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
-using Fluor.ProjectSwitcher.Base.Class;
+using Fluor.ProjectSwitcher.Class;
 using System.Linq;
 
 namespace Fluor.ProjectSwitcher.ViewModel
@@ -75,7 +75,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(subApplication, subApplication.Name, (contextMenuParameters) =>
             {
-                subApplication.CreateContextMenus(contextMenuParameters);
+                //subApplication.CreateContextMenus(contextMenuParameters);
             }));
 
             tb.ContextMenu.ItemsSource = subApplication.ContextMenuCollection;

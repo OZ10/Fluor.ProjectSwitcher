@@ -13,20 +13,25 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>\\fbspfil010\Desapps\Fluor\ProjectSwitcher\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ProductName>Project Switcher</ProductName>
+    <PublisherName>Fluor</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationVersion>3.0.3.4</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -51,14 +56,22 @@
   <PropertyGroup>
     <ApplicationIcon>icon6.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>3BD571665A7A2BE393098B09A4EAEF72F020F4F0</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Fluor.ProjectSwitcher_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fluor.ProjectSwitcher.Admin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Fluor.ProjectSwitcher.Admin\Fluor.ProjectSwitcher.Admin\bin\Debug\Fluor.ProjectSwitcher.Admin.dll</HintPath>
-    </Reference>
-    <Reference Include="Fluor.ProjectSwitcher.Base">
-      <HintPath>..\..\Fluor.ProjectSwitcher.Base\Fluor.ProjectSwitcher.Base\bin\Debug\Fluor.ProjectSwitcher.Base.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight">
       <HintPath>..\packages\MvvmLightLibs.4.4.32.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -95,13 +108,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Message\MessageChangeSelectedProject.cs" />
+    <Compile Include="Class\Association.cs" />
+    <Compile Include="Class\Base.cs" />
+    <Compile Include="Class\ContextMenu.cs" />
+    <Compile Include="Class\ini.cs" />
+    <Compile Include="Class\Parameter.cs" />
+    <Compile Include="Class\Project.cs" />
+    <Compile Include="Class\SubApplication.cs" />
+    <Compile Include="Class\SwitcherItem.cs" />
+    <Compile Include="Class\TopApplication.cs" />
+    <Compile Include="Class\Utilities.cs" />
     <Compile Include="Message\MessagePopulateApplications.cs" />
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />
+    <Compile Include="Message\MessageUpdateSelectedTile.cs" />
+    <Compile Include="ViewModel\ViewModelAddNew.cs" />
     <Compile Include="ViewModel\ViewModelApplications.cs" />
     <Compile Include="ViewModel\ViewModelTiles.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\ViewAddNew.xaml.cs">
+      <DependentUpon>ViewAddNew.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewApplications.xaml.cs">
       <DependentUpon>ViewApplications.xaml</DependentUpon>
     </Compile>
@@ -112,6 +139,21 @@
       <DependentUpon>ViewStatusWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Page Include="..\..\Fluor_Resources\Fluor_Accents.xaml">
+      <Link>Themes\Fluor_Accents.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\Fluor_Resources\Fluor_CustomControlStyles.xaml">
+      <Link>Themes\Fluor_CustomControlStyles.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\Fluor_Resources\Fluor_Icons.xaml">
+      <Link>Themes\Fluor_Icons.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,7 +166,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Style\AccentFluor.xaml">
+    <Page Include="View\ViewAddNew.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -159,6 +201,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Fluor.ProjectSwitcher_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -189,7 +232,27 @@
   <ItemGroup>
     <Resource Include="icon6.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Fluor.ProjectSwitcher.Projects.xml">
+      <Link>Fluor.ProjectSwitcher.Projects.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Fluor.ProjectSwitcher.Projects.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

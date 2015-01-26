@@ -1,4 +1,4 @@
-﻿using Fluor.ProjectSwitcher.Base.Class;
+﻿using Fluor.ProjectSwitcher.Class;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +21,11 @@ namespace Fluor.ProjectSwitcher.View
         public ViewTiles()
         {
             InitializeComponent();
+        }
+
+        private void btnAddNew_Click(object sender, RoutedEventArgs e)
+        {
+            vm.AddNewTile();
         }
     }
 }

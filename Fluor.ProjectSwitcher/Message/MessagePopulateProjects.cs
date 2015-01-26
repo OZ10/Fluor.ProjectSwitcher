@@ -1,4 +1,4 @@
-﻿using Fluor.ProjectSwitcher.Base.Class;
+﻿using Fluor.ProjectSwitcher.Class;
 using System.Collections.ObjectModel;
 
 namespace Fluor.ProjectSwitcher.Message

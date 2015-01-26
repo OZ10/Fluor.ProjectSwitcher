@@ -115,9 +115,8 @@ namespace Fluor.ProjectSwitcher
 
         private void miAdmin_Click(object sender, RoutedEventArgs e)
         {
-            //Admin.View.Admin_ViewMain main = new Admin.View.Admin_ViewMain();
-            //main.Show();
-            vm.OpenAdminModule();
+            //vm.OpenAdminModule();
+            Messenger.Default.Send<GenericMessage<bool>>(new GenericMessage<bool>(this, true));
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -129,12 +128,12 @@ namespace Fluor.ProjectSwitcher
         {
             MenuItem mi = (MenuItem)sender;
 
-            Fluor.ProjectSwitcher.Base.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
+            Fluor.ProjectSwitcher.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Base.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Base.Class.SwitcherItem>(this, null));
+            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>(this, null));
         }
     }
 }

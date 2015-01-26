@@ -6,26 +6,13 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary Source="Style/AccentFluor.xaml"/>
+                <ResourceDictionary Source="Themes/Fluor_Accents.xaml" />
+                <ResourceDictionary Source="Themes/Fluor_Icons.xaml" />
+                <ResourceDictionary Source="Themes/Fluor_CustomControlStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <Path x:Key="FolderIcon" Fill="{DynamicResource HighlightBrush}" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 21,30.0001L 55.9999,30.0001L 55.9999,50L 21,50L 21,30.0001 Z M 52,28L 37,28C 38,25 39.4999,24.0001 39.4999,24.0001L 50.75,24C 51.3023,24 52,24.6977 52,25.25L 52,28 Z "/>
-            <Path x:Key="PlusIcon" Fill="{DynamicResource HighlightBrush}" x:Shared="False" Width="15" Height="15" Stretch="Uniform" Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z " />
-            <Path x:Key="MinusIcon" Fill="{DynamicResource HighlightBrush}" x:Shared="False" Width="15" Height="15" Stretch="Uniform" Data="F1 M 19,38L 57,38L 57,44L 19,44L 19,38 Z " />
-            <Path x:Key="SelectThisOnlyIcon" Fill="{DynamicResource HighlightBrush}" x:Shared="False" Width="15" Height="15" Stretch="Uniform" Data="F1 M 19,25L 27,25L 27,33L 19,33L 19,25 Z M 19,36L 27,36L 27,44L 19,44L 19,36 Z M 31,25L 57,25L 57,33L 31,33L 31,25 Z M 19,47L 27,47L 27,55L 19,55L 19,47 Z " />
-            <Path x:Key="SelectAllExceptThisIcon" Fill="{DynamicResource HighlightBrush}" x:Shared="False" Width="15" Height="15" Stretch="Uniform" Data="F1 M 19,34.0001L 20,34.0001L 20,35.0001L 19,35.0001L 19,34.0001 Z M 18.9999,36.0002L 19.9999,36.0002L 19.9999,37.0002L 18.9999,37.0002L 18.9999,36.0002 Z M 18.9999,38.0002L 19.9999,38.0002L 19.9999,39.0002L 18.9999,39.0002L 18.9999,38.0002 Z M 18.9999,40.0002L 19.9999,40.0002L 19.9999,41.0002L 20.9999,41.0002L 20.9999,42.0002L 19.9999,42.0002L 19.9999,41.0002L 18.9999,41.0002L 18.9999,40.0002 Z M 20.9999,35.0002L 20.9999,34.0002L 21.9998,34.0002L 21.9998,35.0002L 20.9999,35.0002 Z M 22.9998,35.0002L 22.9998,34.0002L 23.9998,34.0002L 23.9998,35.0002L 22.9998,35.0002 Z M 24.9998,35.0002L 24.9998,34.0002L 25.9998,34.0002L 25.9998,35.0002L 26.9998,35.0002L 26.9998,36.0002L 25.9998,36.0002L 25.9998,35.0002L 24.9998,35.0002 Z M 25.9999,37.0002L 26.9999,37.0002L 26.9999,38.0002L 25.9999,38.0002L 25.9999,37.0002 Z M 25.9999,39.0002L 26.9999,39.0002L 26.9999,40.0002L 25.9999,40.0002L 25.9999,39.0002 Z M 25.9999,41.0002L 26.9999,41.0002L 26.9999,42.0002L 25.9999,42.0002L 25.9999,41.0002 Z M 24.9999,42.0002L 23.9999,42.0002L 23.9999,41.0002L 24.9999,41.0002L 24.9999,42.0002 Z M 22.9999,42.0002L 21.9999,42.0002L 21.9999,41.0002L 22.9999,41.0002L 22.9999,42.0002 Z M 30.9999,34.0002L 31.9999,34.0002L 31.9999,35.0002L 30.9999,35.0002L 30.9999,34.0002 Z M 30.9999,36.0002L 31.9999,36.0002L 31.9999,37.0002L 30.9999,37.0002L 30.9999,36.0002 Z M 30.9999,38.0001L 31.9999,38.0001L 31.9999,39.0001L 30.9999,39.0001L 30.9999,38.0001 Z M 30.9999,40.0001L 31.9999,40.0001L 31.9999,41.0001L 32.9999,41.0001L 32.9999,42.0001L 31.9999,42.0001L 31.9999,41.0001L 30.9999,41.0001L 30.9999,40.0001 Z M 32.9999,35.0001L 32.9999,34.0001L 33.9999,34.0001L 33.9999,35.0001L 32.9999,35.0001 Z M 34.9999,35.0001L 34.9999,34.0001L 35.9999,34.0001L 35.9999,35.0001L 34.9999,35.0001 Z M 36.9999,35.0001L 36.9999,34.0001L 37.9999,34.0001L 37.9999,35.0001L 36.9999,35.0001 Z M 56.9998,35.0001L 56.9998,36.0001L 55.9998,36.0001L 55.9998,35.0001L 54.9999,35.0001L 54.9999,34.0001L 55.9999,34.0001L 55.9999,35.0001L 56.9998,35.0001 Z M 55.9998,37.0001L 56.9998,37.0001L 56.9998,38.0001L 55.9998,38.0001L 55.9998,37.0001 Z M 55.9998,39.0001L 56.9998,39.0001L 56.9998,40.0001L 55.9998,40.0001L 55.9998,39.0001 Z M 37.9999,41.0001L 38.9999,41.0001L 38.9999,42.0001L 37.9999,42.0001L 37.9999,41.0001 Z M 36.9999,42.0001L 35.9999,42.0001L 35.9999,41.0001L 36.9999,41.0001L 36.9999,42.0001 Z M 34.9999,42.0001L 33.9999,42.0001L 33.9999,41.0001L 34.9999,41.0001L 34.9999,42.0001 Z M 40,42.0001L 40,41.0001L 41,41.0001L 41,42.0001L 40,42.0001 Z M 41,35.0001L 41,34.0001L 42,34.0001L 42,35.0001L 41,35.0001 Z M 42.9999,35.0001L 42.9999,34.0001L 43.9999,34.0001L 43.9999,35.0001L 42.9999,35.0001 Z M 44.9999,35.0001L 44.9999,34.0001L 45.9999,34.0001L 45.9999,35.0001L 44.9999,35.0001 Z M 45.9999,41.0001L 46.9999,41.0001L 46.9999,42.0001L 45.9999,42.0001L 45.9999,41.0001 Z M 44.9999,42.0001L 43.9999,42.0001L 43.9999,41.0001L 44.9999,41.0001L 44.9999,42.0001 Z M 42.9999,42.0001L 42,42.0001L 42,41.0001L 42.9999,41.0001L 42.9999,42.0001 Z M 39,35L 39,34L 40,34L 40,35L 39,35 Z M 47.9999,41L 48.9999,41L 48.9999,42L 47.9999,42L 47.9999,41 Z M 50,42L 50,41L 51,41L 51,42L 50,42 Z M 56,41L 57,41L 57,42L 56,42L 56,41 Z M 55,42L 54,42L 54,41L 55,41L 55,42 Z M 53,42L 52,42L 52,41L 53,41L 53,42 Z M 47,35L 47,34L 48,34L 48,35L 47,35 Z M 51,35L 51,34L 52,34L 52,35L 51,35 Z M 53,35L 53,34L 54,34L 54,35L 53,35 Z M 49,35L 49,34L 50,34L 50,35L 49,35 Z M 19,23L 27,23L 27,31L 19,31L 19,23 Z M 30.9999,23.0003L 56.9997,23.0003L 56.9997,31.0003L 30.9999,31.0003L 30.9999,23.0003 Z M 19,45.0001L 26.9999,45.0001L 26.9999,53.0001L 19,53.0001L 19,45.0001 Z M 30.9999,45.0001L 56.9998,45.0001L 56.9998,53.0001L 30.9999,53.0001L 30.9999,45.0001 Z " />
-            <Path x:Key="SwitchProjectIcon" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Width="30" Height="30" Stretch="Uniform" Data="M 80 91.734368 80 84 66.5 84 53 84 53 75 53 66 66.45619 66 79.912381 66 80.20619 58.978175 80.5 51.956349 92.250306 63.743501 104.00061 75.530653 92.000306 87.499695 80 99.468736 80 91.734368 z M 36.515972 65.021667 24.531944 53.000682 35.99966 41.500341 C 42.306904 35.175153 47.812216 30 48.233688 30 48.65516 30 49 33.15 49 37 l 0 7 13 0 13 0 0 9 0 9 -12.957936 0 -12.957935 0 -0.292065 7.521326 L 48.5 77.042652 36.515972 65.021667 z " />
-            <Path x:Key="SettingsIcon" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" x:Shared="False" Width="15" Height="15" Stretch="Uniform" Data="F1 M 38,23.5C 38.8643,23.5 39.7109,23.5756 40.5337,23.7206L 42.6275,18.5381L 48.1901,20.787L 46.0964,25.9692C 47.6473,27.0149 48.9851,28.3527 50.0308,29.9036L 55.213,27.8099L 57.4619,33.3725L 52.2794,35.4664C 52.4244,36.2891 52.5,37.1357 52.5,38C 52.5,38.8643 52.4244,39.7109 52.2794,40.5337L 57.4619,42.6275L 55.213,48.1901L 50.0308,46.0964C 49.0795,47.5073 47.8865,48.7418 46.5112,49.7405L 48.7844,54.8462L 43.3041,57.2891L 41.0307,52.1828C 40.0533,52.3906 39.0394,52.5 38,52.5C 37.1357,52.5 36.2891,52.4244 35.4664,52.2794L 33.3725,57.462L 27.8099,55.213L 29.9036,50.0309C 28.3527,48.9851 27.0149,47.6473 25.9691,46.0964L 20.787,48.1901L 18.538,42.6275L 23.7206,40.5336C 23.5756,39.7109 23.5,38.8643 23.5,38C 23.5,37.1357 23.5756,36.2891 23.7206,35.4664L 18.538,33.3725L 20.787,27.8099L 25.9691,29.9036C 26.9205,28.4927 28.1135,27.2582 29.4889,26.2594L 27.2157,21.1537L 32.6959,18.7109L 34.9694,23.8172C 35.9468,23.6094 36.9606,23.5 38,23.5 Z M 38,28C 32.4771,28 28,32.4772 28,38C 28,43.5229 32.4771,48 38,48C 43.5228,48 48,43.5229 48,38C 48,32.4772 43.5228,28 38,28 Z " />
-            <!--<Path x:Key="SettingsWhiteIcon" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Width="15" Height="15" x:Shared="False" Stretch="Uniform" Data="F1 M 38,23.5C 38.8643,23.5 39.7109,23.5756 40.5337,23.7206L 42.6275,18.5381L 48.1901,20.787L 46.0964,25.9692C 47.6473,27.0149 48.9851,28.3527 50.0308,29.9036L 55.213,27.8099L 57.4619,33.3725L 52.2794,35.4664C 52.4244,36.2891 52.5,37.1357 52.5,38C 52.5,38.8643 52.4244,39.7109 52.2794,40.5337L 57.4619,42.6275L 55.213,48.1901L 50.0308,46.0964C 49.0795,47.5073 47.8865,48.7418 46.5112,49.7405L 48.7844,54.8462L 43.3041,57.2891L 41.0307,52.1828C 40.0533,52.3906 39.0394,52.5 38,52.5C 37.1357,52.5 36.2891,52.4244 35.4664,52.2794L 33.3725,57.462L 27.8099,55.213L 29.9036,50.0309C 28.3527,48.9851 27.0149,47.6473 25.9691,46.0964L 20.787,48.1901L 18.538,42.6275L 23.7206,40.5336C 23.5756,39.7109 23.5,38.8643 23.5,38C 23.5,37.1357 23.5756,36.2891 23.7206,35.4664L 18.538,33.3725L 20.787,27.8099L 25.9691,29.9036C 26.9205,28.4927 28.1135,27.2582 29.4889,26.2594L 27.2157,21.1537L 32.6959,18.7109L 34.9694,23.8172C 35.9468,23.6094 36.9606,23.5 38,23.5 Z M 38,28C 32.4771,28 28,32.4772 28,38C 28,43.5229 32.4771,48 38,48C 43.5228,48 48,43.5229 48,38C 48,32.4772 43.5228,28 38,28 Z " />-->
-            <Path x:Key="CloseIcon" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Width="15" Height="15" x:Shared="False" Stretch="Uniform" Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z " />
-            <Path x:Key="AboutIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 37.2083,49.0833C 39.3945,49.0833 41.1667,50.8555 41.1667,53.0417C 41.1667,55.2278 39.3945,57 37.2083,57C 35.0222,57 33.25,55.2278 33.25,53.0417C 33.25,50.8555 35.0222,49.0833 37.2083,49.0833 Z M 38,17.4167C 44.9956,17.4167 50.6666,21.9416 50.6666,28.5C 50.6666,30.875 49.0833,34.8333 45.9167,36.4167C 42.75,38 41.1667,40.1267 41.1667,42.75L 41.1667,45.9167L 33.25,45.9167L 33.25,43.5417C 33.25,38.1571 38,34.8333 39.5833,33.25C 42.75,30.0833 42.75,29.644 42.75,28.5C 42.75,25.8767 40.6233,23.75 38,23.75C 35.3766,23.75 33.25,25.8767 33.25,28.5L 33.25,30.875L 25.3333,30.875L 25.3333,29.2917C 25.3333,22.7333 31.0044,17.4167 38,17.4167 Z " />
-            <Path x:Key="RefreshIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" Data="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z "/>
-            <Path x:Key="ProjectIcon" Stretch="Uniform" x:Shared="False" Width="30" Height="30" Data="F1 M 19.0001,23.5L 41.0002,19.9999L 41.0002,55.9999L 19.0001,52.5L 19.0001,23.5 Z M 28.9898,39.9572L 30.0923,39.9784C 31.3742,39.9021 32.8663,39.3726 33.5545,38.2883C 34.5013,36.7965 34.4981,34.2219 33.2239,32.9978C 31.6458,31.4819 28.872,32.2686 26.6872,32.3915L 26.6882,43.8668L 27.8457,43.9349L 29.0033,44.003L 28.9898,39.9572 Z M 28.9942,34.2921L 29.9044,34.259C 30.3659,34.3962 30.9434,34.3353 31.2888,34.6708C 32.0579,35.4178 31.7203,37.4869 30.7059,37.8341C 30.4483,37.9222 30.1693,37.9335 29.8977,37.9522L 28.988,37.9527L 28.9942,34.2921 Z M 57.0002,23.9999L 57.0002,51.9999L 42.0002,51.9999L 42.0002,44.9497L 45.5002,48.4496L 50.45,43.4999L 45.5002,38.5501L 42.0002,42.0502L 42.0002,30.9999L 50.0002,30.9999L 50.0002,36.9999L 47.0002,36.9999L 51.0001,41L 55.0002,36.9999L 52.0002,36.9999L 52.0002,30.9999L 52.0002,28.9999L 42.0002,28.9999L 42.0002,23.9999L 57.0002,23.9999 Z " Fill="#89000000"/>
-            <Path x:Key="BackIcon" Fill="White" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 35.8724,37.6042L 39.0391,40.7708L 50.5182,51.8542L 40.2266,51.8542L 25.1849,37.6041L 40.2266,23.3542L 50.5182,23.3542L 39.0391,34.4375L 35.8724,37.6042 Z "/>
-            <Path x:Key="HomeIcon" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Width="15" Height="15" Stretch="Uniform" x:Shared="False" Data="F1 M 24.0033,56.0078L 24.0033,38.0053L 22.0031,40.0056L 19.0027,35.0049L 38.0053,20.0028L 45.0063,25.5299L 45.0063,21.753L 49.0068,21.0029L 49.0068,28.6882L 57.008,35.0049L 54.0075,40.0056L 52.0073,38.0053L 52.0073,56.0078L 24.0033,56.0078 Z M 38.0053,26.9204L 27.0038,36.005L 27.0038,53.0074L 33.0046,53.0074L 33.0046,42.006L 43.006,42.006L 43.006,53.0074L 49.0068,53.0074L 49.0068,36.005L 38.0053,26.9204 Z "/>
-
+            
             <Style x:Key="MetroTileCustom" TargetType="{x:Type Button}">
                 <!--BasedOn="{StaticResource {x:Type Button}}">-->
                 <!--<Setter Property="Background" Value="Aqua"/>-->
@@ -37,6 +24,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50"/>
@@ -45,6 +33,11 @@
                                 <Grid.ContextMenu>
                                     <ContextMenu>
                                         <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
+                                        <ContextMenu.ItemTemplate>
+                                            <DataTemplate>
+                                                <MenuItem Header="{Binding DisplayName}" CommandParameter="{Binding Value}"/>
+                                            </DataTemplate>
+                                        </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
                                             <Style TargetType="{x:Type MenuItem}">
                                                 <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
@@ -58,13 +51,14 @@
                                 <Rectangle x:Name="rec2" Fill="{DynamicResource SubColorBrush}" Grid.RowSpan="2" Opacity="0"/>
                                 <Border BorderBrush="#33000000" BorderThickness="1,0,0,1"/>
                                 <ContentPresenter Content="{DynamicResource ProjectIcon}" Margin="5" Grid.RowSpan="2"/>
-                                <Rectangle Fill="White" Margin="2,0,0,0" Grid.Column="1" Grid.RowSpan="2"/>
-                                <Border BorderBrush="#33000000" BorderThickness="0,0,0,1" Grid.Column="1" Grid.RowSpan="2"/>
+                                <Rectangle Fill="White" Margin="2,0,0,0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                <Border BorderBrush="#33000000" BorderThickness="0,0,0,1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Normal" FontSize="20" />
                                     <TextBlock Text="{Binding MiscText}" VerticalAlignment="Center" Margin="10,4,0,4" FontWeight="Normal" FontSize="12" Visibility="{Binding MiscTextVisibility}" Foreground="{DynamicResource TextBlack54Brush}"/>
                                 </StackPanel>
-
+                                <ContentPresenter Content="{DynamicResource EditIcon}" Margin="5" Grid.RowSpan="2" Grid.Column="2" Visibility="{Binding IsEditMode}"/>
+                                <Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="5" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustom}" Opacity="0" Foreground="{DynamicResource SubColorBrush}" Visibility="{Binding IsEditMode}" Click="btnEdit_Click"/>
                             </Grid>
 
                             <ControlTemplate.Triggers>
@@ -93,7 +87,25 @@
                                     </Trigger.ExitActions>
                                 </Trigger>
 
-                                <!--<Trigger Property="IsMouseOver" Value="True">
+                                <Trigger Property="IsMouseOver" Value="True" SourceName="btnEdit">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <!--<ColorAnimation Duration="0:0:0.3" To="Aquamarine" Storyboard.TargetProperty="(Button.Foreground).Color" Storyboard.TargetName="btnEdit"/>-->
+                                                <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="btnEdit"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="btnEdit"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+
+                                    <!--<Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="rec1" Property="Fill" Value="{DynamicResource SubColorBrush}"/>
                                 </Trigger>-->
                             </ControlTemplate.Triggers>
@@ -111,6 +123,11 @@
                     <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Margin="0,0,0,1" Padding="5" Background="White" FontSize="18" FontWeight="Normal" Foreground="Black">
                         <TextBlock.ContextMenu>
                             <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate>
+                                        <MenuItem Header="{Binding DisplayName}" CommandParameter="{Binding Value}"/>
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
                                 <ContextMenu.ItemContainerStyle>
                                     <Style TargetType="{x:Type MenuItem}">
                                         <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
@@ -150,218 +167,6 @@
 
             <vm:ViewModelLocator xmlns:vm="clr-namespace:Fluor.ProjectSwitcher.ViewModel" x:Key="Locator" d:IsDataSource="True" />
 
-            <!--<Style x:Key="MetroCircleButtonStyleCustom" TargetType="{x:Type Button}">
-                <Setter Property="FocusVisualStyle">
-                    <Setter.Value>
-                        <Style>
-                            <Setter Property="Control.Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Control}">
-                                        <Ellipse Margin="8" SnapsToDevicePixels="True" Stroke="{DynamicResource BlackBrush}" StrokeThickness="1" StrokeDashArray="2 2"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush3}"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="1"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Ellipse Fill="{TemplateBinding Background}" Margin="4" Opacity="0.7" StrokeThickness="0"/>
-                                <Ellipse x:Name="ellipsebg" Fill="{DynamicResource SubColorBrush}" Margin="4" Opacity="0" StrokeThickness="0"/>
-                                <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RenderTransformOrigin="0.5,0.5">
-                                    <ContentPresenter.RenderTransform>
-                                        <RotateTransform x:Name="TransRotate" Angle="0"/>
-                                    </ContentPresenter.RenderTransform>
-                                </ContentPresenter>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
-                                    <Setter Property="Opacity" TargetName="ellipsebg" Value="0.3"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>-->
-
-            <Style x:Key="MetroCircleButtonStyleCustom" TargetType="{x:Type Button}">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush3}"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="1"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Ellipse x:Name="ellipsebg" Fill="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Margin="4" StrokeThickness="0"/>
-                                <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RenderTransformOrigin="0.5,0.5">
-                                    <ContentPresenter.RenderTransform>
-                                        <RotateTransform x:Name="TransRotate" Angle="0"/>
-                                    </ContentPresenter.RenderTransform>
-                                </ContentPresenter>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ellipsebg"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="MetroCircleButtonStyleCustomSpin" TargetType="{x:Type Button}" BasedOn="{StaticResource MetroCircleButtonStyleCustom}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Ellipse x:Name="ellipsebg" Fill="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Margin="4" StrokeThickness="0"/>
-                                <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RenderTransformOrigin="0.5,0.5">
-                                    <ContentPresenter.RenderTransform>
-                                        <RotateTransform x:Name="TransRotate" Angle="0"/>
-                                    </ContentPresenter.RenderTransform>
-                                </ContentPresenter>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.15" From="0" To="180" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                                <!--<ColorAnimation Duration="0:0:0.15" To="{StaticResource SubColor}" Storyboard.TargetProperty="(Button.Foreground).Color"/>-->
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.15" To="0" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                                <!--<ColorAnimation Duration="0:0:0.15" To="White" Storyboard.TargetProperty="(Button.Foreground).Color"/>-->
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="MetroCircleButtonStyleCustomSpinForever" TargetType="{x:Type Button}" BasedOn="{StaticResource MetroCircleButtonStyleCustom}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Ellipse x:Name="ellipsebg" Fill="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Margin="4" StrokeThickness="0"/>
-                                <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RenderTransformOrigin="0.5,0.5">
-                                    <ContentPresenter.RenderTransform>
-                                        <RotateTransform x:Name="TransRotate" Angle="0"/>
-                                    </ContentPresenter.RenderTransform>
-                                </ContentPresenter>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard RepeatBehavior="Forever">
-                                                <DoubleAnimation Duration="0:0:0.50" From="0" To="180" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                                <!--<DoubleAnimation BeginTime="0:0:0.50" Duration="0:0:1.50" From="180" To="360" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>-->
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.15" To="0" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="MetroCircleButtonStyleCustomWobble" TargetType="{x:Type Button}" BasedOn="{StaticResource MetroCircleButtonStyleCustom}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid>
-                                <Ellipse x:Name="ellipsebg" Fill="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Control}}" Margin="4" StrokeThickness="0"/>
-                                <ContentPresenter x:Name="content" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RenderTransformOrigin="0.5,0.5">
-                                    <ContentPresenter.RenderTransform>
-                                        <RotateTransform x:Name="TransRotate" Angle="0"/>
-                                    </ContentPresenter.RenderTransform>
-                                </ContentPresenter>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard RepeatBehavior="Forever">
-                                                <DoubleAnimation Duration="0:0:0.10" To="25" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                                <DoubleAnimation BeginTime="0:0:0.10" Duration="0:0:0.10" To="0" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                                <DoubleAnimation BeginTime="0:0:0.20" Duration="0:0:0.10" To="-25" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                                <DoubleAnimation BeginTime="0:0:0.30" Duration="0:0:0.10" To="0" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.15" To="0" Storyboard.TargetProperty="Angle" Storyboard.TargetName="TransRotate"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
             <Style x:Key="MetroBreadCrumbButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="2"/>
@@ -385,6 +190,11 @@
                                 
                                 <Grid.ContextMenu>
                                     <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
+                                        <ContextMenu.ItemTemplate>
+                                            <DataTemplate>
+                                                <MenuItem Header="{Binding DisplayName}" CommandParameter="{Binding Value}"/>
+                                            </DataTemplate>
+                                        </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
                                             <Style TargetType="{x:Type MenuItem}">
                                                 <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
@@ -420,6 +230,32 @@
                 </Setter>
                 <EventSetter Event="Click" Handler="btnBack_Click"/>
             </Style>
+
+            <ControlTemplate x:Key="NewTileTemplate">
+                <Grid Margin="5,0,5,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Name"/>
+                    <TextBox Grid.Column="1" Text="{Binding Name}"/>
+                    <Label Content="ContextMenus" Grid.Row="1"/>
+                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                        <TextBox Text="{Binding ContextMenus}" MaxWidth="200"/>
+                        <Button Name="btnEditContextMenu" Content="..."/>
+                    </StackPanel>
+                    <Label Content="Misc Text" Grid.Row="2"/>
+                    <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding MiscText}"/>
+                    <Button Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,20,80,0"/>
+                    <Button Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,20,0,0"/>
+                </Grid>
+            </ControlTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

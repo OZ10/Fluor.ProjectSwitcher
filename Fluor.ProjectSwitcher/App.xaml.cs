@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
-using Fluor.ProjectSwitcher.Base.Class;
+using Fluor.ProjectSwitcher.Class;
 
 namespace Fluor.ProjectSwitcher
 {
@@ -28,7 +28,12 @@ namespace Fluor.ProjectSwitcher
         {
             MenuItem mi = (MenuItem)sender;
 
-            Fluor.ProjectSwitcher.Base.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
+            //TODO The binding is not working correctly here; I'm not sure why. For some reason the
+            //     The ContextMenu class is bound to the header property of the MenuItem.
+            Class.ContextMenu contextMenu = (Class.ContextMenu)mi.Header;
+
+            Fluor.ProjectSwitcher.Class.Utilities.OpenFolder(contextMenu.Value);
+            //Fluor.ProjectSwitcher.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
         }
 
         private void tbApplicationName_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -46,8 +51,15 @@ namespace Fluor.ProjectSwitcher
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            SwitcherItem selectedProject = (SwitcherItem)btn.DataContext;
-            Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedProject));
+            SwitcherItem selectedTile = (SwitcherItem)btn.DataContext;
+            Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            SwitcherItem selectedTile = (SwitcherItem)btn.DataContext;
+            Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, true, this));
         }
     }
 }

@@ -10,24 +10,12 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
-using Fluor.ProjectSwitcher.Base.Class;
+using Fluor.ProjectSwitcher.Class;
 using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
 
@@ -99,6 +87,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        bool isAddNewTabSelected;
+        public bool IsAddNewTabSelected
+        {
+            get
+            {
+                return isAddNewTabSelected;
+            }
+            set
+            {
+                isAddNewTabSelected = value;
+                RaisePropertyChanged("IsAddNewTabSelected");
+            }
+        }
+
         private ObservableCollection<Button> breadcrumbCollection;
         public ObservableCollection<Button> BreadcrumbCollection
         {
@@ -121,8 +123,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             IsTileTabSelected = true;
             BreadcrumbCollection = new ObservableCollection<Button>();
 
-            //Messenger.Default.Register<Message.MessageChangeSelectedProject>(this, ChangeSelectedProject);
-            Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, ChangeSelectedTile);
+            Messenger.Default.Register<Message.MessageUpdateSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
@@ -133,11 +134,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public void SetupEnvironment()
         {
-            XElement xmlDoc = XElement.Load("Fluor.ProjectSwitcher.Projects.xml");
+            try
+            {
+                XElement xmlDoc = XElement.Load("Fluor.ProjectSwitcher.Projects.xml");
 
-            PopulateProjects(xmlDoc);
-            PopulateAssociations(xmlDoc);
-            PopulateApplications(xmlDoc);
+                PopulateProjects(xmlDoc);
+                PopulateAssociations(xmlDoc);
+                PopulateApplications(xmlDoc);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Doh!");
+                //Messenger.Default.Send<Message.MessageStatusUpdate>(new Message.MessageStatusUpdate(Visibility.Visible, "Doh!"));
+            }
         }
 
         /// <summary>
@@ -157,15 +166,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     {
                         // Create a new project instance
                         project = new Project(xmlProject.Attribute("NAME").Value,
-                                                xmlProject.Attribute("ID").Value,
-                                                (bool)xmlProject.Attribute("ISEXPANDED"),
-                                                xmlProject.Attribute("CONTEXTMENU").Value,
+                                                xmlProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
                                                 xmlProject.Attribute("MISCTEXT").Value,
                                                 true,
                                                 null);
 
                         // Get any sub projects associated with this project
-                        project.CreateSubProjects(xmlProject, project.ContextMenus);
+                        project.CreateSubProjects(xmlProject); //, project.ContextMenus);
                         
                         ProjectsCollection.Add(project);
                         //ProjectsCollection.Add(new Project("","", false,"","", false));
@@ -198,7 +205,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 foreach (XElement xmlAssociation in xmlAssociations.Elements("ASSOCIATION"))
                 {
                     association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
-                                                    xmlAssociation.Attribute("PARAMETERS").Value, xmlAssociation.Attribute("CONTEXTMENU").Value);
+                                                    xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
 
                     Associations.Add(association);
                 }
@@ -216,7 +223,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             TopApplication application;
             foreach (XElement xmlApplication in xmlDoc.Elements("APPLICATION"))
             {
-                application = new TopApplication(xmlApplication.Attribute("NAME").Value, xmlApplication.Attribute("CONTEXTMENU").Value, true);
+                application = new TopApplication(xmlApplication.Attribute("NAME").Value, xmlApplication.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"), true);
 
                 application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
 
@@ -285,34 +292,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Associations have a 'parameters' field. This field contains project & application specific settings which need to be set.
                 // This could be an ini file setting(s), registry setting(s) or something else (as long as code as been written to deal with it).
 
-                // PARAMETER Structure:
-                // Parameters are seperated by ';'
-                // Within each parameter there is a type (ini, regitry etc) and one or more setting
-                // The type and setting(s) are seperated by '#'
-
-                // TYPE Structure:
-                // Within the type is the type name in '( )' and a location (of the ini, registry key etc)
-
-                // SETTING(S) Structure:
-                // The setting(s) are seperated by ','
-
-                // Method:
-                // Split parameters from Parameters property
-                // Determine what type of parameters there are
-                // Set parameters
-
-                // Split out parameters
-                string[] parameters = Parameter.GetParameters(association.Parameters);
-
                 // For each parameter, determine type and set
-                foreach (string parameter in parameters)
+                foreach (Parameter parameter in association.Parameters)
                 {
                     // Determine type
-                    if (parameter.StartsWith("(INI)"))
+                    if (parameter.Type == Parameter.TypeEnum.INI)
                     {
-                        SetIni(association, parameter);
+                        SetIni(parameter);
                     }
-                    else if (parameter.StartsWith("(REG)"))
+                    else if (parameter.Type == Parameter.TypeEnum.REG)
                     {
                         SetRegistry(parameter);
                     }
@@ -320,83 +308,24 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void SetIni(Association association, string parameter)
+        private void SetIni(Parameter parameter)
         {
             //TODO Check if ini file exists
 
             Ini.IniFile ini = new IniFile("");
 
-            // Split parameter into ini type & settings
-            List<string> iniTypeSettings = Parameter.GetTypeAndSettings(parameter);
+            ini = new Ini.IniFile(parameter.Path);
 
-            // Array:
-            // [0] = Ini type & location
-            // [X] = Ini file settings
-            // Remove type string to leave ini location
-            //iniTypeSettings[0] = iniTypeSettings[0].Replace("(INI)", "");
+            List<string> iniSettings = parameter.GetSettings();
 
-            // Check if location contains a '%' meaning the string contains an enviroment variable -- TODO There is probably a better way to do this check
-            if (iniTypeSettings[0].Contains("%"))
-            {
-                ini = new Ini.IniFile(Environment.ExpandEnvironmentVariables(iniTypeSettings[0]));
-            }
-            else if (iniTypeSettings[0].Contains("*"))
-            {
-                foreach (TopApplication app in ApplicationsCollection.Where(a => a.Name == association.ApplicationName))
-                {
-                    SubApplication subApp = (SubApplication)app.SubItems[0];
-
-                    switch (iniTypeSettings[0])
-                    {
-                        case "*installpath*":
-                            ini = new Ini.IniFile(subApp.InstallPath + iniTypeSettings[1]);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                ini = new Ini.IniFile(iniTypeSettings[0]);
-            }
-
-            // Groups of ini file settings are seperated by '( )'.
-            // Split ini file settings by ')(' - i.e. the finish ')' and start of a new group '('
-            List<string> iniSettings = Parameter.GetSettings(iniTypeSettings[1]); //.Split(new string[] { ")(" }, StringSplitOptions.None);
-
-            // Split each group
-            foreach (string iniSetting in iniSettings)
-            {
-                // Array
-                // [0] = Section
-                // [1] = Key
-                // [2] = Value
-                List<string> setting = Parameter.GetSettingValues(iniSetting); //.Split(',');
-                ini.IniWriteValue(setting[0], setting[1], setting[2]);
-            }
+            ini.IniWriteValue(iniSettings[0], iniSettings[1], iniSettings[2]);
         }
 
-        private void SetRegistry(string parameter)
+        private void SetRegistry(Parameter parameter)
         {
-            // Remove type string to leave registry settings
-            parameter = parameter.Replace("(REG)#", "");
+            List<string> regSettings = parameter.GetSettings();
 
-            // Groups of registry settings are seperated by '( )'.
-            // Split registry settings by ')(' - i.e. the finish ')' and start of a new group '('
-            List<string> regSettings = Parameter.GetSettings(parameter); //.Split(new string[] { ")(" }, StringSplitOptions.None);
-
-            // Split each group
-            foreach (string regSetting in regSettings)
-            {
-                // Array
-                // [0] = Key - i.e. HKEY_LOCAL......
-                // [1] = ValueName
-                // [2] = Value
-                // Note the 'trims' to remove left over '(' or ')'
-                List<string> setting = Parameter.GetSettingValues(regSetting); //.Split(',');
-                Registry.SetValue(setting[0], setting[1], setting[2]);
-            }
+            Registry.SetValue(regSettings[0], regSettings[1], regSettings[2]);
         }
 
         /// <summary>
@@ -537,51 +466,61 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Changes the selected tile.
         /// </summary>
         /// <param name="msg">Message containing the selected item.</param>
-        private void ChangeSelectedTile(GenericMessage<SwitcherItem> msg)
+        private void ChangeSelectedTile(Message.MessageUpdateSelectedTile msg)
         {
-            if (msg.Sender is ViewModelTiles)
+            // Collect all the applications that are associated with the newly selected item
+
+            SelectedTile = msg.SelectedTile;
+
+            if (msg.Sender is App)
             {
-                // Collect all the applications that are associated with the newly selected item
-                AssociatedApplicationCollection = new ObservableCollection<SwitcherItem>();
-
-                // A tile has been selected so display the tile tab
-                IsTileTabSelected = true;
-
-                SelectedTile = (SwitcherItem)msg.Content;
-
-                if (SelectedTile != null)
+                IsAddNewTabSelected = true;
+                Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(SelectedTile, true, this));
+            }
+            else if (msg.Sender is ViewModelTiles)
+            {
+                //TODO Double message here so added this selected tab check. Must be a better way to do this
+                if (IsAddNewTabSelected == false)
                 {
-                    // Change the breadcrumb (title bar) to reflect the newly selected item
-                    PopulateBreadCrumb(SelectedTile);
+                    AssociatedApplicationCollection = new ObservableCollection<SwitcherItem>();
 
-                    // Get all the associations associated with the selected item
-                    foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedTile.Name))
+                    // A tile has been selected so display the tile tab
+                    IsTileTabSelected = true;
+
+                    if (SelectedTile != null)
                     {
-                        foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                        // Change the breadcrumb (title bar) to reflect the newly selected item
+                        PopulateBreadCrumb(SelectedTile);
+
+                        // Get all the associations associated with the selected item
+                        foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedTile.Name))
                         {
-                            AssociatedApplicationCollection.Add(application);
+                            foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                            {
+                                AssociatedApplicationCollection.Add(application);
+                            }
+                        }
+
+                        if (AssociatedApplicationCollection.Any())
+                        {
+                            if (AssociatedApplicationCollection.Count == 1)
+                            {
+                                // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
+                                TopApplication application = AssociatedApplicationCollection[0] as TopApplication;
+                                Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
+                            }
+                            else
+                            {
+                                // Send the associated applications to the Tile view
+                                Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
+                            }
                         }
                     }
-
-                    if (AssociatedApplicationCollection.Any())
+                    else
                     {
-                        if (AssociatedApplicationCollection.Count == 1)
-                        {
-                            // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
-                            TopApplication application = AssociatedApplicationCollection[0] as TopApplication;
-                            Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
-                        }
-                        else
-                        {
-                            // Send the associated applications to the Tile view
-                            Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
-                        }
+                        // Selected tile was null (home button selected), reset the breadcrumb collection.
+                        BreadcrumbCollection = new ObservableCollection<Button>();
                     }
-                }
-                else
-                {
-                    // Selected tile was null (home button selected), reset the breadcrumb collection.
-                    BreadcrumbCollection = new ObservableCollection<Button>();
                 }
             }
         }
@@ -632,15 +571,21 @@ namespace Fluor.ProjectSwitcher.ViewModel
             string contextMenus = "";
 
             SwitcherItem switcherItem = (SwitcherItem)msg.Sender;
-            contextMenus = SetContextMenuValue(contextMenus, switcherItem.ContextMenus);
+            //contextMenus = SetContextMenuValue(contextMenus, switcherItem.ContextMenus);
 
             // Get all associtions associated with the selected item
             foreach (Association association in Associations.Where(ass => ass.ProjectName == msg.Notification))
             {
-                contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
+                foreach (Class.ContextMenu contextMenu in association.ContextMenuCollection)
+                {
+                    switcherItem.ContextMenuCollection.Add(contextMenu);
+                }
+
+                //contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
             }
 
             // Return contextmenus to sender
+            //TODO This no longer needs to be an Action message
             msg.Execute(contextMenus);
         }
 
@@ -671,7 +616,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public void OpenAdminModule()
         {
-            Fluor.ProjectSwitcher.Admin.Class.Run adminModule = new Admin.Class.Run(ProjectsCollection, ApplicationsCollection, Associations);
+            //Fluor.ProjectSwitcher.Admin.Class.Run adminModule = new Admin.Class.Run(ProjectsCollection, ApplicationsCollection, Associations);
         }
 
         private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)

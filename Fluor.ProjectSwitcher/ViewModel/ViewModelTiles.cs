@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Linq;
-using Fluor.ProjectSwitcher.Base.Class;
+using Fluor.ProjectSwitcher.Class;
 using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
@@ -81,7 +81,22 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 RaisePropertyChanged("SelectedTile");
 
                 // Send a message to the main view model containing the newly selected item
-                Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
+                Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, false, this));
+                //Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
+            }
+        }
+
+        private Visibility isEditMode;
+        public Visibility IsEditMode
+        {
+            get
+            {
+                return isEditMode;
+            }
+            set
+            {
+                isEditMode = value;
+                RaisePropertyChanged("IsEditMode");
             }
         }
 
@@ -94,6 +109,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<Grid>>(this, DisplayContextMenus);
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoBackToParent);
             Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
+
+            Messenger.Default.Register<GenericMessage<bool>>(this, SetEditMode);
+
+            IsEditMode = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -181,8 +200,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 SelectedTile = project;
 
                 // TODO Is this message required? switcherItem already has a collection of context menus.
-                GetContextMenus(switcherItem);
-                Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(switcherItem.ContextMenuCollection));
+                //GetContextMenus(switcherItem);
+                //Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(switcherItem.ContextMenuCollection));
             }
             else
             {
@@ -216,7 +235,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // menu parameters as listed in the associations section
             Messenger.Default.Send(new NotificationMessageAction<string>(switcherItem, switcherItem.Name, (contextMenuParameters) =>
             {
-                switcherItem.CreateContextMenus(contextMenuParameters);
+                //switcherItem.CreateContextMenus(contextMenuParameters);
             }));
         }
 
@@ -249,8 +268,36 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     }
                     SelectedTile = switcherItem;
                 }
+            }   
+        }
+
+        private void SetEditMode(GenericMessage<bool> msg)
+        {
+            //TODO This needs to be refactored 
+            if (IsEditMode == Visibility.Collapsed)
+            {
+                IsEditMode = Visibility.Visible;
+
+                foreach (Button tile in ActiveTileCollection)
+                {
+                    SwitcherItem swi = (SwitcherItem)tile.DataContext;
+                    swi.IsEditMode = IsEditMode;
+                }
             }
-            
+            else
+            {
+                IsEditMode = Visibility.Collapsed;
+
+                foreach (Button tile in ActiveTileCollection)
+                {
+                    SwitcherItem swi = (SwitcherItem)tile.DataContext;
+                    swi.IsEditMode = IsEditMode;
+                }
+            }
+        }
+
+        public void AddNewTile()
+        {
         }
     }
 }

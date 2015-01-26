@@ -7,7 +7,7 @@
         Title="" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="280" MinWidth="370" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" BorderBrush="Black" FontFamily="Calibri" ShowTitleBar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowSystemMenuOnRightClick="False">
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout Name="flySettings" Header="settings" Position="Bottom" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
+            <Controls:Flyout Name="flySettings" Header="settings" Position="Left" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
@@ -16,7 +16,7 @@
                     <Rectangle Stroke="White" Height="Auto" Width="1" HorizontalAlignment="Left"/>
                     <StackPanel Grid.Column="1">
                         <MenuItem Name="miViewSettingsFile" Header="View Settings File" Icon="{DynamicResource SettingsIcon}" Click="miViewSettingsFile_Click" Foreground="White" FontSize="12"/>
-                        <MenuItem Name="miAdmin" Header="Open Admin Module" Icon="{DynamicResource SettingsIcon}" Foreground="White" FontSize="12" Click="miAdmin_Click" IsEnabled="False"/>
+                        <MenuItem Name="miAdmin" Header="Open Admin Module" Icon="{DynamicResource SettingsIcon}" Foreground="White" FontSize="12" Click="miAdmin_Click"/>
                         <MenuItem Name="miRefresh" Header="Refresh After Changes" Icon="{DynamicResource RefreshIcon}" Foreground="White" FontSize="12" Click="miRefresh_Click"/>
                         <MenuItem Name="miCloseAllApps" Header="Close All Open Apps" Icon="{DynamicResource CloseIcon}" Click="miCloseAllApps_Click" Foreground="White" FontSize="12"/>
                         <MenuItem Name="miAbout" Header="About" Icon="{DynamicResource AboutIcon}" Click="miAbout_Click" Foreground="White" FontSize="12"/>
@@ -54,20 +54,22 @@
         <Grid Background="#FF00457D">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Name="btnHome" Style="{DynamicResource MetroCircleButtonStyleCustomWobble}" Content="{DynamicResource HomeIcon}" Height="35" Width="35" Click="btnHome_Click" ToolTip="HOME" Margin="5,0,0,0" Foreground="White"/>
-            <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="1">
+            <Button Name="btnSettings" Height="35" Width="35" VerticalAlignment="Center" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" ToolTip="SETTINGS" Foreground="White"/>
+            <Button Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustomWobble}" Content="{DynamicResource HomeIcon}" Height="35" Width="35" Click="btnHome_Click" ToolTip="HOME" Foreground="White"/>
+            <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <Button Name="btnSettings" Height="35" Width="35" VerticalAlignment="Center" Click="btnSettings_Click" Content="{DynamicResource SettingsIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpinForever}" Grid.Column="2" ToolTip="SETTINGS" Foreground="White"/>
-            <Button Name="btnClose" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="3" Click="btnClose_Click" ToolTip="CLOSE" Margin="0,0,5,0" Foreground="White"/>
+            <Button Name="btnEditMode" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE" Foreground="White"/>
+            <Button Name="btnClose" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="CLOSE" Margin="0,0,5,0" Foreground="White"/>
         </Grid>
 
         <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>
@@ -77,6 +79,9 @@
             </TabItem>
             <TabItem Name="tbiApplications" Header="Apps" IsSelected="{Binding IsApplicationsTabSelected}" Visibility="Collapsed">
                 <View:ViewApplications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </TabItem>
+            <TabItem Name="tbiAddNew" Header="Add New" IsSelected="{Binding IsAddNewTabSelected}" Visibility="Collapsed">
+                <View:ViewAddNew Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
         </TabControl>
         <!--<Rectangle Grid.Row="1" Grid.Column="1" Width="1" HorizontalAlignment="Right" Stroke="{DynamicResource AccentColorBrush4}"/>-->
