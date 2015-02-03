@@ -35,6 +35,8 @@ namespace Fluor.ProjectSwitcher.Class
                 {
                     MiscTextVisibility = Visibility.Visible;
                 }
+
+                RaisePropertyChanged("MiscText");
             }
         }
 
@@ -77,21 +79,6 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 isActive = value;
                 RaisePropertyChanged("IsActive");
-            }
-        }
-
-        // TODO Remove this?
-        private SolidColorBrush tileColor;
-        public SolidColorBrush TileColor
-        {
-            get
-            {
-                return tileColor;
-            }
-            set
-            {
-                tileColor = value;
-                RaisePropertyChanged("TileColor");
             }
         }
 
@@ -170,24 +157,16 @@ namespace Fluor.ProjectSwitcher.Class
                 {
                     //TODO Hard-coded PATH enum needs to be changed
                     ContextMenu newContextMenu = new ContextMenu(ContextMenu.TypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
-                    ContextMenuCollection.Add(newContextMenu);
+                    AddContextMenu(newContextMenu);
                 }
             }
         }
 
-        public string GetContextMenuParameters()
+        public void AddContextMenu(ContextMenu contextMenu)
         {
-            SwitcherItem subItem = GetActiveSubItem();
-
-            if (subItem != null)
+            if (!contextMenuCollection.Contains(contextMenu))
             {
-                //TODO This needs to be changed
-                //return subItem.ContextMenus;
-                return null;
-            }
-            else
-            {
-                return "";
+                ContextMenuCollection.Add(contextMenu);
             }
         }
 

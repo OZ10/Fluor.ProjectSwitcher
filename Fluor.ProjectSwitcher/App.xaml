@@ -12,7 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <Style x:Key="MetroTileCustom" TargetType="{x:Type Button}">
                 <!--BasedOn="{StaticResource {x:Type Button}}">-->
                 <!--<Setter Property="Background" Value="Aqua"/>-->
@@ -105,7 +105,7 @@
                                     </Trigger.ExitActions>
                                 </Trigger>
 
-                                    <!--<Trigger Property="IsMouseOver" Value="True">
+                                <!--<Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="rec1" Property="Fill" Value="{DynamicResource SubColorBrush}"/>
                                 </Trigger>-->
                             </ControlTemplate.Triggers>
@@ -136,9 +136,10 @@
                             </ContextMenu>
                         </TextBlock.ContextMenu>
                     </TextBlock>
-                    
+
                     <Border BorderBrush="#33000000" BorderThickness="1,0,0,1" Margin="0,0,0,1"/>
-                    <ListBox Grid.Row="1" ItemsSource="{Binding SubItems}" BorderBrush="{DynamicResource AccentColorBrush4}" BorderThickness="1,0,0,0" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}"> <!--Background="{DynamicResource AccentColorBrush4}"-->
+                    <ListBox Grid.Row="1" ItemsSource="{Binding SubItems}" BorderBrush="{DynamicResource AccentColorBrush4}" BorderThickness="1,0,0,0" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}">
+                        <!--Background="{DynamicResource AccentColorBrush4}"-->
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Visibility="{Binding Visibility}" Padding="5" FontSize="14" Foreground="{DynamicResource TextBlack87Brush}">
@@ -183,11 +184,12 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                
-                                <Border BorderBrush="White" BorderThickness="2,0,0,0" Margin="4"/>
+
+                                <!--<Border BorderBrush="White" BorderThickness="2,0,0,0" Margin="4"/>-->
+                                <Path Width="15" Height="15" Fill="#DDFFFFFF" Stretch="Uniform" Margin="5,0,5,0" Data="F1 M 39.8307,37.6042L 36.6641,34.4375L 25.1849,23.3542L 35.4766,23.3542L 50.5182,37.6042L 35.4766,51.8542L 25.1849,51.8542L 36.6641,40.7708L 39.8307,37.6042 Z "/>
                                 <Rectangle x:Name="rectanglebg" Fill="{DynamicResource SubColorBrush}" Opacity="0" StrokeThickness="0" Grid.Column="1" RadiusX="2" RadiusY="2"/>
                                 <TextBlock x:Name="txtProjectName" Foreground="#DDFFFFFF" Text="{Binding Name}" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" HorizontalAlignment="Left" Grid.Column="1"/>
-                                
+
                                 <Grid.ContextMenu>
                                     <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
                                         <ContextMenu.ItemTemplate>
@@ -200,7 +202,7 @@
                                                 <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>
-                                    </ContextMenu> 
+                                    </ContextMenu>
                                 </Grid.ContextMenu>
                             </Grid>
                             <ControlTemplate.Triggers>
@@ -232,28 +234,65 @@
             </Style>
 
             <ControlTemplate x:Key="NewTileTemplate">
-                <Grid Margin="5,0,5,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="30"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Name"/>
-                    <TextBox Grid.Column="1" Text="{Binding Name}"/>
-                    <Label Content="ContextMenus" Grid.Row="1"/>
-                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                        <TextBox Text="{Binding ContextMenus}" MaxWidth="200"/>
-                        <Button Name="btnEditContextMenu" Content="..."/>
-                    </StackPanel>
-                    <Label Content="Misc Text" Grid.Row="2"/>
-                    <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding MiscText}"/>
-                    <Button Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,20,80,0"/>
-                    <Button Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,20,0,0"/>
+
+                    <Label Content="{Binding Name}" FontSize="20" FontWeight="Bold"/>
+
+                    <Grid Margin="10,0,5,20" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!--<TextBox Grid.Column="1" Text="{Binding Name}"/>-->
+                        <Label Content="ContextMenus" Grid.Row="1" FontSize="12"/>
+                        <DataGrid Grid.Row="2" ItemsSource="{Binding ContextMenuCollection}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}"/>
+                        <Button Name="btnAddnewContextMenu" Grid.Row="3" Content="{DynamicResource PlusIcon}" Click="btnAddnewContextMenu_Click"/>
+                        <Label Content="Misc Text" Grid.Row="4" FontSize="12" Margin="0,10,0,0"/>
+                        <TextBox Grid.Row="5" Text="{Binding MiscText}" FontSize="12"/>
+                    </Grid>
+
+                    <!--<Rectangle Fill="{DynamicResource AccentSelectedColorBrush}" Grid.Row="2" Height="10"/>-->
+                    
+                    <Grid Margin="10,0,5,10" Grid.Row="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Label Content="Associations" FontStyle="Italic" FontSize="18"/>
+                        <ListBox Name="lstAssociation" Grid.Row="1" ItemsSource="{Binding Associations}" DisplayMemberPath="ApplicationName" SelectionChanged="lstAssociation_SelectionChanged" FontSize="12"/>
+
+                        <!--<Rectangle Fill="{DynamicResource AccentColorBrush4}" Grid.Row="1" VerticalAlignment="Bottom" Height="8"/>-->
+                        
+                        <Label Content="ContextMenus" Grid.Row="2" FontSize="12" Margin="0,10,0,0"/>
+                        <DataGrid Grid.Row="3" ItemsSource="{Binding SelectedAssociation.ContextMenuCollection}" FontSize="12"/>
+
+                        <Label Content="Parameters" Grid.Row="4" FontSize="12" Margin="0,10,0,0"/>
+                        <DataGrid Grid.Row="5" ItemsSource="{Binding SelectedAssociation.Parameters}" FontSize="12"/>
+
+                        <!--<DataGrid Grid.Column="1" Grid.Row="1" ItemsSource="{Binding ContextMenuCollection}"/>
+                        <Button Name="btnAddnewContextMenu" Grid.Row="3" Grid.Column="1" Content="{DynamicResource PlusIcon}" Click="btnAddnewContextMenu_Click"/>
+                        <Label Content="Misc Text" Grid.Row="4"/>
+                        <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding MiscText}"/>-->
+                    </Grid>
+
+                    <Button Name="btnEditOk" Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,20,80,0" Click="btnEditOk_Click"/>
+                    <Button Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,20,0,0"/>
                 </Grid>
             </ControlTemplate>
         </ResourceDictionary>

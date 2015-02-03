@@ -10,10 +10,10 @@ namespace Fluor.ProjectSwitcher.Message
     public class MessageUpdateSelectedTile
     {
         public object Sender { get; set; }
-        public SwitcherItem SelectedTile { get; set; }
+        public Project SelectedTile { get; set; }
         public bool IsNewTile { get; set; }
 
-        public MessageUpdateSelectedTile(SwitcherItem selectedTile, bool isNewTile, object sender)
+        public MessageUpdateSelectedTile(Project selectedTile, bool isNewTile, object sender)
         {
             SelectedTile = selectedTile;
             IsNewTile = isNewTile;

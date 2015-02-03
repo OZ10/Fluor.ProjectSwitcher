@@ -13,8 +13,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class ViewModelAddNew : ViewModelBase 
     {
-        private SwitcherItem selectedItem;
-        public SwitcherItem SelectedItem
+        private Project selectedItem;
+        public Project SelectedItem
         {
             get
             {
@@ -24,6 +24,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 selectedItem = value;
                 RaisePropertyChanged("SelectedItem");
+            }
+        }
+
+        private Association selectedAssociation;
+        public Association SelectedAssociation
+        {
+            get
+            {
+                return selectedAssociation;
+            }
+            set
+            {
+                selectedAssociation = value;
+                RaisePropertyChanged("SelectedAssociation");
             }
         }
 
@@ -52,6 +66,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             if (msg.Sender is MainViewModel)
             {
                 SelectedItem = msg.SelectedTile;
+
+                //TODO Refactor this
+                // Add blank contextmenu item so user can edit it to create new context menus
+                SelectedItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+
+                foreach (Association association in selectedItem.Associations)
+                {
+                    association.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+
+                    association.Parameters.Add(new Parameter(Parameter.TypeEnum.INI, "", ""));
+                }
 
                 SelectedItemCollection = new ObservableCollection<ListBox>();
 

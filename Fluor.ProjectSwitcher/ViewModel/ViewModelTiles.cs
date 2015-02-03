@@ -68,8 +68,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private SwitcherItem selectedTile;
-        public SwitcherItem SelectedTile
+        private Project selectedTile;
+        public Project SelectedTile
         {
             get
             {
@@ -247,7 +247,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (msg.Sender is Fluor.ProjectSwitcher.App | msg.Sender is MainWindow)
             {
-                SwitcherItem switcherItem = (SwitcherItem)msg.Content;
+                //SwitcherItem switcherItem = (SwitcherItem)msg.Content;
+                Project switcherItem = msg.Content as Project;
                 
                 if (switcherItem == null)
                 {

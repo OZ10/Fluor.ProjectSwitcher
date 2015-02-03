@@ -37,6 +37,8 @@ namespace Fluor.ProjectSwitcher.Class
             }
             else if (path.Contains("*"))
             {
+                //TODO install paths that contain the variable *installpath* cannot be populated here because
+                //associations are evaluated BEFORE the application installation path. Need to move somewhere else.
                 //string installPath = Environment.ExpandEnvironmentVariables("%userprofile%");
                 //path = path.Replace("%installpath%", "");
                 //path = installPath + path;

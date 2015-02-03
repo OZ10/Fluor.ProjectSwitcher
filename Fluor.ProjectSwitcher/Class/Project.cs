@@ -12,6 +12,34 @@ namespace Fluor.ProjectSwitcher.Class
 {
     public class Project : Class.SwitcherItem
     {
+        private ObservableCollection<Association> _Associations;
+        public ObservableCollection<Association> Associations
+        {
+            get
+            {
+                return _Associations;
+            }
+            set
+            {
+                _Associations = value;
+                RaisePropertyChanged("Associations");
+            }
+        }
+
+        private Association _selectedAssociation;
+        public Association SelectedAssociation
+        {
+            get
+            {
+                return _selectedAssociation;
+            }
+            set
+            {
+                _selectedAssociation = value;
+                RaisePropertyChanged("SelectedAssociation");
+            }
+        }
+
         public Project(string projectName, IEnumerable<XElement> contextMenus, string miscText, bool isEnabled, Project parentProject)
         {
             Name = projectName;
@@ -28,9 +56,10 @@ namespace Fluor.ProjectSwitcher.Class
             //tileColors s = (tileColors)colorValues.GetValue(random.Next(colorValues.Length));
 
             SubItems = new ObservableCollection<SwitcherItem>();
+            Associations = new ObservableCollection<Association>();
         }
 
-        public void CreateSubProjects(XElement xmlProject) //, string parentContextMenu)
+        public void CreateSubProjects(XElement xmlProject, XElement xmlSettings) //, string parentContextMenu)
         {
             if (xmlProject.Elements("SUBPROJECT").Any())
             {
@@ -51,9 +80,12 @@ namespace Fluor.ProjectSwitcher.Class
                                              true,
                                              this);
 
+                    // Get any associations associated with this subproject
+                    GetAssociations(subProject, xmlSettings);
+
                     SubItems.Add(subProject);
 
-                    subProject.CreateSubProjects(xmlSubProject); //, contextMenu);
+                    subProject.CreateSubProjects(xmlSubProject, xmlSettings); //, contextMenu);
                 }
             } 
         }
@@ -68,6 +100,20 @@ namespace Fluor.ProjectSwitcher.Class
                 }
                 
                 subProject.ChangeIsActiveForSubProjects(selectedProjectName);
+            }
+        }
+
+        public void GetAssociations(Project project, XElement xmlSettings)
+        {
+            Association association;
+            foreach (XElement xmlAssociation in xmlSettings.Elements("ASSOCIATIONS").Elements("ASSOCIATION"))
+            {
+                if (xmlAssociation.Attribute("PROJECTNAME").Value == project.Name)
+                {
+                    association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
+                                                                    xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
+                    project.Associations.Add(association);
+                }
             }
         }
     }

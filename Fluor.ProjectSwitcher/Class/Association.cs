@@ -12,8 +12,21 @@ namespace Fluor.ProjectSwitcher.Class
     {
         public string ProjectName { get; set; }
         public string ApplicationName { get; set; }
-        public ObservableCollection<Parameter> Parameters { get; set; }
-        public string ContextMenus { get; set; }
+
+        private ObservableCollection<Parameter> _parameters;
+        public ObservableCollection<Parameter> Parameters
+        {
+            get
+            {
+                return _parameters;
+            }
+            set
+            {
+                _parameters = value;
+                RaisePropertyChanged("Parameters");
+            }
+        }
+        //public string ContextMenus { get; set; }
 
         public Association(string projectName, string applicationName, IEnumerable<XElement> projectParameters, IEnumerable<XElement> contextMenus)
         {

@@ -58,8 +58,31 @@ namespace Fluor.ProjectSwitcher
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            SwitcherItem selectedTile = (SwitcherItem)btn.DataContext;
+            Project selectedTile = (Project)btn.DataContext;
             Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, true, this));
+        }
+
+        private void btnEditOk_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            SwitcherItem switchItem = (SwitcherItem)btn.DataContext;
+
+            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>(this, switchItem));
+        }
+
+        private void btnAddnewContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            SwitcherItem switchItem = (SwitcherItem)btn.DataContext;
+            switchItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+        }
+
+        private void lstAssociation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox lst = (ListBox)sender;
+            Project project = (Project)lst.DataContext;
+
+            project.SelectedAssociation = (Association)lst.SelectedItem;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Fluor.ProjectSwitcher.Class;
+using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Controls;
 

@@ -21,7 +21,7 @@ namespace Fluor.ProjectSwitcher.Class
 
             GetContextMenus(contextMenus);
 
-            TileColor = (SolidColorBrush)System.Windows.Application.Current.Resources["WindowTitleColorBrush"];
+            //TileColor = (SolidColorBrush)System.Windows.Application.Current.Resources["WindowTitleColorBrush"];
 
             SubItems = new ObservableCollection<SwitcherItem>();
         }
