@@ -41,10 +41,18 @@ namespace Fluor.ProjectSwitcher.Class
         {
             Parameters = new ObservableCollection<Parameter>();
 
-            foreach (XElement parameter in projectParameters)
+            if (projectParameters != null)
             {
-                Parameter p = new Parameter((Parameter.TypeEnum)Enum.Parse(typeof(Parameter.TypeEnum), parameter.Attribute("TYPE").Value), parameter.Attribute("VALUE").Value, parameter.Attribute("PATH").Value);
-                Parameters.Add(p);
+                foreach (XElement parameter in projectParameters)
+                {
+                    Parameter p = new Parameter((Parameter.TypeEnum)Enum.Parse(typeof(Parameter.TypeEnum), parameter.Attribute("TYPE").Value), parameter.Attribute("VALUE").Value, parameter.Attribute("PATH").Value);
+                    Parameters.Add(p);
+                }
+            }
+            else
+            {
+                // Add a blank row so user can input data
+                Parameters.Add(new Parameter(Parameter.TypeEnum.INI, "", ""));
             }
         }
     }

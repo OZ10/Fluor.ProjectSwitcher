@@ -118,6 +118,8 @@
     <Compile Include="Class\SwitcherItem.cs" />
     <Compile Include="Class\TopApplication.cs" />
     <Compile Include="Class\Utilities.cs" />
+    <Compile Include="Message\MessageSaveChangesToTile.cs" />
+    <Compile Include="Message\MessageCreateOrEditTile.cs" />
     <Compile Include="Message\MessagePopulateApplications.cs" />
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />

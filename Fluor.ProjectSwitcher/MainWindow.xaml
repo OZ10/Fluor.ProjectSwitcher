@@ -51,16 +51,16 @@
         <Label Content="Applications" Grid.Column="2" Margin="20,0,0,0" Foreground="White" />-->
         <!--<Rectangle Fill="{DynamicResource HighlightBrush}" Width="Auto"/>-->
         <!--<Button Style="{DynamicResource BackButton}" HorizontalAlignment="Left"/>-->
-        <Grid Background="#FF00457D">
+        <Grid Background="{DynamicResource HighlightBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
-            <Button Name="btnSettings" Height="35" Width="35" VerticalAlignment="Center" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" ToolTip="SETTINGS" Foreground="White"/>
-            <Button Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustomWobble}" Content="{DynamicResource HomeIcon}" Height="35" Width="35" Click="btnHome_Click" ToolTip="HOME" Foreground="White"/>
+            <Button Name="btnSettings" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" ToolTip="SETTINGS" Foreground="White"/>
+            <Button Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustomWobble}" Content="{DynamicResource HomeIcon}"  Click="btnHome_Click" ToolTip="HOME" Foreground="White"/>
             <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -68,8 +68,9 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <Button Name="btnEditMode" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE" Foreground="White"/>
-            <Button Name="btnClose" Height="35" Width="35" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="CLOSE" Margin="0,0,5,0" Foreground="White"/>
+            <Button Name="btnEditMode" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE" Foreground="White"/>
+            <Rectangle Grid.Column="4" Fill="{DynamicResource CloseButtonBackGroundBrush}" />
+            <Button Name="btnClose" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="CLOSE" Foreground="White"/>
         </Grid>
 
         <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>

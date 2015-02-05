@@ -15,10 +15,12 @@ namespace Fluor.ProjectSwitcher.Class
 {
     public class SwitcherItem : Class.Base 
     {
-        public string Name { get; set; }
+        public string Name { get; set; } // Current name of the project
+        public string OriginalName { get; set; } // Used to store the name before it's modified in the Edit view
         public ObservableCollection<SwitcherItem> SubItems { get; set; }
         public bool IsEnabled { get; set; }
         public SwitcherItem ParentItem { get; set; }
+        public bool IsNew { get; set; }
 
         private string miscText;
         public string MiscText
@@ -151,14 +153,24 @@ namespace Fluor.ProjectSwitcher.Class
                 ContextMenuCollection = new ObservableCollection<ContextMenu>();
             }
 
-            foreach (XElement contextMenu in contextMenus)
+            if (contextMenus != null)
             {
-                if (contextMenu.Attribute("TYPE").Value != "")
+                foreach (XElement contextMenu in contextMenus)
                 {
-                    //TODO Hard-coded PATH enum needs to be changed
-                    ContextMenu newContextMenu = new ContextMenu(ContextMenu.TypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
-                    AddContextMenu(newContextMenu);
+                    if (contextMenu.Attribute("TYPE").Value != "")
+                    {
+                        //TODO Hard-coded PATH enum needs to be changed
+                        ContextMenu newContextMenu = new ContextMenu(ContextMenu.TypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
+                        AddContextMenu(newContextMenu);
+                    }
                 }
+            }
+            else
+            {
+                // Add a blank row so user can input data
+                //TODO Hard-coded PATH enum needs to be changed
+                ContextMenu newContextMenu = new ContextMenu(ContextMenu.TypeEnum.PATH, "", "");
+                AddContextMenu(newContextMenu);
             }
         }
 

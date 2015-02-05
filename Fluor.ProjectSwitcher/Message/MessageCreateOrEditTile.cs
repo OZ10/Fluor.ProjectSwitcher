@@ -7,12 +7,12 @@ using Fluor.ProjectSwitcher.Class;
 
 namespace Fluor.ProjectSwitcher.Message
 {
-    public class MessageUpdateSelectedTile
+    public class MessageCreateOrEditTile
     {
         public object Sender { get; set; }
         public Project SelectedTile { get; set; }
 
-        public MessageUpdateSelectedTile(Project selectedTile, object sender)
+        public MessageCreateOrEditTile(Project selectedTile, object sender)
         {
             SelectedTile = selectedTile;
             Sender = sender;

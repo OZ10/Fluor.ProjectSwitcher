@@ -40,14 +40,16 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public Project(string projectName, IEnumerable<XElement> contextMenus, string miscText, bool isEnabled, Project parentProject)
+        public Project(string projectName, IEnumerable<XElement> contextMenus, string miscText, bool isEnabled, Project parentProject, bool isNew)
         {
             Name = projectName;
+            OriginalName = projectName;
             MiscTextVisibility = Visibility.Collapsed;
             MiscText = miscText;
             IsEnabled = isEnabled;
             ParentItem = parentProject;
             IsEditMode = Visibility.Collapsed;
+            IsNew = isNew;
 
             GetContextMenus(contextMenus);
 
@@ -78,7 +80,8 @@ namespace Fluor.ProjectSwitcher.Class
                                              xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
                                              xmlSubProject.Attribute("MISCTEXT").Value,
                                              true,
-                                             this);
+                                             this,
+                                             false);
 
                     // Get any associations associated with this subproject
                     GetAssociations(subProject, xmlSettings);

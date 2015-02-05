@@ -81,7 +81,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 RaisePropertyChanged("SelectedTile");
 
                 // Send a message to the main view model containing the newly selected item
-                Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, false, this));
+                Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, this));
                 //Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
             }
         }
@@ -299,6 +299,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void AddNewTile()
         {
+            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(null, this));
         }
     }
 }

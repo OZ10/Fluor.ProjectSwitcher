@@ -55,19 +55,21 @@ namespace Fluor.ProjectSwitcher
             Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
         }
 
+        // Edit button click on tile
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             Project selectedTile = (Project)btn.DataContext;
-            Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, true, this));
+            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(selectedTile, this));
         }
 
+        // Ok (save) button on the add new view
         private void btnEditOk_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            SwitcherItem switchItem = (SwitcherItem)btn.DataContext;
+            Project selectedTile = (Project)btn.DataContext;
 
-            Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>(this, switchItem));
+            Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(selectedTile, this));
         }
 
         private void btnAddnewContextMenu_Click(object sender, RoutedEventArgs e)
@@ -77,12 +79,21 @@ namespace Fluor.ProjectSwitcher
             switchItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
         }
 
-        private void lstAssociation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btnAddAssociatedApplication_Click(object sender, RoutedEventArgs e)
         {
-            ListBox lst = (ListBox)sender;
-            Project project = (Project)lst.DataContext;
-
-            project.SelectedAssociation = (Association)lst.SelectedItem;
+            Button btn = (Button)sender;
+            Project project = (Project)btn.DataContext;
+            Association association = new Association(project.Name, "SPPID", null, null);
+            project.Associations.Add(association);
+            project.SelectedAssociation = association;
         }
+
+        //private void lstAssociation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    ListBox lst = (ListBox)sender;
+        //    Project project = (Project)lst.DataContext;
+
+        //    project.SelectedAssociation = (Association)lst.SelectedItem;
+        //}
     }
 }

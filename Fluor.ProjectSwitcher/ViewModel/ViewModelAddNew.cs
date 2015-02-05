@@ -58,14 +58,27 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public ViewModelAddNew()
         {
             //Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, DisplayTileDetails);
-            Messenger.Default.Register<Message.MessageUpdateSelectedTile>(this, DisplayTileDetails);
+            Messenger.Default.Register<Message.MessageCreateOrEditTile>(this, DisplayTileDetails);
         }
 
-        private void DisplayTileDetails(Message.MessageUpdateSelectedTile msg)
+        private void DisplayTileDetails(Message.MessageCreateOrEditTile msg)
         {
             if (msg.Sender is MainViewModel)
             {
-                SelectedItem = msg.SelectedTile;
+                if (msg.SelectedTile != null)
+                {
+                    SelectedItem = msg.SelectedTile;
+
+                    // If the selected project only has one assoication, select it
+                    if (SelectedItem.Associations.Count == 1)
+                    {
+                        SelectedItem.SelectedAssociation = SelectedItem.Associations[0];
+                    }
+                }
+                else
+                {
+                    SelectedItem = new Project("Project Name", null, "", true, null, true);
+                }
 
                 //TODO Refactor this
                 // Add blank contextmenu item so user can edit it to create new context menus

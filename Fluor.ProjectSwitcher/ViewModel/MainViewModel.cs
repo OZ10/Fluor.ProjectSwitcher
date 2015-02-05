@@ -131,6 +131,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoToTilesView);
+            Messenger.Default.Register<Message.MessageCreateOrEditTile>(this, CreateOrEditTile);
+            Messenger.Default.Register<Message.MessageSaveChangesToTile>(this, SavesChangesToSettings);
         }
 
         /// <summary>
@@ -173,7 +175,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                                                 xmlProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
                                                 xmlProject.Attribute("MISCTEXT").Value,
                                                 true,
-                                                null);
+                                                null,
+                                                false);
 
                         // Get any associations associated with this project
                         project.GetAssociations(project, _xmlSettings);
@@ -486,12 +489,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             SelectedTile = msg.SelectedTile;
 
-            if (msg.Sender is App)
-            {
-                IsAddNewTabSelected = true;
-                Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(SelectedTile, true, this));
-            }
-            else if (msg.Sender is ViewModelTiles)
+            //if (msg.Sender is App | msg.Sender is ViewModelTiles)
+            //{
+            //    IsAddNewTabSelected = true;
+            //    Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(SelectedTile, this));
+            //}
+            if (msg.Sender is ViewModelTiles)
             {
                 //TODO Double message here so added this selected tab check. Must be a better way to do this
                 if (IsAddNewTabSelected == false)
@@ -652,30 +655,80 @@ namespace Fluor.ProjectSwitcher.ViewModel
             IsApplicationsTabSelected = false;
             IsAddNewTabSelected = false;
             isTileTabSelected = true;
+        }
 
+        private void SavesChangesToSettings(Message.MessageSaveChangesToTile msg)
+        {
             //TODO Refactor this
             if (msg.Sender is App)
             {
-                Project switcherItem = msg.Content as Project;
+                Project switcherItem = msg.SelectedTile;
 
                 if (switcherItem != null)
                 {
-                    foreach (XElement xProject in _xmlSettings.Elements("PROJECTS").Elements("PROJECT"))
+                    XElement xProject = null;
+                    if (switcherItem.IsNew)
                     {
-                        //TODO If project has subprojects
+                        // Add new xelement for new project
+                        xProject = new XElement("PROJECT", new XAttribute("NAME", switcherItem.Name), new XAttribute("MISCTEXT", switcherItem.MiscText));
+                        _xmlSettings.Element("PROJECTS").Add(xProject);
 
-                        if (xProject.Attribute("NAME").Value == switcherItem.Name)
+                        if (switcherItem.Associations.Any())
                         {
-                            SaveContextMenus(switcherItem.ContextMenuCollection, xProject);
+                            // Add Association, context menus & parameters nodes
+                            foreach (Association association in switcherItem.Associations)
+                            {
+                                // Create association node
+                                XElement xAssociation = new XElement("ASSOCIATION", new XAttribute("PROJECTNAME", association.ProjectName), new XAttribute("APPLICATIONNAME", association.ApplicationName));
 
-                            xProject.Attribute("MISCTEXT").Value = switcherItem.MiscText;
+                                // Create contextmenu node
+                                xAssociation.Add(new XElement("CONTEXTMENUS"));
+
+                                // Create parameter node
+                                xAssociation.Add(new XElement("PARAMETERS"));
+
+                                _xmlSettings.Element("ASSOCIATIONS").Add(xAssociation);
+                            }
                         }
-                        break;
+                    }
+                    else
+                    {
+                        // Find existing project
+                        foreach (XElement xExistingProject in _xmlSettings.Elements("PROJECTS").Elements("PROJECT"))
+                        {
+                            //TODO If project has subprojects
+
+                            if (xExistingProject.Attribute("NAME").Value == switcherItem.OriginalName)
+                            {
+                                xProject = xExistingProject;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (xProject != null)
+                    {
+                        // Rename project if it's changed
+                        if (switcherItem.OriginalName != switcherItem.Name)
+                        {
+                            // Update xml project name
+                            xProject.Attribute("NAME").Value = switcherItem.Name;
+
+                            // Project has been renamed. Change name on any associations
+                            foreach (Association association in switcherItem.Associations)
+                            {
+                                association.ProjectName = switcherItem.OriginalName;
+                            }
+                        }
+                        
+                        SaveContextMenus(switcherItem.ContextMenuCollection, xProject);
+
+                        xProject.Attribute("MISCTEXT").Value = switcherItem.MiscText;
                     }
 
                     foreach (XElement xAssociation in _xmlSettings.Elements("ASSOCIATIONS").Elements("ASSOCIATION"))
                     {
-                        if (xAssociation.Attribute("PROJECTNAME").Value == switcherItem.Name)
+                        if (xAssociation.Attribute("PROJECTNAME").Value == switcherItem.OriginalName)
                         {
                             if (switcherItem.Associations.Any())
                             {
@@ -683,7 +736,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                                 foreach (Association association in switcherItem.Associations)
                                 {
-                                    //associations.Add(new XElement("ASSOCIATION", new XAttribute("PROJECTNAME", association.ProjectName), new XAttribute("APPLICATIONNAME", association.ApplicationName)));
                                     SaveContextMenus(association.ContextMenuCollection, xAssociation);
                                     SaveParameters(association.Parameters, xAssociation);
                                 }
@@ -696,11 +748,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
                             }
                         }
                     }
+
+                    switcherItem.OriginalName = switcherItem.Name;
                 }
 
-                // Save changes item
+                // Save changes
                 _xmlSettings.Save("Fluor.ProjectSwitcher.Projects.xml");
+                SetupEnvironment();
             }
+
+            IsTileTabSelected = true;
         }
 
         private static void SaveContextMenus(ObservableCollection<Class.ContextMenu> contextMenuCollection, XElement xmlNode)
@@ -716,6 +773,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         contextMenus.Add(new XElement("CONTEXTMENU", new XAttribute("TYPE", contextMenu.Type), new XAttribute("VALUE", contextMenu.Value), new XAttribute("DISPLAYNAME", contextMenu.DisplayName)));
                     }
                 }
+                if (xmlNode.Element("CONTEXTMENUS") == null)
+                {
+                    xmlNode.Add(new XElement("CONTEXTMENUS"));
+                }
+
                 xmlNode.Element("CONTEXTMENUS").ReplaceNodes(contextMenus);
             }
             else
@@ -744,6 +806,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 // Remove all contextmenu nodes
                 xmlNode.Element("PARAMETERS").RemoveNodes();
+            }
+        }
+
+        private void CreateOrEditTile(Message.MessageCreateOrEditTile msg)
+        {
+            if (msg.Sender is App | msg.Sender is ViewModelTiles)
+            {
+                SelectedTile = msg.SelectedTile;
+                IsAddNewTabSelected = true;
+                Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(SelectedTile, this));
             }
         }
     }
