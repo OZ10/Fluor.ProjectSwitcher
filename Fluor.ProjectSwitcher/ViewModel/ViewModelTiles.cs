@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Linq;
 using Fluor.ProjectSwitcher.Class;
 using System.Windows;
+using System.Xml.Linq;
+using System;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -105,10 +107,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public ViewModelTiles()
         {
-            Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdateProjectsCollection);
+            //Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdateProjectsCollection);
             Messenger.Default.Register<GenericMessage<Grid>>(this, DisplayContextMenus);
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoBackToParent);
-            Messenger.Default.Register<Message.MessagePopulateApplications>(this, UpdateApplicationsCollection);
+            Messenger.Default.Register<Message.M_SimpleAction>(this, DisplayApplicationsAsTiles);
+            Messenger.Default.Register<Message.M_LoadFromSettings>(this, PopulateProjects);
 
             Messenger.Default.Register<GenericMessage<bool>>(this, SetEditMode);
 
@@ -116,13 +119,56 @@ namespace Fluor.ProjectSwitcher.ViewModel
         }
 
         /// <summary>
-        /// Updates the projects collection and creates a tile for each project.
+        /// Reads the project details from the xml file and populates the projects listview.
+        /// </summary>
+        /// <param name="xmlDoc">The XML document.</param>
+        private void PopulateProjects(Message.M_LoadFromSettings msg)
+        {
+            try
+            {
+                ProjectsCollection = new ObservableCollection<Project>();
+
+                Project project;
+
+                foreach (XElement xmlProject in msg.XmlSettings.Elements("PROJECTS").Elements("PROJECT"))
+                {
+                    //foreach (XElement xmlProject in xmlProjects.Elements("PROJECT"))
+                    //{
+                    // Create a new project instance
+                    project = new Project(xmlProject.Attribute("NAME").Value,
+                                            xmlProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
+                                            xmlProject.Attribute("MISCTEXT").Value,
+                                            true,
+                                            null,
+                                            false);
+
+                    // Get any associations associated with this project
+                    project.GetAssociations(project, msg.XmlSettings);
+
+                    // Get any sub projects associated with this project
+                    project.CreateSubProjects(xmlProject, msg.XmlSettings); //, project.ContextMenus);
+
+                    ProjectsCollection.Add(project);
+                    //ProjectsCollection.Add(new Project("","", false,"","", false));
+                    //}
+                }
+
+                CreateTiles();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("The SPPIDProjects section of the configuration XML file contains errors.\n\nMandatory attributes are:\nNAME\nPLANTNAME\nINIFILE\nPIDPATH\nSPENGPATH",
+                    "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// reates a tile for each project.
         /// </summary>
         /// <param name="msg">Message containing a collection of projects.</param>
-        private void UpdateProjectsCollection(Message.MessagePopulateProjects msg)
+        private void CreateTiles()
         {
-            ProjectsCollection = msg.ProjectsCollection;
-
             TopLevelTileCollection = new ObservableCollection<Button>();
             ActiveTileCollection = new ObservableCollection<Button>();
 
@@ -140,17 +186,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Updates the applications collection and creates a tile for each application.
         /// </summary>
         /// <param name="msg">Message containing a collection of applications.</param>
-        private void UpdateApplicationsCollection(Message.MessagePopulateApplications msg)
+        private void DisplayApplicationsAsTiles(Message.M_SimpleAction msg)
         {
-            ApplicationsCollection = msg.ApplicationsCollection;
+            //ApplicationsCollection = msg.ApplicationsCollection;
 
-            ActiveTileCollection = new ObservableCollection<Button>();
-
-            foreach (TopApplication application in ApplicationsCollection)
+            if (msg.SimpleAction == Message.M_SimpleAction.Action.DisplayApplicationsAsTiles)
             {
-                Button tile = CreateTile(application);
+                ActiveTileCollection = new ObservableCollection<Button>();
 
-                ActiveTileCollection.Add(tile);
+                foreach (TopApplication application in SelectedTile.Applications) //  ApplicationsCollection)
+                {
+                    Button tile = CreateTile(application);
+
+                    ActiveTileCollection.Add(tile);
+                }
             }
         }
 
@@ -161,6 +210,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <returns></returns>
         private Button CreateTile(SwitcherItem switcherItem)
         {
+            //TODO See if style can be set in XMAL
             Button tile = new Button();
             tile.Click += new RoutedEventHandler(Tile_Clicked);
             tile.DataContext = switcherItem;
@@ -199,6 +249,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                 SelectedTile = project;
 
+                ChangeActiveProject();
+
                 // TODO Is this message required? switcherItem already has a collection of context menus.
                 //GetContextMenus(switcherItem);
                 //Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(switcherItem.ContextMenuCollection));
@@ -208,6 +260,27 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Selected tile must be an application. Send a message to the main view model containing the selected application
                 TopApplication application = switcherItem as TopApplication;
                 Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, application));
+            }
+        }
+
+        /// <summary>
+        /// Changes the active project.
+        /// </summary>
+        private void ChangeActiveProject()
+        {
+            if (SelectedTile.IsActiveProject == false)
+            {
+                SelectedTile.IsActiveProject = true;
+
+                // Unselect all other projects
+                foreach (Project project in ProjectsCollection.Where(proj => proj.Name != SelectedTile.Name))
+                {
+                    project.IsActiveProject = false;
+                    project.ChangeIsActiveForSubProjects(SelectedTile.Name);
+                }
+
+                // Selected project is now active so set project specific settings for each selected application
+                //SetProjectSpecificSettings();
             }
         }
 
@@ -299,7 +372,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void AddNewTile()
         {
-            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(null, this));
+            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(null, this, null));
         }
     }
 }

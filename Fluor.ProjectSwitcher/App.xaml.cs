@@ -60,7 +60,7 @@ namespace Fluor.ProjectSwitcher
         {
             Button btn = (Button)sender;
             Project selectedTile = (Project)btn.DataContext;
-            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(selectedTile, this));
+            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(selectedTile, this, null));
         }
 
         // Ok (save) button on the add new view

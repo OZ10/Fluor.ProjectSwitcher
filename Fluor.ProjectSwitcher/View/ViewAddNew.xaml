@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}">
-    <Grid>
+             d:DesignHeight="300" d:DesignWidth="400" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}">
+    <!--<Grid>
         <ItemsControl Name="icAddNew" ItemsSource="{Binding SelectedItemCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -13,5 +13,81 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
+    </Grid>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+        
+        <TabControl>
+            <TabItem Header="Project">
+                <StackPanel>
+                    <TextBox Text="{Binding SelectedItem.Name}" FontSize="20" FontWeight="Bold" Background="{x:Null}" BorderBrush="{x:Null}"/>
+
+                <Grid Margin="0,0,5,0" Grid.Row="1" Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="3"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="3"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="ContextMenus" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <Button Name="btnAddnewContextMenu" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource PlusIcon}" Foreground="{DynamicResource TextBlack54Brush}" Click="btnAddnewContextMenu_Click"/>
+                        <DataGrid Grid.Column="3" ItemsSource="{Binding SelectedItem.ContextMenuCollection}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}"/>
+                    <TextBlock Text="Misc Text" Grid.Row="4" FontSize="12" Margin="5,10,0,0" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding MiscText}" FontSize="12" Margin="0,10,0,0" BorderThickness="0,0,0,2" />
+                    <Rectangle Grid.Column="2" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>
+                    <Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>
+                </Grid>
+                </StackPanel>
+                
+            </TabItem>
+            
+            <TabItem Header="Associations">
+                <StackPanel>
+                    <Grid Margin="0,0,5,10" Grid.Row="3" Background="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="3"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="3"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Applications" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                        <Button Name="btnAddAssociatedApplication" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource PlusIcon}" Foreground="{DynamicResource TextBlack54Brush}" Click="btnAddAssociatedApplication_Click" />
+                        <ListBox Name="lstAssociation" Grid.Column="3" ItemsSource="{Binding SelectedItem.Associations}" DisplayMemberPath="ApplicationName" SelectedItem="{Binding SelectedAssociation}" FontSize="12"/>
+
+                        <TextBlock Text="ContextMenus" Grid.Row="2" FontSize="12" VerticalAlignment="Center" Margin="0,10,0,0"/>
+                        <DataGrid Grid.Row="2" Grid.Column="3" ItemsSource="{Binding SelectedAssociation.ContextMenuCollection}" FontSize="12"/>
+
+                        <TextBlock Text="Parameters" Grid.Row="4" FontSize="12" VerticalAlignment="Center" Margin="0,10,0,0"/>
+                        <DataGrid Grid.Row="4" Grid.Column="3" ItemsSource="{Binding SelectedAssociation.Parameters}" FontSize="12"/>
+
+                        <Rectangle Grid.Column="2" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>
+                        <Rectangle Grid.ColumnSpan="4" Grid.Row="1" Fill="{DynamicResource AccentColorBrush4}"/>
+                        <Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        
+        <Button Name="btnEditOk" Grid.Row="4" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" Background="{DynamicResource SubColorBrush}" Style="{DynamicResource MetroCircleButtonStyleCustom}"/>
+        <Button Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,10,0,0" Background="{DynamicResource SubColorBrush}"/>
     </Grid>
 </UserControl>

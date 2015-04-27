@@ -5,7 +5,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />-->
                 <ResourceDictionary Source="Themes/Fluor_Accents.xaml" />
                 <ResourceDictionary Source="Themes/Fluor_Icons.xaml" />
                 <ResourceDictionary Source="Themes/Fluor_CustomControlStyles.xaml" />
@@ -22,7 +22,7 @@
                             <Grid Margin="0,0,0,7" Width="350" MouseRightButtonUp="tile_MouseRightButtonUp">
                                 <!--Background="{TemplateBinding Background}">-->
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="50"/>
                                 </Grid.ColumnDefinitions>
@@ -35,7 +35,11 @@
                                         <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
                                         <ContextMenu.ItemTemplate>
                                             <DataTemplate>
-                                                <MenuItem Header="{Binding DisplayName}" CommandParameter="{Binding Value}"/>
+                                                <MenuItem Header="{Binding DisplayName}" CommandParameter="{Binding Value}">
+                                                    <MenuItem.Icon>
+                                                        <Path Data="{DynamicResource Folder}" Style="{DynamicResource MenuItemIcon}"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
                                             </DataTemplate>
                                         </ContextMenu.ItemTemplate>
                                         <ContextMenu.ItemContainerStyle>
@@ -50,15 +54,15 @@
                                 <Rectangle x:Name="rec1" Fill="White" Grid.RowSpan="2"/>
                                 <Rectangle x:Name="rec2" Fill="{DynamicResource SubColorBrush}" Grid.RowSpan="2" Opacity="0"/>
                                 <Border BorderBrush="#33000000" BorderThickness="1,0,0,1"/>
-                                <ContentPresenter Content="{DynamicResource ProjectIcon}" Margin="5" Grid.RowSpan="2"/>
+                                <!--<ContentPresenter Content="{DynamicResource ProjectIcon}" Margin="10" Grid.RowSpan="2"/>-->
                                 <Rectangle Fill="White" Margin="2,0,0,0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                                 <Border BorderBrush="#33000000" BorderThickness="0,0,0,1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Normal" FontSize="20" />
                                     <TextBlock Text="{Binding MiscText}" VerticalAlignment="Center" Margin="10,4,0,4" FontWeight="Normal" FontSize="12" Visibility="{Binding MiscTextVisibility}" Foreground="{DynamicResource TextBlack54Brush}"/>
                                 </StackPanel>
-                                <ContentPresenter Content="{DynamicResource EditIcon}" Margin="5" Grid.RowSpan="2" Grid.Column="2" Visibility="{Binding IsEditMode}"/>
-                                <Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="5" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustom}" Opacity="0" Foreground="{DynamicResource SubColorBrush}" Visibility="{Binding IsEditMode}" Click="btnEdit_Click"/>
+                                <ContentPresenter Content="{DynamicResource EditIcon}" Margin="15" Grid.RowSpan="2" Grid.Column="2" Visibility="{Binding IsEditMode}"/>
+                                <Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="10" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Opacity="0" Visibility="{Binding IsEditMode}" Click="btnEdit_Click"/>
                             </Grid>
 
                             <ControlTemplate.Triggers>
@@ -247,7 +251,8 @@
 
                     <Grid Margin="0,0,5,0" Grid.Row="1" Background="White">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="20"/>
                             <ColumnDefinition Width="3"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
@@ -260,12 +265,12 @@
                         </Grid.RowDefinitions>
                         <!--<TextBox Grid.Column="1" Text="{Binding Name}"/>-->
                         <TextBlock Text="ContextMenus" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        <DataGrid Grid.Column="2" ItemsSource="{Binding ContextMenuCollection}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}"/>
-                        <Button Name="btnAddnewContextMenu" Grid.Row="1" Grid.Column="2" Width="50" Content="{DynamicResource PlusIcon}" Click="btnAddnewContextMenu_Click" Margin="0,0,5,0"/>
+                        <Button Name="btnAddnewContextMenu" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource PlusIcon}" Foreground="{DynamicResource TextBlack54Brush}" Click="btnAddnewContextMenu_Click"/>
+                        <DataGrid Grid.Column="3" ItemsSource="{Binding ContextMenuCollection}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}"/>
                         <TextBlock Text="Misc Text" Grid.Row="4" FontSize="12" Margin="5,10,0,0" VerticalAlignment="Center"/>
                         <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding MiscText}" FontSize="12" Margin="0,10,0,0" BorderThickness="0,0,0,2" />
-                        <Rectangle Grid.Column="1" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>
-                        <Rectangle Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>
+                        <Rectangle Grid.Column="2" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>
+                        <Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>
                     </Grid>
 
                     <!--<Rectangle Fill="{DynamicResource AccentSelectedColorBrush}" Grid.Row="2" Height="10"/>-->
@@ -307,8 +312,8 @@
                         <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding MiscText}"/>-->
                     </Grid>
 
-                    <Button Name="btnEditOk" Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,20,80,0" Click="btnEditOk_Click"/>
-                    <Button Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyle}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,20,0,0"/>
+                    <Button Name="btnEditOk" Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,20,80,0" Click="btnEditOk_Click" Background="{DynamicResource SubColorBrush}"/>
+                    <Button Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,20,0,0" Background="{DynamicResource SubColorBrush}"/>
                 </Grid>
             </ControlTemplate>
         </ResourceDictionary>

@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
 using Fluor.ProjectSwitcher.Class;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -42,6 +43,39 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<MenuItem>>(this, SelectApplications);
             Messenger.Default.Register<GenericMessage<TextBlock>>(this, DisplayContextMenus);
+            Messenger.Default.Register<Message.M_LoadFromSettings>(this, PopulateApplications);
+            Messenger.Default.Register<Message.M_GetAssociatedApplications>(this, GetAssociatedApplications);
+        }
+
+        private void GetAssociatedApplications(Message.M_GetAssociatedApplications msg)
+        {
+            // Get all the associations associated with the selected item
+            foreach (Association association in msg.SelectedProject.Associations) //.Where(ass => ass.ProjectName == SelectedTile.Name))
+            {
+                foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                {
+                    msg.SelectedProject.Applications.Add(application);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the application details from the xml file and populates the applications collection.
+        /// </summary>
+        /// <param name="xmlDoc">The XML document.</param>
+        private void PopulateApplications(Message.M_LoadFromSettings msg)
+        {
+            ApplicationsCollection = new ObservableCollection<SwitcherItem>();
+
+            TopApplication application;
+            foreach (XElement xmlApplication in msg.XmlSettings.Elements("APPLICATION"))
+            {
+                application = new TopApplication(xmlApplication.Attribute("NAME").Value, xmlApplication.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"), true);
+
+                application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
+
+                ApplicationsCollection.Add(application);
+            }
         }
 
         private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)

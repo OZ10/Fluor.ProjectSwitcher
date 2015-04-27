@@ -23,6 +23,21 @@ namespace Fluor.ProjectSwitcher.View
             InitializeComponent();
         }
 
+        private void btnEditOk_Click(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(null, this));
+        }
+
+        private void btnAddnewContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAddAssociatedApplication_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         //private void muApplication_Click(object sender, RoutedEventArgs e)
         //{
         //    MenuItem mi = (MenuItem)sender;

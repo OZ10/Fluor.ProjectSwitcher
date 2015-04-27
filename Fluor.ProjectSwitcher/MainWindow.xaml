@@ -15,11 +15,26 @@
                     </Grid.ColumnDefinitions>
                     <Rectangle Stroke="White" Height="Auto" Width="1" HorizontalAlignment="Left"/>
                     <StackPanel Grid.Column="1">
-                        <MenuItem Name="miViewSettingsFile" Header="View Settings File" Icon="{DynamicResource SettingsIcon}" Click="miViewSettingsFile_Click" Foreground="White" FontSize="12"/>
-                        <MenuItem Name="miAdmin" Header="Open Admin Module" Icon="{DynamicResource SettingsIcon}" Foreground="White" FontSize="12" Click="miAdmin_Click"/>
-                        <MenuItem Name="miRefresh" Header="Refresh After Changes" Icon="{DynamicResource RefreshIcon}" Foreground="White" FontSize="12" Click="miRefresh_Click"/>
-                        <MenuItem Name="miCloseAllApps" Header="Close All Open Apps" Icon="{DynamicResource CloseIcon}" Click="miCloseAllApps_Click" Foreground="White" FontSize="12"/>
-                        <MenuItem Name="miAbout" Header="About" Icon="{DynamicResource AboutIcon}" Click="miAbout_Click" Foreground="White" FontSize="12"/>
+                        <MenuItem Name="miViewSettingsFile" Header="View Settings File" Click="miViewSettingsFile_Click" FontSize="12">
+                            <MenuItem.Icon>
+                                <Path Data="{DynamicResource Settings}" Style="{DynamicResource MenuItemIcon}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="miRefresh" Header="Refresh After Changes" FontSize="12" Click="miRefresh_Click">
+                            <MenuItem.Icon>
+                                <Path Data="{DynamicResource Refresh}" Style="{DynamicResource MenuItemIcon}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="miCloseAllApps" Header="Close All Open Apps" Click="miCloseAllApps_Click" FontSize="12">
+                            <MenuItem.Icon>
+                                <Path Data="{DynamicResource Close}" Style="{DynamicResource MenuItemIcon}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="miAbout" Header="About" Click="miAbout_Click" FontSize="12">
+                            <MenuItem.Icon>
+                                <Path Data="{DynamicResource About}" Style="{DynamicResource MenuItemIcon}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </StackPanel>
                 </Grid>
             </Controls:Flyout>
@@ -68,7 +83,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <Button Name="btnEditMode" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE" Foreground="White"/>
+            <Button Name="btnEditMode" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE"/>
             <Rectangle Grid.Column="4" Fill="{DynamicResource CloseButtonBackGroundBrush}" />
             <Button Name="btnClose" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="CLOSE" Foreground="White"/>
         </Grid>

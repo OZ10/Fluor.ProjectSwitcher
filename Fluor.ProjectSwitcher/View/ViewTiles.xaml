@@ -18,6 +18,6 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <Button Name="btnAddNew" Grid.Row="1" Content="{DynamicResource PlusIcon}" BorderBrush="#33000000" BorderThickness="1,0,0,1" Background="White" Height="50" Visibility="{Binding IsEditMode}" Click="btnAddNew_Click" Foreground="{DynamicResource SubColorBrush}"/>
+        <Button Name="btnAddNew" Grid.Row="1" Content="{DynamicResource PlusIcon}" BorderBrush="#33000000" BorderThickness="1,0,0,1" Background="White" Height="50" Visibility="Visible" Click="btnAddNew_Click" Padding="15" Foreground="{DynamicResource TextBlack54Brush}"/>
     </Grid>
 </UserControl>

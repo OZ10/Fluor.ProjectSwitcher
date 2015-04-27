@@ -12,16 +12,16 @@ namespace Fluor.ProjectSwitcher.Class
 {
     public class Project : Class.SwitcherItem
     {
-        private ObservableCollection<Association> _Associations;
+        private ObservableCollection<Association> _associations;
         public ObservableCollection<Association> Associations
         {
             get
             {
-                return _Associations;
+                return _associations;
             }
             set
             {
-                _Associations = value;
+                _associations = value;
                 RaisePropertyChanged("Associations");
             }
         }
@@ -37,6 +37,20 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 _selectedAssociation = value;
                 RaisePropertyChanged("SelectedAssociation");
+            }
+        }
+
+        private ObservableCollection<TopApplication> _applications;
+        public ObservableCollection<TopApplication> Applications
+        {
+            get
+            {
+                return _applications;
+            }
+            set
+            {
+                _applications = value;
+                RaisePropertyChanged("Applications");
             }
         }
 
@@ -59,6 +73,7 @@ namespace Fluor.ProjectSwitcher.Class
 
             SubItems = new ObservableCollection<SwitcherItem>();
             Associations = new ObservableCollection<Association>();
+            Applications = new ObservableCollection<TopApplication>();
         }
 
         public void CreateSubProjects(XElement xmlProject, XElement xmlSettings) //, string parentContextMenu)

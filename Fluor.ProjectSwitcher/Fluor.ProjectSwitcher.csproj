@@ -28,8 +28,8 @@
     <PublisherName>Fluor</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>4</ApplicationRevision>
-    <ApplicationVersion>3.0.3.4</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>3.5.0.2</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -54,7 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon6.ico</ApplicationIcon>
+    <ApplicationIcon>SwitcherIcon_w1.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>3BD571665A7A2BE393098B09A4EAEF72F020F4F0</ManifestCertificateThumbprint>
@@ -120,10 +120,12 @@
     <Compile Include="Class\Utilities.cs" />
     <Compile Include="Message\MessageSaveChangesToTile.cs" />
     <Compile Include="Message\MessageCreateOrEditTile.cs" />
-    <Compile Include="Message\MessagePopulateApplications.cs" />
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />
     <Compile Include="Message\MessageUpdateSelectedTile.cs" />
+    <Compile Include="Message\M_GetAssociatedApplications.cs" />
+    <Compile Include="Message\M_LoadFromSettings.cs" />
+    <Compile Include="Message\M_SimpleAction.cs" />
     <Compile Include="ViewModel\ViewModelAddNew.cs" />
     <Compile Include="ViewModel\ViewModelApplications.cs" />
     <Compile Include="ViewModel\ViewModelTiles.cs" />
@@ -232,9 +234,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon6.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +241,7 @@
       <Link>Fluor.ProjectSwitcher.Projects.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="SwitcherIcon_w1.ico" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="Fluor.ProjectSwitcher.Projects.xml">
