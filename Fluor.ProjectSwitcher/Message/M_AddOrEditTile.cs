@@ -8,17 +8,15 @@ using System.Collections.ObjectModel;
 
 namespace Fluor.ProjectSwitcher.Message
 {
-    public class MessageCreateOrEditTile
+    public class M_AddOrEditTile
     {
         public object Sender { get; set; }
         public Project SelectedTile { get; set; }
-        public ObservableCollection<Project> ProjectsCollection { get; set; }
 
-        public MessageCreateOrEditTile(Project selectedTile, object sender, ObservableCollection<Project> projectsCollection)
+        public M_AddOrEditTile(Project selectedTile, object sender)
         {
             SelectedTile = selectedTile;
             Sender = sender;
-            ProjectsCollection = projectsCollection;
         }
     }
 }

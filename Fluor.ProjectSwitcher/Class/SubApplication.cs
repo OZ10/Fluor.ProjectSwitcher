@@ -6,14 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
     public class SubApplication : Class.TopApplication
     {
+        [XmlAttribute]
         public string Exe { get; set; }
 
         private bool isSelected;
+        [XmlAttribute]
         public bool IsSelected
         {
             get
@@ -24,18 +27,24 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 isSelected = value;
 
-                foreach (SubApplication subApplication in SubItems)
+                if (SubItems != null)
                 {
-                    subApplication.IsSelected = value;
-                }
+                    foreach (SubApplication subApplication in SubItems)
+                    {
+                        subApplication.IsSelected = value;
+                    }
 
-                RaisePropertyChanged("IsSelected");
+                    RaisePropertyChanged("IsSelected");
+                }
+                
             }
         }
 
+        [XmlIgnore]
         public Visibility Visibility { get; set; }
 
         private bool isVisible;
+        [XmlAttribute]
         public bool IsVisible
         {
             get
@@ -58,6 +67,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private string installPath;
+        [XmlAttribute]
         public string InstallPath
         {
             get
@@ -70,17 +80,23 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public SubApplication(string applicationName, XElement installPath, string exe, bool isSelected, bool isVisible, IEnumerable<XElement> contextMenu, bool isEnabled, Fluor.ProjectSwitcher.Class.SubApplication parentApplication) : base(applicationName, contextMenu, isEnabled)
+        public SubApplication()
+        {
+        }
+
+        public void Setup(string applicationName, XElement installPath, string exe, bool isSelected, bool isVisible, IEnumerable<XElement> contextMenu, bool isEnabled, Fluor.ProjectSwitcher.Class.SubApplication parentApplication)
         {
             Name = applicationName;
             Exe = exe;
             IsSelected = isSelected;
             IsVisible = isVisible;
             ParentItem = parentApplication;
+            IsEnabled = isEnabled;
 
             if (installPath.Attribute("TYPE").Value != "")
             {
-                Parameter parameter = new Parameter((Parameter.TypeEnum)Enum.Parse(typeof(Parameter.TypeEnum), installPath.Attribute("TYPE").Value), installPath.Attribute("VALUE").Value, installPath.Attribute("PATH").Value);
+                Parameter parameter = new Parameter();
+                parameter.Setup((Parameter.ParameterTypeEnum)Enum.Parse(typeof(Parameter.ParameterTypeEnum), installPath.Attribute("TYPE").Value), installPath.Attribute("VALUE").Value, installPath.Attribute("PATH").Value);
                 InstallPath = parameter.GetInstallationPath();
             }
             else
@@ -95,6 +111,8 @@ namespace Fluor.ProjectSwitcher.Class
                     ContextMenuCollection.Add(cm);
                 }
             }
+
+            GetContextMenus(contextMenu);
         }
     }
 }

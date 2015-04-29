@@ -1,0 +1,442 @@
+<PROJECTSWITCHER>
+  <PROJECTS>
+    <PROJECT NAME="Maaden" ISEXPANDED="TRUE" MISCTEXT="">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp" DISPLAYNAME="Open project location"/>
+      </CONTEXTMENUS>
+      <SUBPROJECT NAME="Sandbox" MISCTEXT="EPC0">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC0 - Seed" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+      <SUBPROJECT NAME="Daelim Satellite" MISCTEXT="EPC1">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC1 - Daelim" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+      <SUBPROJECT NAME="Intecsa Satellite" MISCTEXT="EPC2">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC2 - Intecsa" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+      <SUBPROJECT NAME="SNC Satellite" MISCTEXT="EPC3">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC3 - SNC" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+      <SUBPROJECT NAME="Hanwha Satellite" MISCTEXT="EPC4">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC4 - Hanwha" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+      <SUBPROJECT NAME="Jacobs Satellite" MISCTEXT="EPC6">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC6 - Jacobs" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+      <SUBPROJECT NAME="HQC Satellite" MISCTEXT="EPC7">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC7 - HQC" DISPLAYNAME="Open project location"/>
+        </CONTEXTMENUS>
+      </SUBPROJECT>
+    </PROJECT>
+    <PROJECT NAME="Tco Testing" MISCTEXT="">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\FBPPFIL009\FB_CITX" DISPLAYNAME="Open project location"/>
+      </CONTEXTMENUS>
+    </PROJECT>
+    <PROJECT NAME="Sadara ICF" MISCTEXT="Interconnecting Facilities">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fdnet.com\fb_projects\FB_R1TP_UPINP" DISPLAYNAME="Open project location"/>
+      </CONTEXTMENUS>
+    </PROJECT>
+    <PROJECT NAME="Gasco Hab5" MISCTEXT="FB">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil006\FB_NGSB\CAD\000\Test Environments\TST_A7EE" DISPLAYNAME="Open project location"/>
+      </CONTEXTMENUS>
+    </PROJECT>
+  </PROJECTS>
+
+  <ASSOCIATIONS>
+    <ASSOCIATION PROJECTNAME="Sandbox" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID_SB\SMARTPLANT_RESOURCES\EPC0" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM_SB\SITE\SPPID\EPC0" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM_SB\SITE\SPPID\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC0" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC0" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Daelim Satellite" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID\SMARTPLANT_RESOURCES\EPC1" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\EPC1" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC1" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC1" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Intecsa Satellite" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID\SMARTPLANT_RESOURCES\EPC2" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\EPC2" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC2" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC2" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="SNC Satellite" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID\SMARTPLANT_RESOURCES\EPC3" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\EPC3" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC3" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC3" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Hanwha Satellite" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID\SMARTPLANT_RESOURCES\EPC4" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\EPC4" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC4" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC4" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Jacobs Satellite" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID\SMARTPLANT_RESOURCES\EPC6" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\EPC6" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC6" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC6" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="HQC Satellite" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPPID\SMARTPLANT_RESOURCES\EPC7" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\EPC7" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil009\fb_a6mp\CAD\000\SPEM\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,EPC7" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,EPC7" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Tco Testing" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_citx\CAD\000\SPPID\SMARTPLANT_RESOURCES" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_citx\CAD\000\SPEM\SITE\SPPID\TCOFGP" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\Fbppfil009\fb_citx\CAD\000\SPEM\SITE\SPPID\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,TCOFGP" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,TCOFGP" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Tco Testing" APPLICATIONNAME="SPEL">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_citx\CAD\000\SPEL\SMARTPLANT_RESOURCES" DISPLAYNAME="Open SPEL Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_citx\CAD\000\SPEM\SITE\SPEL\TCOFGP" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\Fbppfil009\fb_citx\CAD\000\SPEM\SITE\SPEL\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,TCOFGP" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,TCOFGP" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Tco Testing" APPLICATIONNAME="SPI">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\Fbppfil009\fb_citx\CAD\000\SPI" DISPLAYNAME="Open SPI Ref Data Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="database,ServerName,FBCITXSI" PATH="*installpath*\\intools.INI"/>
+        <PARAMETER TYPE="INI" VALUE="database,Database,FBCITXSI" PATH="*installpath*\\intools.INII"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Sadara ICF" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fdnet.com\fb_projects\FB_R1TP_UPINP\CAD\000\SPPID_SB\SMARTPLANT_RESOURCES" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fdnet.com\fb_projects\FB_R1TP_UPINP\CAD\000\SPEM_SB\SITE" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fdnet.com\fb_projects\FB_R1TP_UPINP\CAD\000\SPEM_SB\SITE\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,Interconnecting Facilities" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,Interconnecting Facilities" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+    <ASSOCIATION PROJECTNAME="Gasco Hab5" APPLICATIONNAME="SPPID">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil006\FB_NGSB\CAD\000\Test Environments\TST_A7EE\SPPID_SB\SMARTPLANT_RESOURCES" DISPLAYNAME="Open P&amp;ID Ref Data Folder"/>
+        <CONTEXTMENU TYPE="PATH" VALUE="\\fbppfil006\FB_NGSB\CAD\000\Test Environments\TST_A7EE\SPENG_SB\SITE" DISPLAYNAME="Open Eng Manager Folder"/>
+      </CONTEXTMENUS>
+      <PARAMETERS>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,SiteServer,\\fbppfil006\FB_NGSB\CAD\000\Test Environments\TST_A7EE\SPENG_SB\smartplantv4.ini" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActivePlant,PROC_SOUTH" PATH="%userprofile%\\SmartPlantManager.INI"/>
+        <PARAMETER TYPE="INI" VALUE="SmartPlant Manager,ActiveParentPlant,PROC_SOUTH" PATH="%userprofile%\\SmartPlantManager.INI"/>
+      </PARAMETERS>
+    </ASSOCIATION>
+  </ASSOCIATIONS>
+
+  <APPLICATION NAME="SPPID" CONTEXTMENU="">
+    <CONTEXTMENUS>
+      <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+    </CONTEXTMENUS>
+    <SUBAPPLICATION NAME="SmartPlant P&amp;ID" EXE="" ISSELECTED="FALSE" ISVISIBLE="TRUE">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" DISPLAYNAME="Open SPPID install location"/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="REG" VALUE="\Program\" PATH="HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\SmartPlant P&amp;ID\CurrentVersion,InstallationPath"/>
+      <SUBAPPLICATION NAME="Drawing Manager" INSTALLPATH="" EXE="DrawingManagerEXE.exe" ISSELECTED="TRUE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Rule Manager" INSTALLPATH="" EXE="Rule Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Insulation Manager" INSTALLPATH="" EXE="Insulation Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Options Manager" INSTALLPATH="" EXE="Options Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Draft" INSTALLPATH="" EXE="draft.exe" ISSELECTED="FALSE" ISVISIBLE="FALSE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+    </SUBAPPLICATION>
+
+    <SUBAPPLICATION NAME="SmartPlant Engineering Manager" EXE="" ISSELECTED="FALSE" ISVISIBLE="TRUE">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" DISPLAYNAME="Open SPENG install location"/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="REG" VALUE="\Program\" PATH="HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\SmartPlant Engineering Manager\CurrentVersion,PathName"/>
+      <SUBAPPLICATION NAME="Engineering Manager" INSTALLPATH="" EXE="SmartPlant Engineering Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Data Dictionary Manager" INSTALLPATH="" EXE="Data Dictionary Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Catalog Manager" INSTALLPATH="" EXE="CatalogManager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Filter Manager" INSTALLPATH="" EXE="igrFilterManager412.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Format Manager" INSTALLPATH="" EXE="igrFormatManager412.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Ref Data Sync Manager" INSTALLPATH="" EXE="RefDataSyncMgr.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+    </SUBAPPLICATION>
+
+    <SUBAPPLICATION NAME="Support Utilities" EXE="" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="PATH" VALUE="" PATH="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\"/>
+      <SUBAPPLICATION NAME="Item Tag Configuration Utility" INSTALLPATH="" EXE="ConfigureItemTagFormatUtility.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Change Linked Document Utility" INSTALLPATH="" EXE="GlobalChangeLinkedDocSourceUtility.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Global Report Utility" INSTALLPATH="" EXE="GlobalReportUtility.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Global Symbol Update Utility" INSTALLPATH="" EXE="GlobalSymbolUpdateUtility" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Global Validation Utility" INSTALLPATH="" EXE="GlobalValidationUpdateUtility.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Symbol Report Utility" INSTALLPATH="" EXE="SymbolReportUtility.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+    </SUBAPPLICATION>
+  </APPLICATION>
+
+  <APPLICATION NAME="SPEL" CONTEXTMENU="">
+    <CONTEXTMENUS>
+      <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+    </CONTEXTMENUS>
+    <SUBAPPLICATION NAME="SmartPlant Electrical" EXE="" ISSELECTED="FALSE" ISVISIBLE="TRUE">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="REG" VALUE="\Program\" PATH="HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\Applications\spelect.Application\Setup,InstallPath"/>
+      <SUBAPPLICATION NAME="Smartplant Electrical" INSTALLPATH="" EXE="spelect.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Rule Manager" INSTALLPATH="" EXE="SpelRuleManager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Import Manager" INSTALLPATH="" EXE="SPELImportManager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Options Manager" INSTALLPATH="" EXE="SPELOptionsManager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Draft" INSTALLPATH="" EXE="draft.exe" ISSELECTED="FALSE" ISVISIBLE="FALSE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+    </SUBAPPLICATION>
+
+    <SUBAPPLICATION NAME="SmartPlant Engineering Manager" EXE="" ISSELECTED="FALSE" ISVISIBLE="TRUE">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" DISPLAYNAME="Open SPENG install location"/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="REG" VALUE="\Program\" PATH="HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\SmartPlant Engineering Manager\CurrentVersion,PathName"/>
+      <SUBAPPLICATION NAME="Engineering Manager" INSTALLPATH="" EXE="SmartPlant Engineering Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Data Dictionary Manager" INSTALLPATH="" EXE="Data Dictionary Manager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Catalog Manager" INSTALLPATH="" EXE="CatalogManager.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Filter Manager" INSTALLPATH="" EXE="igrFilterManager412.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Format Manager" INSTALLPATH="" EXE="igrFormatManager412.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Ref Data Sync Manager" INSTALLPATH="" EXE="RefDataSyncMgr.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+    </SUBAPPLICATION>
+  </APPLICATION>
+
+  <APPLICATION NAME="SPI" CONTEXTMENU="">
+    <CONTEXTMENUS>
+      <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+    </CONTEXTMENUS>
+    <SUBAPPLICATION NAME="SmartPlant Instrumentation" EXE="" ISSELECTED="FALSE" ISVISIBLE="TRUE">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="PATH" VALUE="C:\Program Files (x86)\SmartPlant\Instrumentation\" DISPLAYNAME="Open SPI install location"/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="REG" VALUE="" PATH="HKEY_LOCAL_MACHINE\SOFTWARE\Intergraph\Intergraph Intools Documentation,InstallationPath"/>
+      <SUBAPPLICATION NAME="SPI" INSTALLPATH="" EXE="intools.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+      <SUBAPPLICATION NAME="Administration" INSTALLPATH="" EXE="main.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+        <CONTEXTMENUS>
+          <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+        </CONTEXTMENUS>
+        <INSTALLPATH TYPE="" VALUE="" PATH=""/>
+      </SUBAPPLICATION>
+    </SUBAPPLICATION>
+  </APPLICATION>
+
+  <APPLICATION NAME="NOTEPAD" CONTEXTMENU="">
+    <CONTEXTMENUS>
+      <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+    </CONTEXTMENUS>
+    <SUBAPPLICATION NAME="NotePad" EXE="notepad.exe" ISSELECTED="FALSE" ISVISIBLE="TRUE" CONTEXTMENU="">
+      <CONTEXTMENUS>
+        <CONTEXTMENU TYPE="" VALUE="" DISPLAYNAME=""/>
+      </CONTEXTMENUS>
+      <INSTALLPATH TYPE="PATH" VALUE="" PATH="C:\Windows\"/>
+    </SUBAPPLICATION>
+  </APPLICATION>
+
+</PROJECTSWITCHER>

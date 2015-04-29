@@ -25,7 +25,10 @@ namespace Fluor.ProjectSwitcher.View
 
         private void btnEditOk_Click(object sender, RoutedEventArgs e)
         {
-            Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(null, this));
+            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayTilesTab));
+            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.RefreshViews));
+            //Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(null, this));
+            vm.OkButton_Clicked();
         }
 
         private void btnAddnewContextMenu_Click(object sender, RoutedEventArgs e)

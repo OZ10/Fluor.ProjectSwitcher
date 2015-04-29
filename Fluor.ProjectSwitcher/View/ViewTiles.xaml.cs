@@ -25,7 +25,10 @@ namespace Fluor.ProjectSwitcher.View
 
         private void btnAddNew_Click(object sender, RoutedEventArgs e)
         {
-            vm.AddNewTile();
+            Project newProject = new Project();
+            newProject.Setup("Project Name", null, "", true, null, true);
+            Messenger.Default.Send<Project>(newProject);
+            //vm.AddNewTile();
         }
     }
 }

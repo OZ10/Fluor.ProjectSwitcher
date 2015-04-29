@@ -121,6 +121,7 @@ namespace Fluor.ProjectSwitcher
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            vm.SaveAndClose();
             this.Close();
         }
 

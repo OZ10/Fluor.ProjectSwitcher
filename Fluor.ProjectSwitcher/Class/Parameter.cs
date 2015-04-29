@@ -4,23 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
     public class Parameter
     {
-        public enum TypeEnum
+        public enum ParameterTypeEnum
         {
             INI,
             REG,
             PATH
         };
 
-        public TypeEnum Type { get; set; }
+        [XmlAttribute("ParameterType")]
+        public ParameterTypeEnum Type { get; set; }
+
+        [XmlAttribute("Value")]
         public string Value { get; set; }
+
+        [XmlAttribute("Path")]
         public string Path { get; set; }
 
-        public Parameter(TypeEnum type, string value, string path)
+        public Parameter()
+        {
+        }
+
+        public void Setup(ParameterTypeEnum type, string value, string path)
         {
             Type = type;
             Value = value;
@@ -55,9 +65,9 @@ namespace Fluor.ProjectSwitcher.Class
         {
             switch (Type)
             {
-                case TypeEnum.INI:
+                case ParameterTypeEnum.INI:
                     break;
-                case TypeEnum.REG:
+                case ParameterTypeEnum.REG:
                     string[] reg = Path.Split(',');
                     Path = (string)Registry.GetValue(@reg[0], reg[1], null);
 
@@ -69,7 +79,7 @@ namespace Fluor.ProjectSwitcher.Class
                         }
                     }
                     return Path;
-                case TypeEnum.PATH:
+                case ParameterTypeEnum.PATH:
                     return Path;
                 default:
                     break;

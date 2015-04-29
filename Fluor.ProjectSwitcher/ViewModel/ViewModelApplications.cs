@@ -5,13 +5,14 @@ using GalaSoft.MvvmLight;
 using Fluor.ProjectSwitcher.Class;
 using System.Linq;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelApplications :ViewModelBase 
+    public class ViewModelApplications : ViewModelBase
     {
-        private ObservableCollection<SwitcherItem> applicationsCollection;
-        public ObservableCollection<SwitcherItem> ApplicationsCollection
+        private ObservableCollection<TopApplication> applicationsCollection;
+        public ObservableCollection<TopApplication> ApplicationsCollection
         {
             get
             {
@@ -43,7 +44,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<MenuItem>>(this, SelectApplications);
             Messenger.Default.Register<GenericMessage<TextBlock>>(this, DisplayContextMenus);
-            Messenger.Default.Register<Message.M_LoadFromSettings>(this, PopulateApplications);
+            Messenger.Default.Register<ObservableCollection<TopApplication>>(this, PopulateApplications);
             Messenger.Default.Register<Message.M_GetAssociatedApplications>(this, GetAssociatedApplications);
         }
 
@@ -63,29 +64,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Reads the application details from the xml file and populates the applications collection.
         /// </summary>
         /// <param name="xmlDoc">The XML document.</param>
-        private void PopulateApplications(Message.M_LoadFromSettings msg)
+        private void PopulateApplications(ObservableCollection<TopApplication> msg)
         {
-            ApplicationsCollection = new ObservableCollection<SwitcherItem>();
-
-            TopApplication application;
-            foreach (XElement xmlApplication in msg.XmlSettings.Elements("APPLICATION"))
-            {
-                application = new TopApplication(xmlApplication.Attribute("NAME").Value, xmlApplication.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"), true);
-
-                application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
-
-                ApplicationsCollection.Add(application);
-            }
+            ApplicationsCollection = msg;
         }
 
         private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)
         {
             //check = false;
-            ApplicationsCollection = message.Content.SubItems;
+            // ApplicationsCollection = message.Content.SubItems;
 
             ActiveApplicationCollection = new ObservableCollection<ListBox>();
 
-            foreach (TopApplication application in ApplicationsCollection)
+            foreach (TopApplication application in message.Content.SubItems)
             {
                 ListBox lb = new ListBox();
                 lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
@@ -153,7 +144,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         default:
                             break;
                     }
-                    
+
                 }
             }
         }

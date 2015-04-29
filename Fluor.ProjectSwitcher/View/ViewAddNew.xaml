@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="300" d:DesignWidth="400" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}" d:IsHidden="False">
     <!--<Grid>
         <ItemsControl Name="icAddNew" ItemsSource="{Binding SelectedItemCollection}">
             <ItemsControl.ItemsPanel>
@@ -20,38 +20,33 @@
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         
-        <TabControl>
-            <TabItem Header="Project">
-                <StackPanel>
+        <!--<TabControl>-->
+            <!--<TabItem Header="Project">-->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
                     <TextBox Text="{Binding SelectedItem.Name}" FontSize="20" FontWeight="Bold" Background="{x:Null}" BorderBrush="{x:Null}"/>
-
-                <Grid Margin="0,0,5,0" Grid.Row="1" Background="White">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="3"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="3"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="ContextMenus" FontSize="12" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                    <Button Name="btnAddnewContextMenu" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource PlusIcon}" Foreground="{DynamicResource TextBlack54Brush}" Click="btnAddnewContextMenu_Click"/>
-                        <DataGrid Grid.Column="3" ItemsSource="{Binding SelectedItem.ContextMenuCollection}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}"/>
-                    <TextBlock Text="Misc Text" Grid.Row="4" FontSize="12" Margin="5,10,0,0" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="4" Grid.Column="3" Text="{Binding MiscText}" FontSize="12" Margin="0,10,0,0" BorderThickness="0,0,0,2" />
-                    <Rectangle Grid.Column="2" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>
-                    <Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>
+                    
+                    <TextBlock Grid.Row="1" Text="Context Menus" FontSize="14" VerticalAlignment="Center"/>
+                    <Button Grid.Row="1" Name="btnAddnewContextMenu" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="40" Content="{DynamicResource PlusIcon}" Foreground="{DynamicResource TextBlack54Brush}" Click="btnAddnewContextMenu_Click" HorizontalAlignment="Right"/>
+                    <ListBox Grid.Row="2" ItemsSource="{Binding SelectedItem.ContextMenuCollection}" FontSize="12" ItemTemplate="{DynamicResource ListViewItemWithEditButton}"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" Background="White" >
+                        <TextBlock Text="Misc Text" FontSize="14" VerticalAlignment="Center" Width="100"/>
+                        <TextBox Text="{Binding SelectedItem.MiscText}" FontSize="14" BorderThickness="0,0,0,2" VerticalAlignment="Center" />
+                    </StackPanel>
+                        <!--<Rectangle Grid.Column="2" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>-->
+                        <!--<Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>-->
                 </Grid>
-                </StackPanel>
                 
-            </TabItem>
+            <!--</TabItem>-->
             
-            <TabItem Header="Associations">
+            <!--<TabItem Header="Associations">
                 <StackPanel>
                     <Grid Margin="0,0,5,10" Grid.Row="3" Background="White">
                         <Grid.ColumnDefinitions>
@@ -84,10 +79,10 @@
                         <Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>
                     </Grid>
                 </StackPanel>
-            </TabItem>
-        </TabControl>
+            </TabItem>-->
+        <!--</TabControl>-->
         
-        <Button Name="btnEditOk" Grid.Row="4" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" Background="{DynamicResource SubColorBrush}" Style="{DynamicResource MetroCircleButtonStyleCustom}"/>
+        <Button Name="btnEditOk" Grid.Row="4" Content="{DynamicResource TickIcon}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" Background="{DynamicResource SubColorBrush}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" />
         <Button Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,10,0,0" Background="{DynamicResource SubColorBrush}"/>
     </Grid>
 </UserControl>

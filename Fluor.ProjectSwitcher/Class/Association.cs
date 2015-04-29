@@ -5,12 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
     public class Association : SwitcherItem 
     {
+        [XmlAttribute()]
         public string ProjectName { get; set; }
+
+        [XmlAttribute()]
         public string ApplicationName { get; set; }
 
         private ObservableCollection<Parameter> _parameters;
@@ -28,11 +32,15 @@ namespace Fluor.ProjectSwitcher.Class
         }
         //public string ContextMenus { get; set; }
 
-        public Association(string projectName, string applicationName, IEnumerable<XElement> projectParameters, IEnumerable<XElement> contextMenus)
+        public Association()
+        {
+        }
+
+        public void Setup(string projectName, string applicationName, IEnumerable<XElement> projectParameters, IEnumerable<XElement> contextMenus)
         {
             ProjectName = projectName;
             ApplicationName = applicationName;
-            
+
             GetContextMenus(contextMenus);
             GetParameters(projectParameters);
         }
@@ -45,14 +53,17 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 foreach (XElement parameter in projectParameters)
                 {
-                    Parameter p = new Parameter((Parameter.TypeEnum)Enum.Parse(typeof(Parameter.TypeEnum), parameter.Attribute("TYPE").Value), parameter.Attribute("VALUE").Value, parameter.Attribute("PATH").Value);
+                    Parameter p = new Parameter();
+                    p.Setup((Parameter.ParameterTypeEnum)Enum.Parse(typeof(Parameter.ParameterTypeEnum), parameter.Attribute("TYPE").Value), parameter.Attribute("VALUE").Value, parameter.Attribute("PATH").Value);
                     Parameters.Add(p);
                 }
             }
             else
             {
                 // Add a blank row so user can input data
-                Parameters.Add(new Parameter(Parameter.TypeEnum.INI, "", ""));
+                Parameter p = new Parameter();
+                p.Setup(Parameter.ParameterTypeEnum.INI, "", "");
+                Parameters.Add(p);
             }
         }
     }

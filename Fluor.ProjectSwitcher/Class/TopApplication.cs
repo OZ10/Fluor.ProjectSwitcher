@@ -13,7 +13,15 @@ namespace Fluor.ProjectSwitcher.Class
 {
     public class TopApplication : Class.SwitcherItem 
     {
-        public TopApplication(string applicationName, IEnumerable<XElement> contextMenus, bool isEnabled)
+        public ObservableCollection<SubApplication> SubItems { get; set; }
+
+        public TopApplication()
+        {
+            ContextMenuCollection = new ObservableCollection<ContextMenu>();
+            SubItems = new ObservableCollection<SubApplication>();
+        }
+
+        public void Setup(string applicationName, IEnumerable<XElement> contextMenus, bool isEnabled)
         {
             Name = applicationName;
             MiscTextVisibility = Visibility.Collapsed;
@@ -22,8 +30,6 @@ namespace Fluor.ProjectSwitcher.Class
             GetContextMenus(contextMenus);
 
             //TileColor = (SolidColorBrush)System.Windows.Application.Current.Resources["WindowTitleColorBrush"];
-
-            SubItems = new ObservableCollection<SwitcherItem>();
         }
 
         public void GetSubApplications(XElement xmlApplication, SubApplication parentApplication) // string parentInstallPath, string parentContextMenu)
@@ -33,7 +39,8 @@ namespace Fluor.ProjectSwitcher.Class
                 SubApplication subApplication;
                 foreach (XElement xmlSubApplication in xmlApplication.Elements("SUBAPPLICATION"))
                 {
-                    subApplication = new SubApplication(xmlSubApplication.Attribute("NAME").Value,
+                    subApplication = new SubApplication();
+                    subApplication.Setup(xmlSubApplication.Attribute("NAME").Value,
                                                         xmlSubApplication.Element("INSTALLPATH"),
                                                         xmlSubApplication.Attribute("EXE").Value,
                                                         (bool)xmlSubApplication.Attribute("ISSELECTED"),

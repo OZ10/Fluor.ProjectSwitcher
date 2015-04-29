@@ -74,6 +74,10 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
+            <!--<Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.ColumnSpan="2" Width="2"/>
+            <Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.Column="1" Width="2" HorizontalAlignment="Right"/>
+            <Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.Column="2" Width="2" HorizontalAlignment="Right"/>
+            <Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.Column="3" Grid.ColumnSpan="2" Width="2"/>-->
             <Button Name="btnSettings" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" ToolTip="SETTINGS" Foreground="White"/>
             <Button Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustomWobble}" Content="{DynamicResource HomeIcon}"  Click="btnHome_Click" ToolTip="HOME" Foreground="White"/>
             <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="2">
@@ -84,7 +88,7 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
             <Button Name="btnEditMode" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE"/>
-            <Rectangle Grid.Column="4" Fill="{DynamicResource CloseButtonBackGroundBrush}" />
+            <!--<Rectangle Grid.Column="4" Fill="{DynamicResource CloseButtonBackGroundBrush}" />-->
             <Button Name="btnClose" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="CLOSE" Foreground="White"/>
         </Grid>
 

@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using Fluor.ProjectSwitcher.Class;
 using System.ComponentModel;
 using System.Windows.Controls;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -25,8 +27,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Add code to deal with applications with only one sub application to run - i.e. notepad
         // TODO Fix bug where selected sub apps will launch even if they are not currently displayed - i.e. even with SPEL selected, Drawing Manager will launch because it's selected by default
 
-        private XElement _xmlSettings;
         private TopApplication _selectedApplication;
+
+        public ProjectSwitcherSettings ProjectSwitcherSettings { get; set; }
 
         //public ObservableCollection<Project> ProjectsCollection { get; set; }
         //public ObservableCollection<SwitcherItem> ApplicationsCollection { get; set; }
@@ -130,8 +133,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoToTilesView);
-            Messenger.Default.Register<Message.MessageCreateOrEditTile>(this, CreateOrEditTile);
-            Messenger.Default.Register<Message.MessageSaveChangesToTile>(this, SavesChangesToSettings);
+            Messenger.Default.Register<Message.M_SimpleAction>(this, ChangeTab);
         }
 
         /// <summary>
@@ -141,9 +143,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             try
             {
-                _xmlSettings = XElement.Load("Fluor.ProjectSwitcher.Projects.xml");
-                Messenger.Default.Send<Message.M_LoadFromSettings>(new Message.M_LoadFromSettings(Message.M_LoadFromSettings.SettingLoadType.Project, _xmlSettings));
-                Messenger.Default.Send<Message.M_LoadFromSettings>(new Message.M_LoadFromSettings(Message.M_LoadFromSettings.SettingLoadType.Application, _xmlSettings));
+                ProjectSwitcherSettings = Deserialize();
+
+                //_xmlSettings = XElement.Load("Fluor.ProjectSwitcher.Projects.xml");
+                //Messenger.Default.Send<Message.M_LoadFromSettings>(new Message.M_LoadFromSettings(Message.M_LoadFromSettings.SettingLoadType.Project, _xmlSettings));
+                //Messenger.Default.Send<Message.M_LoadFromSettings>(new Message.M_LoadFromSettings(Message.M_LoadFromSettings.SettingLoadType.Application, _xmlSettings));
+
+                Messenger.Default.Send<ObservableCollection<Project>>(ProjectSwitcherSettings.Projects);
+                Messenger.Default.Send<ObservableCollection<TopApplication>>(ProjectSwitcherSettings.Applications);
 
                 //PopulateProjects();
                 //PopulateAssociations();
@@ -156,91 +163,23 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        ///// <summary>
-        ///// Reads the project details from the xml file and populates the projects listview.
-        ///// </summary>
-        ///// <param name="xmlDoc">The XML document.</param>
-        //private void PopulateProjects()
-        //{
-        //    try
-        //    {
-        //        ProjectsCollection = new ObservableCollection<Project>();
+        static public void Serialize(ProjectSwitcherSettings d)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
+            using (TextWriter writer = new StreamWriter(@"Fluor.ProjectSwitcher.Projects.xml"))
+            {
+                serializer.Serialize(writer, d);
+            }
+        }
 
-        //        Project project;
-        //        foreach (XElement xmlProject in _xmlSettings.Elements("PROJECTS").Elements("PROJECT"))
-        //        {
-        //            //foreach (XElement xmlProject in xmlProjects.Elements("PROJECT"))
-        //            //{
-        //                // Create a new project instance
-        //                project = new Project(xmlProject.Attribute("NAME").Value,
-        //                                        xmlProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
-        //                                        xmlProject.Attribute("MISCTEXT").Value,
-        //                                        true,
-        //                                        null,
-        //                                        false);
-
-        //                // Get any associations associated with this project
-        //                project.GetAssociations(project, _xmlSettings);
-
-        //                // Get any sub projects associated with this project
-        //                project.CreateSubProjects(xmlProject, _xmlSettings); //, project.ContextMenus);
-
-        //                ProjectsCollection.Add(project);
-        //                //ProjectsCollection.Add(new Project("","", false,"","", false));
-        //            //}
-        //        }
-
-        //        // Pass the projects collection to the Projects View
-        //        Messenger.Default.Send(new Message.MessagePopulateProjects(ProjectsCollection));
-        //    }
-        //    catch (NullReferenceException)
-        //    {
-        //        MessageBox.Show("The SPPIDProjects section of the configuration XML file contains errors.\n\nMandatory attributes are:\nNAME\nPLANTNAME\nINIFILE\nPIDPATH\nSPENGPATH",
-        //            "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
-        //        throw;
-        //    }
-        //}
-
-        /// <summary>
-        /// Reads the association details from the xml file and populates the associations collection.
-        /// </summary>
-        /// <param name="xmlDoc">The XML document.</param>
-        //private void PopulateAssociations()
-        //{
-        //    Associations = new List<Association>();
-        //    AssociatedApplicationCollection = new ObservableCollection<SwitcherItem>();
-
-        //    Association association;
-        //    foreach (XElement xmlAssociations in _xmlSettings.Elements("ASSOCIATIONS"))
-        //    {
-        //        foreach (XElement xmlAssociation in xmlAssociations.Elements("ASSOCIATION"))
-        //        {
-        //            association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
-        //                                            xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
-
-        //            Associations.Add(association);
-        //        }
-        //    }   
-        //}
-
-        ///// <summary>
-        ///// Reads the application details from the xml file and populates the applications collection.
-        ///// </summary>
-        ///// <param name="xmlDoc">The XML document.</param>
-        //private void PopulateApplications()
-        //{
-        //    ApplicationsCollection = new ObservableCollection<SwitcherItem>();
-
-        //    TopApplication application;
-        //    foreach (XElement xmlApplication in _xmlSettings.Elements("APPLICATION"))
-        //    {
-        //        application = new TopApplication(xmlApplication.Attribute("NAME").Value, xmlApplication.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"), true);
-
-        //        application.GetSubApplications(xmlApplication, null); //"", application.ContextMenus);
-
-        //        ApplicationsCollection.Add(application);
-        //    }
-        //}
+        public static ProjectSwitcherSettings Deserialize()
+        {
+            XmlSerializer deserializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
+            TextReader reader = new StreamReader(@"Fluor.ProjectSwitcher.Projects.xml");
+            object obj = deserializer.Deserialize(reader);
+            reader.Close();
+            return (ProjectSwitcherSettings)obj;
+        }
 
         /// <summary>
         /// Closes any open applications and opens new ones.
@@ -278,27 +217,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        ///// <summary>
-        ///// Changes the active project.
-        ///// </summary>
-        //private void ChangeActiveProject()
-        //{
-        //    if (SelectedTile.IsActiveProject == false)
-        //    {
-        //        SelectedTile.IsActiveProject = true;
-
-        //        // Unselect all other projects
-        //        foreach (Project project in ProjectsCollection.Where(proj => proj.Name != SelectedTile.Name))
-        //        {
-        //            project.IsActiveProject = false;
-        //            project.ChangeIsActiveForSubProjects(SelectedTile.Name);
-        //        }
-
-        //        // Selected project is now active so set project specific settings for each selected application
-        //        SetProjectSpecificSettings();
-        //    }
-        //}
-
         public void SetProjectSpecificSettings()
         {
             Project selectedProject = SelectedTile as Project;
@@ -306,27 +224,27 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // For all associations associated with the selected project
             //foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedTile.Name))
             //{
-                // Associations have a 'parameters' field. This field contains project & application specific settings which need to be set.
-                // This could be an ini file setting(s), registry setting(s) or something else (as long as code as been written to deal with it).
+            // Associations have a 'parameters' field. This field contains project & application specific settings which need to be set.
+            // This could be an ini file setting(s), registry setting(s) or something else (as long as code as been written to deal with it).
 
-                // For each parameter, determine type and set
-                //foreach (Parameter parameter in association.Parameters)
+            // For each parameter, determine type and set
+            //foreach (Parameter parameter in association.Parameters)
             if (selectedProject != null && _selectedApplication != null)
             {
                 foreach (Parameter parameter in selectedProject.Associations.First<Association>(a => a.ApplicationName == _selectedApplication.Name).Parameters)
                 {
                     // Determine type
-                    if (parameter.Type == Parameter.TypeEnum.INI)
+                    if (parameter.Type == Parameter.ParameterTypeEnum.INI)
                     {
                         SetIni(parameter);
                     }
-                    else if (parameter.Type == Parameter.TypeEnum.REG)
+                    else if (parameter.Type == Parameter.ParameterTypeEnum.REG)
                     {
                         SetRegistry(parameter);
                     }
                 }
             }
-                
+
             //}
         }
 
@@ -515,30 +433,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         // Get all the associations associated with the selected item
                         Messenger.Default.Send<Message.M_GetAssociatedApplications>(new Message.M_GetAssociatedApplications(SelectedTile));
 
-                        // Get all the associations associated with the selected item
-                        //foreach (Association association in SelectedTile.Associations) //.Where(ass => ass.ProjectName == SelectedTile.Name))
-                        //{
-                        //    foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
-                        //    {
-                        //        AssociatedApplicationCollection.Add(application);
-                        //    }
-                        //}
-
-                        //if (AssociatedApplicationCollection.Any())
-                        //{
-                        //    if (AssociatedApplicationCollection.Count == 1)
-                        //    {
-                        //        // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
-                        //        TopApplication application = AssociatedApplicationCollection[0] as TopApplication;
-                        //        Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
-                        //    }
-                        //    else
-                        //    {
-                        //        // Send the associated applications to the Tile view
-                        //        Messenger.Default.Send(new Message.MessagePopulateApplications(AssociatedApplicationCollection));
-                        //    }
-                        //}
-
                         if (SelectedTile.Applications.Any())
                         {
                             if (SelectedTile.Applications.Count == 1)
@@ -678,187 +572,53 @@ namespace Fluor.ProjectSwitcher.ViewModel
             isTileTabSelected = true;
         }
 
-        private void SavesChangesToSettings(Message.MessageSaveChangesToTile msg)
+        public void SaveAndClose()
         {
-            //if (msg.Sender is App)
-            //{
-            //    Project switcherItem = msg.SelectedTile;
+            if (ProjectSwitcherSettings.HasBeenUpdated)
+            {
+                ProjectSwitcherSettings.HasBeenUpdated = false;
 
-            //    if (switcherItem != null)
-            //    {
-            //        XElement xProject = null;
-            //        if (switcherItem.IsNew)
-            //        {
-            //            xProject = AddNewProjectToXML(switcherItem, xProject);
-            //        }
-            //        else
-            //        {
-            //            xProject = FindExistingProject(switcherItem, xProject);
-            //        }
+                //ProjectSwitcherSettings = new ProjectSwitcherSettings();
 
-            //        UpdateProjectDetails(switcherItem, xProject);
+                // Send messages to get the Project & Application collections from their respective views
+                // TODO I don't think these are required. Any changes to the collections should be reflected
+                // in the ProjectSwitcherSettings collection. Needs testing.
 
-            //        UpdateProjectAssociations(switcherItem);
+                //var msg = new NotificationMessageAction<ObservableCollection<Project>>(this, "", (p) =>
+                //{
+                //    ObservableCollection<Project> projectCollection = p;
+                //    ProjectSwitcherSettings.Projects = p;
+                //});
 
-            //        // Change project name ONLY after searching for association 
-            //        switcherItem.OriginalName = switcherItem.Name;
-            //    }
+                //Messenger.Default.Send(msg);
 
-            //    // Save changes
-            //    _xmlSettings.Save("Fluor.ProjectSwitcher.Projects.xml");
-            //    SetupEnvironment();
-            //}
-            RaisePropertyChanged("ProjectsCollection");
-            IsTileTabSelected = true;
+                //var msg2 = new NotificationMessageAction<ObservableCollection<TopApplication>>(this, "", (a) =>
+                //{
+                //    ObservableCollection<TopApplication> applicationsCollection = a;
+                //    ProjectSwitcherSettings.Applications = a;
+                //});
+
+                //Messenger.Default.Send(msg2);
+
+                Serialize(ProjectSwitcherSettings);
+            }
         }
 
-        //private void UpdateProjectAssociations(Project switcherItem)
-        //{
-        //    foreach (XElement xAssociation in _xmlSettings.Elements("ASSOCIATIONS").Elements("ASSOCIATION"))
-        //    {
-        //        if (xAssociation.Attribute("PROJECTNAME").Value == switcherItem.OriginalName)
-        //        {
-        //            if (switcherItem.Associations.Any())
-        //            {
-        //                List<XElement> associations = new List<XElement>();
-
-        //                foreach (Association association in switcherItem.Associations)
-        //                {
-        //                    SaveContextMenus(association.ContextMenuCollection, xAssociation);
-        //                    SaveParameters(association.Parameters, xAssociation);
-        //                }
-        //                //xAssociation.ReplaceNodes(associations);
-        //            }
-        //            else
-        //            {
-        //                // Remove all contextmenu nodes
-        //                xAssociation.Element("CONTEXTMENUS").RemoveNodes();
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private static void UpdateProjectDetails(Project switcherItem, XElement xProject)
-        //{
-        //    if (xProject != null)
-        //    {
-        //        // Rename project if it's changed
-        //        if (switcherItem.OriginalName != switcherItem.Name)
-        //        {
-        //            // Update xml project name
-        //            xProject.Attribute("NAME").Value = switcherItem.Name;
-
-        //            // Project has been renamed. Change name on any associations
-        //            foreach (Association association in switcherItem.Associations)
-        //            {
-        //                association.ProjectName = switcherItem.OriginalName;
-        //            }
-        //        }
-
-        //        SaveContextMenus(switcherItem.ContextMenuCollection, xProject);
-
-        //        xProject.Attribute("MISCTEXT").Value = switcherItem.MiscText;
-        //    }
-        //}
-
-        //private XElement FindExistingProject(Project switcherItem, XElement xProject)
-        //{
-        //    // Find existing project
-        //    foreach (XElement xExistingProject in _xmlSettings.Elements("PROJECTS").Elements("PROJECT"))
-        //    {
-        //        //TODO If project has subprojects
-
-        //        if (xExistingProject.Attribute("NAME").Value == switcherItem.OriginalName)
-        //        {
-        //            xProject = xExistingProject;
-        //            break;
-        //        }
-        //    }
-        //    return xProject;
-        //}
-
-        ////private XElement AddNewProjectToXML(Project switcherItem, XElement xProject)
-        ////{
-        ////    // Add new xelement for new project
-        ////    xProject = new XElement("PROJECT", new XAttribute("NAME", switcherItem.Name), new XAttribute("MISCTEXT", switcherItem.MiscText));
-        ////    _xmlSettings.Element("PROJECTS").Add(xProject);
-
-        ////    if (switcherItem.Associations.Any())
-        ////    {
-        ////        // Add Association, context menus & parameters nodes
-        ////        foreach (Association association in switcherItem.Associations)
-        ////        {
-        ////            // Create association node
-        ////            XElement xAssociation = new XElement("ASSOCIATION", new XAttribute("PROJECTNAME", association.ProjectName), new XAttribute("APPLICATIONNAME", association.ApplicationName));
-
-        ////            // Create contextmenu node
-        ////            xAssociation.Add(new XElement("CONTEXTMENUS"));
-
-        ////            // Create parameter node
-        ////            xAssociation.Add(new XElement("PARAMETERS"));
-
-        ////            _xmlSettings.Element("ASSOCIATIONS").Add(xAssociation);
-        ////        }
-        ////    }
-        ////    return xProject;
-        ////}
-
-        //private static void SaveContextMenus(ObservableCollection<Class.ContextMenu> contextMenuCollection, XElement xmlNode)
-        //{
-        //    if (contextMenuCollection.Any())
-        //    {
-        //        List<XElement> contextMenus = new List<XElement>();
-
-        //        foreach (Class.ContextMenu contextMenu in contextMenuCollection)
-        //        {
-        //            if (contextMenu.Value != "" && contextMenu.DisplayName != "")
-        //            {
-        //                contextMenus.Add(new XElement("CONTEXTMENU", new XAttribute("TYPE", contextMenu.Type), new XAttribute("VALUE", contextMenu.Value), new XAttribute("DISPLAYNAME", contextMenu.DisplayName)));
-        //            }
-        //        }
-        //        if (xmlNode.Element("CONTEXTMENUS") == null)
-        //        {
-        //            xmlNode.Add(new XElement("CONTEXTMENUS"));
-        //        }
-
-        //        xmlNode.Element("CONTEXTMENUS").ReplaceNodes(contextMenus);
-        //    }
-        //    else
-        //    {
-        //        // Remove all contextmenu nodes
-        //        xmlNode.Element("CONTEXTMENUS").RemoveNodes();
-        //    }
-        //}
-
-        //private static void SaveParameters(ObservableCollection<Parameter> parameterCollection, XElement xmlNode)
-        //{
-        //    if (parameterCollection.Any())
-        //    {
-        //        List<XElement> parameters = new List<XElement>();
-
-        //        foreach (Parameter parameter in parameterCollection)
-        //        {
-        //            if (parameter.Value != "" && parameter.Path != "")
-        //            {
-        //                parameters.Add(new XElement("PARAMETER", new XAttribute("TYPE", parameter.Type), new XAttribute("VALUE", parameter.Value), new XAttribute("PATH", parameter.Path)));
-        //            }
-        //        }
-        //        xmlNode.Element("PARAMETERS").ReplaceNodes(parameters);
-        //    }
-        //    else
-        //    {
-        //        // Remove all contextmenu nodes
-        //        xmlNode.Element("PARAMETERS").RemoveNodes();
-        //    }
-        //}
-
-        private void CreateOrEditTile(Message.MessageCreateOrEditTile msg)
+        private void ChangeTab(Message.M_SimpleAction msg)
         {
-            if (msg.Sender is App | msg.Sender is ViewModelTiles)
+            switch (msg.SimpleAction)
             {
-                SelectedTile = msg.SelectedTile;
-                IsAddNewTabSelected = true;
-                Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(SelectedTile, this, null ));
+                case Fluor.ProjectSwitcher.Message.M_SimpleAction.Action.DisplayTilesTab:
+                    IsTileTabSelected = true;
+                    break;
+                case Fluor.ProjectSwitcher.Message.M_SimpleAction.Action.DisplayApplicationsTab:
+                    IsApplicationsTabSelected = true;
+                    break;
+                case Fluor.ProjectSwitcher.Message.M_SimpleAction.Action.DisplayAddNewTab:
+                    IsAddNewTabSelected = true;
+                    break;
+                default:
+                    break;
             }
         }
     }

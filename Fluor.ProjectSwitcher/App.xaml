@@ -316,6 +316,20 @@
                     <Button Grid.Row="4" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource CloseIcon}" Height="50" Width="50" Margin="80,20,0,0" Background="{DynamicResource SubColorBrush}"/>
                 </Grid>
             </ControlTemplate>
+
+            <DataTemplate x:Key="ListViewItemWithEditButton" DataType="ListViewItem">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                    <Button Margin="0,0,10,0" Grid.Column="1" Width="40" Height="40" VerticalAlignment="Center" Content="{DynamicResource EditIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Foreground="Black"  />
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

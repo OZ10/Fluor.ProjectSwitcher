@@ -10,7 +10,11 @@ namespace Fluor.ProjectSwitcher.Message
     {
         public enum Action
         {
-            DisplayApplicationsAsTiles
+            DisplayApplicationsAsTiles,
+            DisplayTilesTab,
+            DisplayApplicationsTab,
+            DisplayAddNewTab,
+            RefreshViews
         }
 
         public Action SimpleAction;

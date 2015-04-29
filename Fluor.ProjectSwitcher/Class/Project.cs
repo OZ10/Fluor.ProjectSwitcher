@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Xml.Linq;
 using System.Windows.Media;
 using System.Windows;
+using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
@@ -27,6 +28,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private Association _selectedAssociation;
+        [XmlIgnore]
         public Association SelectedAssociation
         {
             get
@@ -54,7 +56,13 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public Project(string projectName, IEnumerable<XElement> contextMenus, string miscText, bool isEnabled, Project parentProject, bool isNew)
+        public ObservableCollection<Project> SubItems { get; set; }
+
+        public Project()
+        {
+        }
+
+        public void Setup(string projectName, IEnumerable<XElement> contextMenus, string miscText, bool isEnabled, Project parentProject, bool isNew)
         {
             Name = projectName;
             OriginalName = projectName;
@@ -71,7 +79,7 @@ namespace Fluor.ProjectSwitcher.Class
             //Random random = new Random();
             //tileColors s = (tileColors)colorValues.GetValue(random.Next(colorValues.Length));
 
-            SubItems = new ObservableCollection<SwitcherItem>();
+            SubItems = new ObservableCollection<Project>();
             Associations = new ObservableCollection<Association>();
             Applications = new ObservableCollection<TopApplication>();
         }
@@ -91,7 +99,15 @@ namespace Fluor.ProjectSwitcher.Class
                     // Set the context menu parameters to those of the sub project's parent
                     //string contextMenu = parentContextMenu;
 
-                    subProject = new Project(xmlSubProject.Attribute("NAME").Value,
+                    //subProject = new Project(xmlSubProject.Attribute("NAME").Value,
+                    //                         xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
+                    //                         xmlSubProject.Attribute("MISCTEXT").Value,
+                    //                         true,
+                    //                         this,
+                    //                         false);
+
+                    subProject = new Project();
+                    subProject.Setup(xmlSubProject.Attribute("NAME").Value,
                                              xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
                                              xmlSubProject.Attribute("MISCTEXT").Value,
                                              true,
@@ -128,7 +144,10 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 if (xmlAssociation.Attribute("PROJECTNAME").Value == project.Name)
                 {
-                    association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
+                    //association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
+                    //                                                xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
+                    association = new Association();
+                    association.Setup(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
                                                                     xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
                     project.Associations.Add(association);
                 }

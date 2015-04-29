@@ -7,10 +7,12 @@ using Fluor.ProjectSwitcher.Class;
 using System.Windows;
 using System.Xml.Linq;
 using System;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelTiles : ViewModelBase 
+    public class ViewModelTiles : ViewModelBase
     {
         // TODO Is this property required?
         private ObservableCollection<Project> projectsCollection;
@@ -18,7 +20,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             get
             {
-                return projectsCollection; 
+                return projectsCollection;
             }
             set
             {
@@ -111,7 +113,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<Grid>>(this, DisplayContextMenus);
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoBackToParent);
             Messenger.Default.Register<Message.M_SimpleAction>(this, DisplayApplicationsAsTiles);
-            Messenger.Default.Register<Message.M_LoadFromSettings>(this, PopulateProjects);
+            Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateProjects);
+            Messenger.Default.Register<Project>(this, AddOrEditProject);
+            Messenger.Default.Register<Message.M_AddOrEditTile>(this, SaveChangesToProject);
 
             Messenger.Default.Register<GenericMessage<bool>>(this, SetEditMode);
 
@@ -122,36 +126,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Reads the project details from the xml file and populates the projects listview.
         /// </summary>
         /// <param name="xmlDoc">The XML document.</param>
-        private void PopulateProjects(Message.M_LoadFromSettings msg)
+        private void PopulateProjects(ObservableCollection<Project> msg)
         {
             try
             {
-                ProjectsCollection = new ObservableCollection<Project>();
-
-                Project project;
-
-                foreach (XElement xmlProject in msg.XmlSettings.Elements("PROJECTS").Elements("PROJECT"))
-                {
-                    //foreach (XElement xmlProject in xmlProjects.Elements("PROJECT"))
-                    //{
-                    // Create a new project instance
-                    project = new Project(xmlProject.Attribute("NAME").Value,
-                                            xmlProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
-                                            xmlProject.Attribute("MISCTEXT").Value,
-                                            true,
-                                            null,
-                                            false);
-
-                    // Get any associations associated with this project
-                    project.GetAssociations(project, msg.XmlSettings);
-
-                    // Get any sub projects associated with this project
-                    project.CreateSubProjects(xmlProject, msg.XmlSettings); //, project.ContextMenus);
-
-                    ProjectsCollection.Add(project);
-                    //ProjectsCollection.Add(new Project("","", false,"","", false));
-                    //}
-                }
+                ProjectsCollection = msg;
 
                 CreateTiles();
             }
@@ -215,7 +194,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             tile.Click += new RoutedEventHandler(Tile_Clicked);
             tile.DataContext = switcherItem;
             tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom"];
-            
+
             return tile;
         }
 
@@ -322,7 +301,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 //SwitcherItem switcherItem = (SwitcherItem)msg.Content;
                 Project switcherItem = msg.Content as Project;
-                
+
                 if (switcherItem == null)
                 {
                     // Selected item had no parent. Reset to top level projects
@@ -342,7 +321,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     }
                     SelectedTile = switcherItem;
                 }
-            }   
+            }
         }
 
         private void SetEditMode(GenericMessage<bool> msg)
@@ -372,7 +351,49 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void AddNewTile()
         {
-            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(null, this, null));
+            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayAddNewTab));
+            //Project newProject = new Project();
+            //newProject.Setup("Project Name", null, "", true, null, true);
+            //Messenger.Default.Send<Project>(newProject);
+        }
+
+        private void AddOrEditProject(Project project)
+        {
+            Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayAddNewTab));
+
+            Messenger.Default.Send<Message.M_AddOrEditTile>(new Message.M_AddOrEditTile(project, this));
+
+            //var msg = new NotificationMessageAction<Project>(project ,"", (p) => 
+            //{
+            //    ProjectsCollection.Add(p);
+            //    Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.RefreshViews));
+            //});
+
+            //Messenger.Default.Send(msg);
+        }
+
+        private void SaveChangesToProject(Message.M_AddOrEditTile msg)
+        {
+            if (msg.Sender is ViewModelAddNew)
+            {
+                Project project = msg.SelectedTile;
+
+                if (project.IsNew)
+                {
+                    ProjectsCollection.Add(project);
+                    UpdateTiles();
+                }
+                Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayTilesTab));
+            }
+        }
+
+        private void UpdateTiles()
+        {
+            foreach (Project project in ProjectsCollection.Where((p) => p.IsNew == true))
+            {
+                Button tile = CreateTile(project);
+                TopLevelTileCollection.Add(tile);
+            }
         }
     }
 }

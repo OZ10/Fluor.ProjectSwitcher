@@ -60,7 +60,7 @@ namespace Fluor.ProjectSwitcher
         {
             Button btn = (Button)sender;
             Project selectedTile = (Project)btn.DataContext;
-            Messenger.Default.Send<Message.MessageCreateOrEditTile>(new Message.MessageCreateOrEditTile(selectedTile, this, null));
+            Messenger.Default.Send<Project>(selectedTile);
         }
 
         // Ok (save) button on the add new view
@@ -69,21 +69,25 @@ namespace Fluor.ProjectSwitcher
             Button btn = (Button)sender;
             Project selectedTile = (Project)btn.DataContext;
 
-            Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(selectedTile, this));
+            //Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(selectedTile, this));
         }
 
         private void btnAddnewContextMenu_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             SwitcherItem switchItem = (SwitcherItem)btn.DataContext;
-            switchItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+            //switchItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+            Class.ContextMenu cm = new Class.ContextMenu();
+            cm.Setup(Class.ContextMenu.ContextMenuTypeEnum.PATH, "", "");
+            switchItem.AddContextMenu(cm);
         }
 
         private void btnAddAssociatedApplication_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             Project project = (Project)btn.DataContext;
-            Association association = new Association(project.Name, "SPPID", null, null);
+            Association association = new Association();
+            association.Setup(project.Name, "SPPID", null, null);
             project.Associations.Add(association);
             project.SelectedAssociation = association;
         }

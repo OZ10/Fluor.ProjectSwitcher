@@ -10,19 +10,31 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
     public class SwitcherItem : Class.Base 
     {
+        [XmlAttribute()]
         public string Name { get; set; } // Current name of the project
+
+        [XmlIgnore]
         public string OriginalName { get; set; } // Used to store the name before it's modified in the Edit view
-        public ObservableCollection<SwitcherItem> SubItems { get; set; }
+
+        //public ObservableCollection<SwitcherItem> SubItems { get; set; }
+
+        [XmlAttribute()]
         public bool IsEnabled { get; set; }
+
+        [XmlIgnore]
         public SwitcherItem ParentItem { get; set; }
+
+        [XmlIgnore]
         public bool IsNew { get; set; }
 
         private string miscText;
+        [XmlAttribute()]
         public string MiscText
         {
             get
@@ -43,6 +55,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private Visibility miscTextVisibility;
+        [XmlIgnore]
         public Visibility MiscTextVisibility
         {
             get
@@ -71,6 +84,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private bool isActive;
+        [XmlIgnore]
         public bool IsActive
         {
             get
@@ -85,6 +99,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private ObservableCollection<MenuItem> menuItemCollection;
+        [XmlIgnore]
         public ObservableCollection<MenuItem> MenuItemCollection
         {
             get
@@ -99,6 +114,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private bool _isActiveProject;
+        [XmlIgnore]
         public bool IsActiveProject
         {
             get
@@ -112,6 +128,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private Visibility isEditMode;
+        [XmlIgnore]
         public Visibility IsEditMode
         {
             get
@@ -125,26 +142,26 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        public SwitcherItem GetActiveSubItem()
-        {
-            SwitcherItem item = RecurseSubItems(SubItems);
-            return item;
-        }
+        //public SwitcherItem GetActiveSubItem()
+        //{
+        //    SwitcherItem item = RecurseSubItems(SubItems);
+        //    return item;
+        //}
 
-        private SwitcherItem RecurseSubItems(ObservableCollection<SwitcherItem> items)
-        {
-            foreach (SwitcherItem subItem in items)
-            {
-                if (subItem.IsActive)
-                {
-                    return subItem;
-                }
+        //private SwitcherItem RecurseSubItems(ObservableCollection<SwitcherItem> items)
+        //{
+        //    foreach (SwitcherItem subItem in items)
+        //    {
+        //        if (subItem.IsActive)
+        //        {
+        //            return subItem;
+        //        }
 
-                RecurseSubItems(subItem.SubItems);
-            }
+        //        RecurseSubItems(subItem.SubItems);
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public void GetContextMenus(IEnumerable<XElement> contextMenus)
         {
@@ -160,7 +177,8 @@ namespace Fluor.ProjectSwitcher.Class
                     if (contextMenu.Attribute("TYPE").Value != "")
                     {
                         //TODO Hard-coded PATH enum needs to be changed
-                        ContextMenu newContextMenu = new ContextMenu(ContextMenu.TypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
+                        ContextMenu newContextMenu = new ContextMenu();
+                        newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
                         AddContextMenu(newContextMenu);
                     }
                 }
@@ -169,7 +187,8 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 // Add a blank row so user can input data
                 //TODO Hard-coded PATH enum needs to be changed
-                ContextMenu newContextMenu = new ContextMenu(ContextMenu.TypeEnum.PATH, "", "");
+                ContextMenu newContextMenu = new ContextMenu();
+                newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, "", "");
                 AddContextMenu(newContextMenu);
             }
         }

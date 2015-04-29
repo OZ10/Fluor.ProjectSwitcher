@@ -59,48 +59,82 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public ViewModelAddNew()
         {
             //Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, DisplayTileDetails);
-            Messenger.Default.Register<Message.MessageCreateOrEditTile>(this, DisplayTileDetails);
+            //Messenger.Default.Register<Message.MessageAddOrEditTile>(this, DisplayTileDetails);
+            Messenger.Default.Register<Message.M_AddOrEditTile>(this, ShowProjectDetails);
         }
 
-        private void DisplayTileDetails(Message.MessageCreateOrEditTile msg)
+        private void ShowProjectDetails(Message.M_AddOrEditTile msg)
         {
-            if (msg.Sender is MainViewModel)
+            if (msg.Sender is ViewModelTiles)
             {
-                if (msg.SelectedTile != null)
+                SelectedItem = msg.SelectedTile;
+
+                // If the selected project only has one assoication, select it
+                if (SelectedItem.Associations.Count == 1)
                 {
-                    SelectedItem = msg.SelectedTile;
-
-                    // If the selected project only has one assoication, select it
-                    if (SelectedItem.Associations.Count == 1)
-                    {
-                        SelectedItem.SelectedAssociation = SelectedItem.Associations[0];
-                    }
+                    SelectedItem.SelectedAssociation = SelectedItem.Associations[0];
                 }
-                else
-                {
-                    SelectedItem = new Project("Project Name", null, "", true, null, true);
-                    msg.ProjectsCollection.Add(SelectedItem);
-                }
-
-                //TODO Refactor this
-                // Add blank contextmenu item so user can edit it to create new context menus
-                SelectedItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
-
-                foreach (Association association in selectedItem.Associations)
-                {
-                    association.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
-
-                    association.Parameters.Add(new Parameter(Parameter.TypeEnum.INI, "", ""));
-                }
-
-                //SelectedItemCollection = new ObservableCollection<ListBox>();
-
-                //ListBox lb = new ListBox();
-                //lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["NewTileTemplate"];
-                //lb.DataContext = SelectedItem;
-
-                //SelectedItemCollection.Add(lb);
             }
+        }
+
+        //private void DisplayTileDetails(Message.MessageAddOrEditTile msg)
+        //{
+        //    if (msg.Sender is MainViewModel)
+        //    {
+        //        if (msg.SelectedTile != null)
+        //        {
+        //            SelectedItem = msg.SelectedTile;
+
+        //            // If the selected project only has one assoication, select it
+        //            if (SelectedItem.Associations.Count == 1)
+        //            {
+        //                SelectedItem.SelectedAssociation = SelectedItem.Associations[0];
+        //            }
+        //        }
+        //        else
+        //        {
+        //            //SelectedItem = new Project("Project Name", null, "", true, null, true);
+        //            //SelectedItem = new Project();
+        //            //SelectedItem.Setup("Project Name", null, "", true, null, true);
+        //            //msg.ProjectsCollection.Add(SelectedItem);
+        //        }
+
+        //        //TODO Refactor this
+        //        // Add blank contextmenu item so user can edit it to create new context menus
+        //        //SelectedItem.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+
+        //        Class.ContextMenu cm = new Class.ContextMenu();
+        //        cm.Setup(Class.ContextMenu.ContextMenuTypeEnum.PATH, "", "");
+        //        SelectedItem.AddContextMenu(cm);
+
+        //        foreach (Association association in selectedItem.Associations)
+        //        {
+        //            //association.AddContextMenu(new Class.ContextMenu(Class.ContextMenu.TypeEnum.PATH, "", ""));
+
+        //            cm = new Class.ContextMenu();
+        //            cm.Setup(Class.ContextMenu.ContextMenuTypeEnum.PATH, "", "");
+        //            association.AddContextMenu(cm);
+
+        //            Parameter p = new Parameter();
+        //            p.Setup(Parameter.ParameterTypeEnum.INI, "", "");
+        //            association.Parameters.Add(p);
+        //        }
+
+        //        //SelectedItemCollection = new ObservableCollection<ListBox>();
+
+        //        //ListBox lb = new ListBox();
+        //        //lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["NewTileTemplate"];
+        //        //lb.DataContext = SelectedItem;
+
+        //        //SelectedItemCollection.Add(lb);
+        //    }
+        //}
+
+        public void OkButton_Clicked()
+        {
+            Messenger.Default.Send<Message.M_AddOrEditTile>(new Message.M_AddOrEditTile(SelectedItem, this));
+            //proj.Execute(SelectedItem);
+            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.RefreshViews));
         }
 
 
