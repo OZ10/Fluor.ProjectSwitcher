@@ -39,6 +39,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        bool isApplicationsTabSelected;
+        public bool IsApplicationsTabSelected
+        {
+            get
+            {
+                return isApplicationsTabSelected;
+            }
+            set
+            {
+                isApplicationsTabSelected = value;
+                RaisePropertyChanged("IsApplicationsTabSelected");
+            }
+        }
+
         public ViewModelApplications()
         {
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
@@ -46,6 +60,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<TextBlock>>(this, DisplayContextMenus);
             Messenger.Default.Register<ObservableCollection<TopApplication>>(this, PopulateApplications);
             Messenger.Default.Register<Message.M_GetAssociatedApplications>(this, GetAssociatedApplications);
+            Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
         }
 
         private void GetAssociatedApplications(Message.M_GetAssociatedApplications msg)
@@ -146,6 +161,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     }
 
                 }
+            }
+        }
+
+        private void ChangeView(Message.M_ChangeView msg)
+        {
+            if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab)
+            {
+                IsApplicationsTabSelected = true;
+            }
+            else
+            {
+                IsApplicationsTabSelected = false;
             }
         }
     }

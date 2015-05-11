@@ -14,7 +14,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class ViewModelTiles : ViewModelBase
     {
-        // TODO Is this property required?
         private ObservableCollection<Project> projectsCollection;
         public ObservableCollection<Project> ProjectsCollection
         {
@@ -26,21 +25,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 projectsCollection = value;
                 RaisePropertyChanged("ProjectsCollection");
-            }
-        }
-
-        // TODO Is this property required?
-        private ObservableCollection<SwitcherItem> applicationsCollection;
-        public ObservableCollection<SwitcherItem> ApplicationsCollection
-        {
-            get
-            {
-                return applicationsCollection;
-            }
-            set
-            {
-                applicationsCollection = value;
-                RaisePropertyChanged("ApplicationsCollection");
             }
         }
 
@@ -86,7 +70,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                 // Send a message to the main view model containing the newly selected item
                 Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, this));
-                //Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
             }
         }
 
@@ -104,6 +87,21 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        bool isTileTabSelected;
+        public bool IsTileTabSelected
+        {
+            get
+            {
+                return isTileTabSelected;
+            }
+            set
+            {
+                isTileTabSelected = value;
+
+                RaisePropertyChanged("IsTileTabSelected");
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewModelTiles"/> class.
         /// </summary>
@@ -116,6 +114,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateProjects);
             Messenger.Default.Register<Project>(this, AddOrEditProject);
             Messenger.Default.Register<Message.M_AddOrEditTile>(this, SaveChangesToProject);
+            Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
 
             Messenger.Default.Register<GenericMessage<bool>>(this, SetEditMode);
 
@@ -136,8 +135,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("The SPPIDProjects section of the configuration XML file contains errors.\n\nMandatory attributes are:\nNAME\nPLANTNAME\nINIFILE\nPIDPATH\nSPENGPATH",
-                    "XML Errors", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Errooooooooorrrrrr");
                 throw;
             }
         }
@@ -299,6 +297,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (msg.Sender is Fluor.ProjectSwitcher.App | msg.Sender is MainWindow)
             {
+                Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+
                 //SwitcherItem switcherItem = (SwitcherItem)msg.Content;
                 Project switcherItem = msg.Content as Project;
 
@@ -349,27 +349,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public void AddNewTile()
-        {
-            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayAddNewTab));
-            //Project newProject = new Project();
-            //newProject.Setup("Project Name", null, "", true, null, true);
-            //Messenger.Default.Send<Project>(newProject);
-        }
-
         private void AddOrEditProject(Project project)
         {
-            Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayAddNewTab));
-
+            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
             Messenger.Default.Send<Message.M_AddOrEditTile>(new Message.M_AddOrEditTile(project, this));
-
-            //var msg = new NotificationMessageAction<Project>(project ,"", (p) => 
-            //{
-            //    ProjectsCollection.Add(p);
-            //    Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.RefreshViews));
-            //});
-
-            //Messenger.Default.Send(msg);
         }
 
         private void SaveChangesToProject(Message.M_AddOrEditTile msg)
@@ -383,7 +366,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     ProjectsCollection.Add(project);
                     UpdateTiles();
                 }
-                Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayTilesTab));
+                Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
             }
         }
 
@@ -393,6 +376,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 Button tile = CreateTile(project);
                 TopLevelTileCollection.Add(tile);
+            }
+        }
+
+        private void ChangeView(Message.M_ChangeView msg)
+        {
+            if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayTilesTab)
+            {
+                IsTileTabSelected = true;
+            }
+            else
+            {
+                IsTileTabSelected = false;
             }
         }
     }

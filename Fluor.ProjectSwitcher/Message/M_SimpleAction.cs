@@ -11,9 +11,6 @@ namespace Fluor.ProjectSwitcher.Message
         public enum Action
         {
             DisplayApplicationsAsTiles,
-            DisplayTilesTab,
-            DisplayApplicationsTab,
-            DisplayAddNewTab,
             RefreshViews
         }
 

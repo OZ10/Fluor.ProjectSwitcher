@@ -64,47 +64,48 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        bool isTileTabSelected;
-        public bool IsTileTabSelected
-        {
-            get
-            {
-                return isTileTabSelected;
-            }
-            set
-            {
-                isTileTabSelected = value;
-                RaisePropertyChanged("IsTileTabSelected");
-            }
-        }
+        //bool isTileTabSelected;
+        //public bool IsTileTabSelected
+        //{
+        //    get
+        //    {
+        //        return isTileTabSelected;
+        //    }
+        //    set
+        //    {
+        //        isTileTabSelected = value;
 
-        bool isApplicationsTabSelected;
-        public bool IsApplicationsTabSelected
-        {
-            get
-            {
-                return isApplicationsTabSelected;
-            }
-            set
-            {
-                isApplicationsTabSelected = value;
-                RaisePropertyChanged("IsApplicationsTabSelected");
-            }
-        }
+        //        RaisePropertyChanged("IsTileTabSelected");
+        //    }
+        //}
 
-        bool isAddNewTabSelected;
-        public bool IsAddNewTabSelected
-        {
-            get
-            {
-                return isAddNewTabSelected;
-            }
-            set
-            {
-                isAddNewTabSelected = value;
-                RaisePropertyChanged("IsAddNewTabSelected");
-            }
-        }
+        //bool isApplicationsTabSelected;
+        //public bool IsApplicationsTabSelected
+        //{
+        //    get
+        //    {
+        //        return isApplicationsTabSelected;
+        //    }
+        //    set
+        //    {
+        //        isApplicationsTabSelected = value;
+        //        RaisePropertyChanged("IsApplicationsTabSelected");
+        //    }
+        //}
+
+        //bool isAddNewTabSelected;
+        //public bool IsAddNewTabSelected
+        //{
+        //    get
+        //    {
+        //        return isAddNewTabSelected;
+        //    }
+        //    set
+        //    {
+        //        isAddNewTabSelected = value;
+        //        RaisePropertyChanged("IsAddNewTabSelected");
+        //    }
+        //}
 
         private ObservableCollection<Button> breadcrumbCollection;
         public ObservableCollection<Button> BreadcrumbCollection
@@ -125,15 +126,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            IsTileTabSelected = true;
+            //IsTileTabSelected = true;
+            //IsApplicationsTabSelected = false;
+            //IsAddNewTabSelected = false;
+
             BreadcrumbCollection = new ObservableCollection<Button>();
 
             Messenger.Default.Register<Message.MessageUpdateSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
-            Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
+            Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
-            Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoToTilesView);
-            Messenger.Default.Register<Message.M_SimpleAction>(this, ChangeTab);
         }
 
         /// <summary>
@@ -145,16 +147,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 ProjectSwitcherSettings = Deserialize();
 
-                //_xmlSettings = XElement.Load("Fluor.ProjectSwitcher.Projects.xml");
-                //Messenger.Default.Send<Message.M_LoadFromSettings>(new Message.M_LoadFromSettings(Message.M_LoadFromSettings.SettingLoadType.Project, _xmlSettings));
-                //Messenger.Default.Send<Message.M_LoadFromSettings>(new Message.M_LoadFromSettings(Message.M_LoadFromSettings.SettingLoadType.Application, _xmlSettings));
-
                 Messenger.Default.Send<ObservableCollection<Project>>(ProjectSwitcherSettings.Projects);
                 Messenger.Default.Send<ObservableCollection<TopApplication>>(ProjectSwitcherSettings.Applications);
+                Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
 
-                //PopulateProjects();
-                //PopulateAssociations();
-                //PopulateApplications();
             }
             catch (Exception)
             {
@@ -198,12 +194,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     bool closeResult = await CloseApplicationsAsync();
                 }
 
-                // Change the active project and setup any project specific settings
-                //ChangeActiveProject();
-
-
                 SetProjectSpecificSettings();
-
 
                 // Update status window
                 Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "opening applications"));
@@ -222,13 +213,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Project selectedProject = SelectedTile as Project;
 
             // For all associations associated with the selected project
-            //foreach (Association association in Associations.Where(ass => ass.ProjectName == SelectedTile.Name))
-            //{
-            // Associations have a 'parameters' field. This field contains project & application specific settings which need to be set.
-            // This could be an ini file setting(s), registry setting(s) or something else (as long as code as been written to deal with it).
-
-            // For each parameter, determine type and set
-            //foreach (Parameter parameter in association.Parameters)
             if (selectedProject != null && _selectedApplication != null)
             {
                 foreach (Parameter parameter in selectedProject.Associations.First<Association>(a => a.ApplicationName == _selectedApplication.Name).Parameters)
@@ -412,48 +396,37 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             SelectedTile = msg.SelectedTile;
 
-            //if (msg.Sender is App | msg.Sender is ViewModelTiles)
-            //{
-            //    IsAddNewTabSelected = true;
-            //    Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(SelectedTile, this));
-            //}
-            if (msg.Sender is ViewModelTiles)
+            // A tile has been selected so display the tile tab
+            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+
+            if (SelectedTile != null)
             {
-                //TODO Double message here so added this selected tab check. Must be a better way to do this
-                if (IsAddNewTabSelected == false)
+                // Change the breadcrumb (title bar) to reflect the newly selected item
+                PopulateBreadCrumb(SelectedTile);
+
+                // Get all the associations associated with the selected item
+                Messenger.Default.Send<Message.M_GetAssociatedApplications>(new Message.M_GetAssociatedApplications(SelectedTile));
+
+                if (SelectedTile.Applications.Any())
                 {
-                    // A tile has been selected so display the tile tab
-                    IsTileTabSelected = true;
-
-                    if (SelectedTile != null)
+                    if (SelectedTile.Applications.Count == 1)
                     {
-                        // Change the breadcrumb (title bar) to reflect the newly selected item
-                        PopulateBreadCrumb(SelectedTile);
-
-                        // Get all the associations associated with the selected item
-                        Messenger.Default.Send<Message.M_GetAssociatedApplications>(new Message.M_GetAssociatedApplications(SelectedTile));
-
-                        if (SelectedTile.Applications.Any())
-                        {
-                            if (SelectedTile.Applications.Count == 1)
-                            {
-                                // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
-                                TopApplication application = SelectedTile.Applications[0] as TopApplication;
-                                Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
-                            }
-                            else
-                            {
-                                // Send a message to the Tile view to display associated applications as tiles
-                                Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayApplicationsAsTiles));
-                            }
-                        }
+                        // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
+                        TopApplication application = SelectedTile.Applications[0] as TopApplication;
+                        Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
+                        Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
                     }
                     else
                     {
-                        // Selected tile was null (home button selected), reset the breadcrumb collection.
-                        BreadcrumbCollection = new ObservableCollection<Button>();
+                        // Send a message to the Tile view to display associated applications as tiles
+                        Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayApplicationsAsTiles));
                     }
                 }
+            }
+            else
+            {
+                // Selected tile was null (home button selected), reset the breadcrumb collection.
+                BreadcrumbCollection = new ObservableCollection<Button>();
             }
         }
 
@@ -546,30 +519,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
             return contextMenus;
         }
 
-        /// <summary>
-        /// Opens the admin module.
-        /// </summary>
-        public void OpenAdminModule()
-        {
-            //Fluor.ProjectSwitcher.Admin.Class.Run adminModule = new Admin.Class.Run(ProjectsCollection, ApplicationsCollection, Associations);
-        }
-
-        private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)
+        private void UpdateSelectedApplication(GenericMessage<TopApplication> message)
         {
             _selectedApplication = (TopApplication)message.Content;
-            IsApplicationsTabSelected = true;
+            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
         }
 
         private void UpdateSelectedProjectContextMenus(GenericMessage<ObservableCollection<MenuItem>> msg)
         {
             ContextMenus = msg.Content;
-        }
-
-        private void GoToTilesView(GenericMessage<SwitcherItem> msg)
-        {
-            IsApplicationsTabSelected = false;
-            IsAddNewTabSelected = false;
-            isTileTabSelected = true;
         }
 
         public void SaveAndClose()
@@ -578,47 +536,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 ProjectSwitcherSettings.HasBeenUpdated = false;
 
-                //ProjectSwitcherSettings = new ProjectSwitcherSettings();
-
-                // Send messages to get the Project & Application collections from their respective views
-                // TODO I don't think these are required. Any changes to the collections should be reflected
-                // in the ProjectSwitcherSettings collection. Needs testing.
-
-                //var msg = new NotificationMessageAction<ObservableCollection<Project>>(this, "", (p) =>
-                //{
-                //    ObservableCollection<Project> projectCollection = p;
-                //    ProjectSwitcherSettings.Projects = p;
-                //});
-
-                //Messenger.Default.Send(msg);
-
-                //var msg2 = new NotificationMessageAction<ObservableCollection<TopApplication>>(this, "", (a) =>
-                //{
-                //    ObservableCollection<TopApplication> applicationsCollection = a;
-                //    ProjectSwitcherSettings.Applications = a;
-                //});
-
-                //Messenger.Default.Send(msg2);
-
                 Serialize(ProjectSwitcherSettings);
-            }
-        }
-
-        private void ChangeTab(Message.M_SimpleAction msg)
-        {
-            switch (msg.SimpleAction)
-            {
-                case Fluor.ProjectSwitcher.Message.M_SimpleAction.Action.DisplayTilesTab:
-                    IsTileTabSelected = true;
-                    break;
-                case Fluor.ProjectSwitcher.Message.M_SimpleAction.Action.DisplayApplicationsTab:
-                    IsApplicationsTabSelected = true;
-                    break;
-                case Fluor.ProjectSwitcher.Message.M_SimpleAction.Action.DisplayAddNewTab:
-                    IsAddNewTabSelected = true;
-                    break;
-                default:
-                    break;
             }
         }
     }

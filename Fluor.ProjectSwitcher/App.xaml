@@ -12,7 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
+            
             <Style x:Key="MetroTileCustom" TargetType="{x:Type Button}">
                 <!--BasedOn="{StaticResource {x:Type Button}}">-->
                 <!--<Setter Property="Background" Value="Aqua"/>-->

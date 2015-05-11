@@ -123,6 +123,7 @@
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />
     <Compile Include="Message\MessageUpdateSelectedTile.cs" />
+    <Compile Include="Message\M_ChangeView.cs" />
     <Compile Include="Message\M_GetAssociatedApplications.cs" />
     <Compile Include="Message\M_SimpleAction.cs" />
     <Compile Include="ViewModel\ViewModelAddNew.cs" />
