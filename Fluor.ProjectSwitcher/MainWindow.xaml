@@ -98,23 +98,23 @@
         <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>
         <!--<TabControl Grid.Row="1">
             <TabItem Name="tbiTiles" Header="Tiles" IsSelected="{Binding IsTileTabSelected}" Visibility="Collapsed">
-                <View:ViewTiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <View:V_Tiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Name="tbiApplications" Header="Apps" IsSelected="{Binding IsApplicationsTabSelected}" Visibility="Collapsed">
-                <View:ViewApplications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <View:V_Applications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Name="tbiAddNew" Header="Add New" IsSelected="{Binding IsAddNewTabSelected}" Visibility="Collapsed">
-                <View:ViewAddNew Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <View:V_AddNew Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </TabItem>
         </TabControl>-->
 
-        <View:ViewTiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsTileTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <View:ViewApplications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <View:ViewAddNew Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsAddNewTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        
-            <!--<Rectangle Grid.Row="1" Grid.Column="1" Width="1" HorizontalAlignment="Right" Stroke="{DynamicResource AccentColorBrush4}"/>-->
+        <View:V_Tiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsTileTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <View:V_Applications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <View:V_AddNew Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsAddNewTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!--<Rectangle Grid.Row="1" Grid.Column="1" Width="1" HorizontalAlignment="Right" Stroke="{DynamicResource AccentColorBrush4}"/>-->
         <!--<Label Name="lblPlantName" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="12" Content="{Binding SelectedProject.MiscText}"/>-->
-        <Button Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="SWITCH PROJECT" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Background="{DynamicResource SubColorBrush}" Foreground="White"/>
+        <Button Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="SWITCH PROJECT" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Foreground="White" Background="{DynamicResource SubColorBrush}"/>
         <local:StatusWindow x:Name="StatusWindow" Grid.RowSpan="4" Grid.ColumnSpan="4" Visibility="Hidden"/>
         <Rectangle Name="recDisable" Grid.RowSpan="3" Grid.ColumnSpan="4" Opacity="0.5" Visibility="Hidden" MouseDown="recDisable_MouseDown">
             <Rectangle.Fill>

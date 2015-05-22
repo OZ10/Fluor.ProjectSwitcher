@@ -122,32 +122,27 @@
     <Compile Include="Message\M_AddOrEditTile.cs" />
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />
-    <Compile Include="Message\MessageUpdateSelectedTile.cs" />
+    <Compile Include="Message\M_UpdateSelectedTile.cs" />
     <Compile Include="Message\M_ChangeView.cs" />
     <Compile Include="Message\M_GetAssociatedApplications.cs" />
     <Compile Include="Message\M_SimpleAction.cs" />
-    <Compile Include="ViewModel\ViewModelAddNew.cs" />
-    <Compile Include="ViewModel\ViewModelApplications.cs" />
-    <Compile Include="ViewModel\ViewModelTiles.cs" />
+    <Compile Include="ViewModel\VM_AddNew.cs" />
+    <Compile Include="ViewModel\VM_Applications.cs" />
+    <Compile Include="ViewModel\VM_Tiles.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="View\ViewAddNew.xaml.cs">
-      <DependentUpon>ViewAddNew.xaml</DependentUpon>
+    <Compile Include="View\V_AddNew.xaml.cs">
+      <DependentUpon>V_AddNew.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewApplications.xaml.cs">
-      <DependentUpon>ViewApplications.xaml</DependentUpon>
+    <Compile Include="View\V_Applications.xaml.cs">
+      <DependentUpon>V_Applications.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewTiles.xaml.cs">
-      <DependentUpon>ViewTiles.xaml</DependentUpon>
+    <Compile Include="View\V_Tiles.xaml.cs">
+      <DependentUpon>V_Tiles.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewStatusWindow.xaml.cs">
-      <DependentUpon>ViewStatusWindow.xaml</DependentUpon>
+    <Compile Include="View\V_StatusWindow.xaml.cs">
+      <DependentUpon>V_StatusWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Page Include="..\..\Fluor_Resources\Fluor_Accents.xaml">
-      <Link>Themes\Fluor_Accents.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="..\..\Fluor_Resources\Fluor_CustomControlStyles.xaml">
       <Link>Themes\Fluor_CustomControlStyles.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
@@ -170,19 +165,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\ViewAddNew.xaml">
+    <Page Include="Themes\Fluor_Accents.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ViewApplications.xaml">
+    <Page Include="View\V_AddNew.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\V_Applications.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ViewTiles.xaml">
+    <Page Include="View\V_Tiles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ViewStatusWindow.xaml">
+    <Page Include="View\V_StatusWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

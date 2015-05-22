@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelApplications : ViewModelBase
+    public class VM_Applications : ViewModelBase
     {
         private ObservableCollection<TopApplication> applicationsCollection;
         public ObservableCollection<TopApplication> ApplicationsCollection
@@ -53,7 +53,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public ViewModelApplications()
+        public VM_Applications()
         {
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<MenuItem>>(this, SelectApplications);

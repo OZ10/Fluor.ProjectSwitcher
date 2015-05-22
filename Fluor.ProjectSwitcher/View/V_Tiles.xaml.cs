@@ -8,17 +8,17 @@ namespace Fluor.ProjectSwitcher.View
     /// <summary>
     /// Interaction logic for ProjectsUC.xaml
     /// </summary>
-    public partial class ViewTiles : UserControl
+    public partial class V_Tiles : UserControl
     {
-        public ViewModel.ViewModelTiles vm
+        public ViewModel.VM_Tiles vm
         {
             get
             {
-                return (ViewModel.ViewModelTiles)DataContext;
+                return (ViewModel.VM_Tiles)DataContext;
             }
         }
 
-        public ViewTiles()
+        public V_Tiles()
         {
             InitializeComponent();
         }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Fluor.ProjectSwitcher.View.ViewTiles"
+﻿<UserControl x:Class="Fluor.ProjectSwitcher.View.V_Tiles"
              xmlns:local="clr-namespace:Fluor.ProjectSwitcher"    
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

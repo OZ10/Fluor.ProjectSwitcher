@@ -62,7 +62,7 @@
                                     <TextBlock Text="{Binding MiscText}" VerticalAlignment="Center" Margin="10,4,0,4" FontWeight="Normal" FontSize="12" Visibility="{Binding MiscTextVisibility}" Foreground="{DynamicResource TextBlack54Brush}"/>
                                 </StackPanel>
                                 <ContentPresenter Content="{DynamicResource EditIcon}" Margin="15" Grid.RowSpan="2" Grid.Column="2" Visibility="{Binding IsEditMode}"/>
-                                <Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="10" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Opacity="0" Visibility="{Binding IsEditMode}" Click="btnEdit_Click"/>
+                                <Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="10" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Opacity="0" Visibility="Visible" Click="btnEdit_Click"/>
                             </Grid>
 
                             <ControlTemplate.Triggers>
@@ -92,10 +92,14 @@
                                 </Trigger>
 
                                 <Trigger Property="IsMouseOver" Value="True" SourceName="btnEdit">
+                                    <Setter Property="Foreground" Value="{StaticResource SubColorBrush}"  />
+                                </Trigger>
+                                
+                                <!--<Trigger Property="IsMouseOver" Value="True" SourceName="btnEdit">
                                     <Trigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <!--<ColorAnimation Duration="0:0:0.3" To="Aquamarine" Storyboard.TargetProperty="(Button.Foreground).Color" Storyboard.TargetName="btnEdit"/>-->
+                                                --><!--<ColorAnimation Duration="0:0:0.3" To="Aquamarine" Storyboard.TargetProperty="(Button.Foreground).Color" Storyboard.TargetName="btnEdit"/>--><!--
                                                 <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="btnEdit"/>
                                             </Storyboard>
                                         </BeginStoryboard>
@@ -107,7 +111,7 @@
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </Trigger.ExitActions>
-                                </Trigger>
+                                </Trigger>-->
 
                                 <!--<Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="rec1" Property="Fill" Value="{DynamicResource SubColorBrush}"/>
@@ -327,7 +331,7 @@
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
-                    <Button Margin="0,0,10,0" Grid.Column="1" Width="40" Height="40" VerticalAlignment="Center" Content="{DynamicResource EditIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Foreground="Black"  />
+                    <Button Margin="0,0,10,0" Grid.Column="1" Width="40" Height="40" VerticalAlignment="Center" Content="{DynamicResource EditIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

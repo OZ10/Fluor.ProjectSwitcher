@@ -132,7 +132,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             BreadcrumbCollection = new ObservableCollection<Button>();
 
-            Messenger.Default.Register<Message.MessageUpdateSelectedTile>(this, ChangeSelectedTile);
+            Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
@@ -390,22 +390,22 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Changes the selected tile.
         /// </summary>
         /// <param name="msg">Message containing the selected item.</param>
-        private void ChangeSelectedTile(Message.MessageUpdateSelectedTile msg)
+        private void ChangeSelectedTile(Message.M_UpdateSelectedTile msg)
         {
             // Collect all the applications that are associated with the newly selected item
 
             SelectedTile = msg.SelectedTile;
 
-            // A tile has been selected so display the tile tab
-            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
-
             if (SelectedTile != null)
             {
+                // A tile has been selected so display the tile tab
+                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+
                 // Change the breadcrumb (title bar) to reflect the newly selected item
                 PopulateBreadCrumb(SelectedTile);
 
                 // Get all the associations associated with the selected item
-                Messenger.Default.Send<Message.M_GetAssociatedApplications>(new Message.M_GetAssociatedApplications(SelectedTile));
+                Messenger.Default.Send(new Message.M_GetAssociatedApplications(SelectedTile));
 
                 if (SelectedTile.Applications.Any())
                 {

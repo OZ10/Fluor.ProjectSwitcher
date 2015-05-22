@@ -8,17 +8,17 @@ namespace Fluor.ProjectSwitcher.View
     /// <summary>
     /// Interaction logic for ApplicationsUC.xaml
     /// </summary>
-    public partial class ViewAddNew : UserControl
+    public partial class V_AddNew : UserControl
     {
-        public ViewModel.ViewModelAddNew vm
+        public ViewModel.VM_AddNew vm
         {
             get
             {
-                return (ViewModel.ViewModelAddNew)DataContext;
+                return (ViewModel.VM_AddNew)DataContext;
             }
         }
 
-        public ViewAddNew()
+        public V_AddNew()
         {
             InitializeComponent();
         }

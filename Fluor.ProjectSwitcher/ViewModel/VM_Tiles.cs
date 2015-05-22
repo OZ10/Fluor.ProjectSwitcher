@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelTiles : ViewModelBase
+    public class VM_Tiles : ViewModelBase
     {
         private ObservableCollection<Project> projectsCollection;
         public ObservableCollection<Project> ProjectsCollection
@@ -69,7 +69,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 RaisePropertyChanged("SelectedTile");
 
                 // Send a message to the main view model containing the newly selected item
-                Messenger.Default.Send<Message.MessageUpdateSelectedTile>(new Message.MessageUpdateSelectedTile(selectedTile, this));
+                Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedTile, this));
             }
         }
 
@@ -103,9 +103,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewModelTiles"/> class.
+        /// Initializes a new instance of the <see cref="VM_Tiles"/> class.
         /// </summary>
-        public ViewModelTiles()
+        public VM_Tiles()
         {
             //Messenger.Default.Register<Message.MessagePopulateProjects>(this, UpdateProjectsCollection);
             Messenger.Default.Register<GenericMessage<Grid>>(this, DisplayContextMenus);
@@ -351,13 +351,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void AddOrEditProject(Project project)
         {
-            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
-            Messenger.Default.Send<Message.M_AddOrEditTile>(new Message.M_AddOrEditTile(project, this));
+            Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
+            Messenger.Default.Send(new Message.M_AddOrEditTile(project, this));
         }
 
         private void SaveChangesToProject(Message.M_AddOrEditTile msg)
         {
-            if (msg.Sender is ViewModelAddNew)
+            if (msg.Sender is VM_AddNew)
             {
                 Project project = msg.SelectedTile;
 
@@ -366,7 +366,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     ProjectsCollection.Add(project);
                     UpdateTiles();
                 }
-                Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
             }
         }
 

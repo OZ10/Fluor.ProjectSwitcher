@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class ViewModelAddNew : ViewModelBase 
+    public class VM_AddNew : ViewModelBase 
     {
         private Project selectedItem;
         public Project SelectedItem
@@ -71,7 +71,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public ViewModelAddNew()
+        public VM_AddNew()
         {
             //Messenger.Default.Register<Message.MessageAddOrEditTile>(this, DisplayTileDetails);
             Messenger.Default.Register<Message.M_AddOrEditTile>(this, ShowProjectDetails);
@@ -80,7 +80,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void ShowProjectDetails(Message.M_AddOrEditTile msg)
         {
-            if (msg.Sender is ViewModelTiles)
+            if (msg.Sender is VM_Tiles)
             {
                 SelectedItem = msg.SelectedTile;
 
