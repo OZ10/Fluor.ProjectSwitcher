@@ -14,8 +14,8 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlAttribute()]
         public string ProjectName { get; set; }
 
-        [XmlAttribute()]
-        public string ApplicationName { get; set; }
+        //[XmlAttribute()]
+        //public string ApplicationName { get; set; }
 
         private ObservableCollection<Parameter> _parameters;
         public ObservableCollection<Parameter> Parameters
@@ -36,13 +36,15 @@ namespace Fluor.ProjectSwitcher.Class
         {
         }
 
-        public void Setup(string projectName, string applicationName, IEnumerable<XElement> projectParameters, IEnumerable<XElement> contextMenus)
+        public void Setup(string projectName, string applicationName) //, IEnumerable<XElement> projectParameters, IEnumerable<XElement> contextMenus)
         {
             ProjectName = projectName;
-            ApplicationName = applicationName;
+            Name = applicationName;
 
-            GetContextMenus(contextMenus);
-            GetParameters(projectParameters);
+            Parameters = new ObservableCollection<Parameter>();
+
+            //GetContextMenus(contextMenus);
+            //GetParameters(projectParameters);
         }
 
         private void GetParameters(IEnumerable<XElement> projectParameters)

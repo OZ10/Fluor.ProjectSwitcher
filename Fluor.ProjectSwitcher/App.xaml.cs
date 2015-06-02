@@ -55,12 +55,21 @@ namespace Fluor.ProjectSwitcher
             Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
         }
 
-        // Edit button click on tile
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        private void btnTileMain_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             Project selectedTile = (Project)btn.DataContext;
-            Messenger.Default.Send<Project>(selectedTile);
+            //Messenger.Default.Send<Project>(selectedTile);
+            Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedTile, this));
+        }
+
+        // Edit button click on tile
+        private void btnTileEdit_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Project selectedTile = (Project)btn.DataContext;
+            Messenger.Default.Send(new Message.M_AddOrEditTile(selectedTile, this));
+            //Messenger.Default.Send<Project>(selectedTile);
         }
 
         // Ok (save) button on the add new view
@@ -84,10 +93,11 @@ namespace Fluor.ProjectSwitcher
 
         private void btnAddAssociatedApplication_Click(object sender, RoutedEventArgs e)
         {
+            //TODO Don't think this is required anymore
             Button btn = (Button)sender;
             Project project = (Project)btn.DataContext;
             Association association = new Association();
-            association.Setup(project.Name, "SPPID", null, null);
+            association.Setup(project.Name, "SPPID"); //, null, null);
             project.Associations.Add(association);
             project.SelectedAssociation = association;
         }

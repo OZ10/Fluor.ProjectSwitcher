@@ -33,7 +33,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<VM_Tiles>();
             SimpleIoc.Default.Register<VM_Applications>();
-            SimpleIoc.Default.Register<VM_AddNew>();
+            SimpleIoc.Default.Register<VM_Edit>();
         }
 
         public MainViewModel Main
@@ -60,11 +60,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public VM_AddNew AddNew
+        public VM_Edit AddNew
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<VM_AddNew>();
+                return ServiceLocator.Current.GetInstance<VM_Edit>();
             }
         }
        

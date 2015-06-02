@@ -26,6 +26,9 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlAttribute("Path")]
         public string Path { get; set; }
 
+        [XmlAttribute()]
+        public string Name { get; set; }
+
         public Parameter()
         {
         }

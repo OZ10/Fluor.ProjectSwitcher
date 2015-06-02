@@ -121,6 +121,39 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        private Visibility switcherButtonVisibility;
+        public Visibility SwitcherButtonVisibility
+        {
+            get { return switcherButtonVisibility; }
+            set
+            {
+                switcherButtonVisibility = value;
+                RaisePropertyChanged("SwitcherButtonVisibility");
+            }
+        }
+
+        //private string statusText;
+        //public string StatusText
+        //{
+        //    get { return statusText; }
+        //    set
+        //    {
+        //        statusText = value;
+        //        RaisePropertyChanged("StatusText");
+        //    }
+        //}
+
+        //private ObservableCollection<string> statusTextCollection;
+        //public ObservableCollection<string> StatusTextCollection
+        //{
+        //    get { return statusTextCollection; }
+        //    set
+        //    {
+        //        statusTextCollection = value;
+        //        RaisePropertyChanged("StatusTextCollection");
+        //    }
+        //}
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel 
         /// </summary>
@@ -131,11 +164,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //IsAddNewTabSelected = false;
 
             BreadcrumbCollection = new ObservableCollection<Button>();
+            SwitcherButtonVisibility = Visibility.Visible;
 
             Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
+            Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
         }
 
         /// <summary>
@@ -145,11 +180,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             try
             {
-                ProjectSwitcherSettings = Deserialize();
+                //ProjectSwitcherSettings = Deserialize("Fluor.ProjectSwitcher.Projects.xml");
+                ProjectSwitcherSettings = CheckStatusOfSettingsFile();
 
-                Messenger.Default.Send<ObservableCollection<Project>>(ProjectSwitcherSettings.Projects);
-                Messenger.Default.Send<ObservableCollection<TopApplication>>(ProjectSwitcherSettings.Applications);
-                Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+                PopulateProjectsAndApplications();
 
             }
             catch (Exception)
@@ -157,6 +191,39 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 MessageBox.Show("Doh!");
                 //Messenger.Default.Send<Message.MessageStatusUpdate>(new Message.MessageStatusUpdate(Visibility.Visible, "Doh!"));
             }
+        }
+
+        private void PopulateProjectsAndApplications()
+        {
+            Messenger.Default.Send<ObservableCollection<Project>>(ProjectSwitcherSettings.Projects);
+            Messenger.Default.Send<ObservableCollection<TopApplication>>(ProjectSwitcherSettings.Applications);
+            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+        }
+
+        private ProjectSwitcherSettings CheckStatusOfSettingsFile()
+        {
+            ProjectSwitcherSettings settings = Deserialize("Fluor.ProjectSwitcher.Projects.xml");
+
+            if (File.Exists("Fluor.ProjectSwitcher.Projects_Backup.xml"))
+            {
+                ProjectSwitcherSettings settingsBackup = Deserialize("Fluor.ProjectSwitcher.Projects_Backup.xml");
+
+                if (settingsBackup.Version >= settings.Version)
+                {
+                    //UpdateStatusText("Loaded settings from backup");
+                    return settingsBackup;
+                }
+            }
+
+            //UpdateStatusText("Loaded settings");
+            return settings;
+        }
+
+        public void LoadSettingsManually(string settingFilePath)
+        {
+            ProjectSwitcherSettings = Deserialize(settingFilePath);
+            PopulateProjectsAndApplications();
+            //UpdateStatusText("Loaded settings user selected settings");
         }
 
         static public void Serialize(ProjectSwitcherSettings d)
@@ -168,10 +235,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        public static ProjectSwitcherSettings Deserialize()
+        public static ProjectSwitcherSettings Deserialize(string filePath)
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
-            TextReader reader = new StreamReader(@"Fluor.ProjectSwitcher.Projects.xml");
+            TextReader reader = new StreamReader(@filePath);
             object obj = deserializer.Deserialize(reader);
             reader.Close();
             return (ProjectSwitcherSettings)obj;
@@ -190,18 +257,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Only close open applcations if the selected project is not the active project
                 if (SelectedTile.IsActiveProject != true)
                 {
-                    Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "closing applications"));
-                    bool closeResult = await CloseApplicationsAsync();
+                    UpdateStatusBar("closing applications");
+                    bool closeResult = await Task.Run(() => CloseApplications());
                 }
 
                 SetProjectSpecificSettings();
 
-                // Update status window
-                Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, "opening applications"));
+                UpdateStatusBar("opening applications");
 
                 // Open new applications
                 System.Threading.Thread.Sleep(1000);
-                bool openResult = await OpenApplicationsAsync();
+                bool openResult = await Task.Run(() => OpenApplications());
 
                 // Hide the status grid
                 Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Hidden));
@@ -215,7 +281,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // For all associations associated with the selected project
             if (selectedProject != null && _selectedApplication != null)
             {
-                foreach (Parameter parameter in selectedProject.Associations.First<Association>(a => a.ApplicationName == _selectedApplication.Name).Parameters)
+                foreach (Parameter parameter in selectedProject.Associations.First<Association>(a => a.Name == _selectedApplication.Name).Parameters)
                 {
                     // Determine type
                     if (parameter.Type == Parameter.ParameterTypeEnum.INI)
@@ -253,19 +319,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
         }
 
         /// <summary>
-        /// Closes the applications asynchronous.
-        /// </summary>
-        /// <returns></returns>
-        public Task<bool> CloseApplicationsAsync()
-        {
-            return Task.Run<bool>(() => ClosingApplications());
-        }
-
-        /// <summary>
         /// Closes the applications.
         /// </summary>
         /// <returns></returns>
-        private bool ClosingApplications()
+        public bool CloseApplications()
         {
             // Check if the application is already open
             foreach (TopApplication application in SelectedTile.Applications)
@@ -297,21 +354,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
         }
 
         /// <summary>
-        /// Opens the applications asynchronous.
-        /// </summary>
-        /// <param name="p">The p.</param>
-        /// <returns></returns>
-        private Task<bool> OpenApplicationsAsync()
-        {
-            return Task.Run<bool>(() => OpeningApplications());
-        }
-
-        /// <summary>
         /// Opens the applications.
         /// </summary>
         /// <param name="p">The p.</param>
         /// <returns></returns>
-        private bool OpeningApplications()
+        private bool OpenApplications()
         {
             try
             {
@@ -399,35 +446,35 @@ namespace Fluor.ProjectSwitcher.ViewModel
             if (SelectedTile != null)
             {
                 // A tile has been selected so display the tile tab
-                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+                //Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
 
                 // Change the breadcrumb (title bar) to reflect the newly selected item
                 PopulateBreadCrumb(SelectedTile);
 
                 // Get all the associations associated with the selected item
-                Messenger.Default.Send(new Message.M_GetAssociatedApplications(SelectedTile));
+                //Messenger.Default.Send(new Message.M_GetAssociatedApplications(SelectedTile));
 
-                if (SelectedTile.Applications.Any())
-                {
-                    if (SelectedTile.Applications.Count == 1)
-                    {
-                        // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
-                        TopApplication application = SelectedTile.Applications[0] as TopApplication;
-                        Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
-                        Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
-                    }
-                    else
-                    {
-                        // Send a message to the Tile view to display associated applications as tiles
-                        Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayApplicationsAsTiles));
-                    }
-                }
+                //if (SelectedTile.Applications.Any())
+                //{
+                //    if (SelectedTile.Applications.Count == 1)
+                //    {
+                //        // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
+                //        TopApplication application = SelectedTile.Applications[0] as TopApplication;
+                //        Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
+                //        Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
+                //    }
+                //    else
+                //    {
+                //        // Send a message to the Tile view to display associated applications as tiles
+                //        Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayApplicationsAsTiles));
+                //    }
+                //}
             }
-            else
-            {
-                // Selected tile was null (home button selected), reset the breadcrumb collection.
-                BreadcrumbCollection = new ObservableCollection<Button>();
-            }
+            //else
+            //{
+            //    // Selected tile was null (home button selected), reset the breadcrumb collection.
+            //    BreadcrumbCollection = new ObservableCollection<Button>();
+            //}
         }
 
         /// <summary>
@@ -465,6 +512,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             BreadcrumbCollection.Add(btn);
         }
 
+        public void ResetBreadCrumb()
+        {
+            BreadcrumbCollection = new ObservableCollection<Button>();
+        }
+
         /// <summary>
         /// Gather & returns all context menus associated with the selected item.
         /// </summary>
@@ -483,11 +535,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Get all associtions associated with the selected item
                 foreach (Association association in project.Associations) //.Where(ass => ass.ProjectName == msg.Notification))
                 {
-                    foreach (Class.ContextMenu contextMenu in association.ContextMenuCollection)
+                    if (association.ContextMenuCollection != null)
                     {
-                        project.AddContextMenu(contextMenu);
+                        foreach (Class.ContextMenu contextMenu in association.ContextMenuCollection)
+                        {
+                            project.AddContextMenu(contextMenu);
+                        }
                     }
-
+                    
                     //contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
                 }
             }
@@ -534,10 +589,40 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (ProjectSwitcherSettings.HasBeenUpdated)
             {
+                ProjectSwitcherSettings.UserVersion += 1;
                 ProjectSwitcherSettings.HasBeenUpdated = false;
 
                 Serialize(ProjectSwitcherSettings);
+
+                // Backup file
+                File.Copy("Fluor.ProjectSwitcher.Projects.xml", "Fluor.ProjectSwitcher.Projects_Backup.xml", true);
             }
+        }
+
+        private void ChangeView(Message.M_ChangeView msg)
+        {
+            // Change view message - hide the switcher button if the Add New view is shown
+            if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayAddNewTab)
+            {
+                SwitcherButtonVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SwitcherButtonVisibility = Visibility.Visible;
+            }
+        }
+
+        //private void UpdateStatusText(string message)
+        //{
+        //    StatusText = message;
+        //    if (StatusTextCollection == null) StatusTextCollection = new ObservableCollection<string>();
+        //    StatusTextCollection.Add(message);
+        //}
+
+
+        private void UpdateStatusBar(string message)
+        {
+            Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, message));
         }
     }
 }

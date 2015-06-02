@@ -68,7 +68,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // Get all the associations associated with the selected item
             foreach (Association association in msg.SelectedProject.Associations) //.Where(ass => ass.ProjectName == SelectedTile.Name))
             {
-                foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.ApplicationName))
+                foreach (TopApplication application in ApplicationsCollection.Where(app => app.Name == association.Name))
                 {
                     msg.SelectedProject.Applications.Add(application);
                 }
@@ -88,6 +88,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             //check = false;
             // ApplicationsCollection = message.Content.SubItems;
+
+            DisplayApplicationsTab();
 
             ActiveApplicationCollection = new ObservableCollection<ListBox>();
 
@@ -174,6 +176,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 IsApplicationsTabSelected = false;
             }
+        }
+
+        private void DisplayApplicationsTab()
+        {
+            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
         }
     }
 }

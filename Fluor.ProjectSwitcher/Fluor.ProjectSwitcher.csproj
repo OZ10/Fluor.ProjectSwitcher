@@ -126,12 +126,12 @@
     <Compile Include="Message\M_ChangeView.cs" />
     <Compile Include="Message\M_GetAssociatedApplications.cs" />
     <Compile Include="Message\M_SimpleAction.cs" />
-    <Compile Include="ViewModel\VM_AddNew.cs" />
+    <Compile Include="ViewModel\VM_Edit.cs" />
     <Compile Include="ViewModel\VM_Applications.cs" />
     <Compile Include="ViewModel\VM_Tiles.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="View\V_AddNew.xaml.cs">
-      <DependentUpon>V_AddNew.xaml</DependentUpon>
+    <Compile Include="View\V_Edit.xaml.cs">
+      <DependentUpon>V_Edit.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\V_Applications.xaml.cs">
       <DependentUpon>V_Applications.xaml</DependentUpon>
@@ -169,7 +169,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\V_AddNew.xaml">
+    <Page Include="View\V_Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -234,6 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+    <Folder Include="SampleData\SampleDataSource\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Fluor.ProjectSwitcher.Projects.xml">

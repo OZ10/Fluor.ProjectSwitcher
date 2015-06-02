@@ -183,18 +183,23 @@ namespace Fluor.ProjectSwitcher.Class
                     }
                 }
             }
-            else
-            {
-                // Add a blank row so user can input data
-                //TODO Hard-coded PATH enum needs to be changed
-                ContextMenu newContextMenu = new ContextMenu();
-                newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, "", "");
-                AddContextMenu(newContextMenu);
-            }
+            //else
+            //{
+            //    // Add a blank row so user can input data
+            //    //TODO Hard-coded PATH enum needs to be changed
+            //    ContextMenu newContextMenu = new ContextMenu();
+            //    newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, "", "");
+            //    AddContextMenu(newContextMenu);
+            //}
         }
 
         public void AddContextMenu(ContextMenu contextMenu)
         {
+            if (ContextMenuCollection == null)
+            {
+                ContextMenuCollection = new ObservableCollection<ContextMenu>();
+            }
+
             if (!contextMenuCollection.Contains(contextMenu))
             {
                 ContextMenuCollection.Add(contextMenu);

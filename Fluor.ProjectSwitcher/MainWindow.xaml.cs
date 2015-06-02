@@ -28,8 +28,6 @@ namespace Fluor.ProjectSwitcher
             InitializeComponent();
 
             Messenger.Default.Register<Message.MessageStatusUpdate>(this, UpdateStatusWindow);
-
-            lblVersion.Content = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
             
             vm.SetupEnvironment();
         }
@@ -58,7 +56,6 @@ namespace Fluor.ProjectSwitcher
         {
             //recDisable.Visibility = System.Windows.Visibility.Hidden;
             flySettings.IsOpen = false;
-            flyAbout.IsOpen = false;
         }
 
         private void flyOut_IsOpenChanged(object sender, EventArgs e)
@@ -77,14 +74,8 @@ namespace Fluor.ProjectSwitcher
 
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
         {
-            vm.CloseApplicationsAsync();
+            vm.CloseApplications();
             flySettings.IsOpen = false;
-        }
-
-        private void miAbout_Click(object sender, RoutedEventArgs e)
-        {
-            flySettings.IsOpen = false;
-            flyAbout.IsOpen = true;
         }
 
         private void UpdateStatusWindow(Message.MessageStatusUpdate statusUpdateMessage)
@@ -100,11 +91,6 @@ namespace Fluor.ProjectSwitcher
             p.Start();
 
             flySettings.IsOpen = false;
-        }
-
-        private void flyAbout_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            flyAbout.IsOpen = false;
         }
 
         private void miRefresh_Click(object sender, RoutedEventArgs e)
@@ -135,6 +121,21 @@ namespace Fluor.ProjectSwitcher
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>(this, null));
+            vm.ResetBreadCrumb();
+        }
+
+        private void miLoadSettingsFile_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            ofd.Filter = "XML Files (*.xml)|*.xml";
+            bool? result = ofd.ShowDialog();
+
+            if (result == true)
+            {
+                vm.LoadSettingsManually(ofd.FileName);
+                flySettings.IsOpen = false;
+            }
         }
     }
 }

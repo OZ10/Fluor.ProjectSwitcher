@@ -21,7 +21,7 @@ namespace Fluor.ProjectSwitcher.Class
         public string Value { get; set; }
 
         [XmlAttribute()]
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         public ContextMenu()
         {
@@ -32,7 +32,7 @@ namespace Fluor.ProjectSwitcher.Class
         {
             Type = type;
             Value = value;
-            DisplayName = displayName;
+            Name = displayName;
         }
     }
 }

@@ -27,7 +27,8 @@ namespace Fluor.ProjectSwitcher.View
         {
             Project newProject = new Project();
             newProject.Setup("Project Name", null, "", true, null, true);
-            Messenger.Default.Send<Project>(newProject);
+            Messenger.Default.Send(new Message.M_AddOrEditTile(newProject, this));
+            //Messenger.Default.Send<Project>(newProject);
             //vm.AddNewTile();
         }
     }
