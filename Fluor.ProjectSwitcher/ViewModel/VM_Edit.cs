@@ -115,6 +115,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        private Project editedItem;
+        public Project EditedItem
+        {
+            get
+            {
+                return editedItem;
+            }
+            set
+            {
+                editedItem = value;
+                RaisePropertyChanged("EditedItem");
+            }
+        }
+
         private Class.ContextMenu selectedContextMenu;
         public Class.ContextMenu SelectedContextMenu
         {
@@ -239,7 +253,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public VM_Edit()
         {
             //Messenger.Default.Register<Message.MessageAddOrEditTile>(this, DisplayTileDetails);
-            Messenger.Default.Register<Message.M_AddOrEditTile>(this, ShowProjectDetails);
+            Messenger.Default.Register<Message.M_EditTile>(this, ShowProjectDetails);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
             Messenger.Default.Register<ObservableCollection<TopApplication>>(this, PopulateApplications);
             Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateExistingAssociations);
@@ -290,36 +304,36 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void ShowProjectDetails(Message.M_AddOrEditTile msg)
+        private void ShowProjectDetails(Message.M_EditTile msg)
         {
             if (msg.Sender is View.V_Tiles | msg.Sender is App)
             {
                 SelectedItem = msg.SelectedTile;
 
-                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
+                EditedItem = ObjectCopier.CloneJson<Project>(SelectedItem);
 
-                // If the selected project only has one assoication, select it
-                //if (SelectedItem.Associations.Count == 1)
-                //{
-                //    SelectedItem.SelectedAssociation = SelectedItem.Associations[0];
-                //}
+                //OriginalItem = new Project();
+                //OriginalItem.Setup(SelectedItem.Name, SelectedItem.ContextMenuCollection, SelectedItem.MiscText, SelectedItem.IsEnabled, (Project)SelectedItem.ParentItem, SelectedItem.IsNew);
+
+                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
             }
         }
 
         public void AddNewContextMenu()
         {
             SelectedContextMenu = new Class.ContextMenu();
-            SelectedItem.ContextMenuCollection.Add(SelectedContextMenu);
+            if (EditedItem.ContextMenuCollection == null) EditedItem.ContextMenuCollection = new ObservableCollection<Class.ContextMenu>();
+            EditedItem.ContextMenuCollection.Add(SelectedContextMenu);
         }
 
         public void DeleteContextMenu(Class.ContextMenu cm)
         {
-            SelectedItem.ContextMenuCollection.Remove(cm);
+            EditedItem.ContextMenuCollection.Remove(cm);
         }
 
         public void DeleteAssociation(Class.Association association)
         {
-            SelectedItem.Associations.Remove(association);
+            EditedItem.Associations.Remove(association);
         }
 
         public void EditAssociation(bool isNew, Class.Association existingAssociation)
@@ -331,11 +345,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 SelectedAssociation = new Association();
                 AvailableApplicationsCollection = new ObservableCollection<TopApplication>();
 
-                if (SelectedItem.Associations.Any())
+                if (EditedItem.Associations.Any())
                 {
                     foreach (var app in ApplicationsCollection)
                     {
-                        if (SelectedItem.Associations.Any((a) => a.Name != app.Name))
+                        if (EditedItem.Associations.Any((a) => a.Name != app.Name))
                         {
                             AvailableApplicationsCollection.Add(app);
                         }
@@ -397,7 +411,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private Association CreateNewAssociation(Class.TopApplication selectedApplication)
         {
             Class.Association a = new Association();
-            a.Setup(SelectedItem.Name, selectedApplication.Name);
+            a.Setup(EditedItem.Name, selectedApplication.Name);
             return a;
         }
 
@@ -421,17 +435,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 if (SelectedContextMenu.Name == null)
                 {
-                    SelectedItem.ContextMenuCollection.Remove(SelectedContextMenu);
+                    EditedItem.ContextMenuCollection.Remove(SelectedContextMenu);
                 }
 
                 SetViewVisibility(true);
             }
             else if (EditAssociatedVisibility == Visibility.Visible)
             {
-                if (!SelectedItem.Associations.Contains(SelectedAssociation))
+                if (!EditedItem.Associations.Contains(SelectedAssociation))
                 {
-                    // Add new association to the SelectedItem's association collection
-                    SelectedItem.Associations.Add(SelectedAssociation);
+                    // Add new association to the EditedItem's association collection
+                    EditedItem.Associations.Add(SelectedAssociation);
                 }
                 
                 SetViewVisibility(true);
@@ -441,7 +455,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 if (SelectedExistingAssociation != null)
                 {
                     SelectedAssociation = new Association();
-                    SelectedAssociation.Setup(selectedItem.Name, SelectedExistingAssociation.Name);
+                    SelectedAssociation.Setup(EditedItem.Name, SelectedExistingAssociation.Name);
 
                     foreach (var parameter in SelectedExistingAssociation.Parameters)
                     {
@@ -462,11 +476,29 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
             else
             {
-                Messenger.Default.Send<Message.M_AddOrEditTile>(new Message.M_AddOrEditTile(SelectedItem, this));
+                SelectedItem.Name = EditedItem.Name;
+                SelectedItem.ContextMenuCollection = EditedItem.ContextMenuCollection;
+                SelectedItem.Applications = editedItem.Applications;
+                SelectedItem.Associations = EditedItem.Associations;
+                SelectedItem.MiscText = EditedItem.MiscText;
+                Messenger.Default.Send<Message.M_EditTile>(new Message.M_EditTile(SelectedItem, this));
             }
             
-            //proj.Execute(SelectedItem);
+            //proj.Execute(EditedItem);
             //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.RefreshViews));
+        }
+
+        public void CancelButton_Clicked()
+        {
+            //EditedItem = EditedItem;
+            //Messenger.Default.Send<Message.M_EditTile>(new Message.M_EditTile(SelectedItem, this));
+            Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+        }
+
+        public void DeleteProjectButton_Clicked()
+        {
+            SelectedItem.IsDeleted = true;
+            Messenger.Default.Send<Message.M_EditTile>(new Message.M_EditTile(SelectedItem, this));
         }
 
         private void ChangeView(Message.M_ChangeView msg)

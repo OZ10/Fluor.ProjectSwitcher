@@ -93,6 +93,16 @@ namespace Fluor.ProjectSwitcher.View
             vm.AddNewParameter();
         }
 
+        private void btnEditCancel_Click(object sender, RoutedEventArgs e)
+        {
+            vm.CancelButton_Clicked();
+        }
+
+        private void btnDeleteProject_Click(object sender, RoutedEventArgs e)
+        {
+            vm.DeleteProjectButton_Clicked();
+        }
+
         //private void muApplication_Click(object sender, RoutedEventArgs e)
         //{
         //    MenuItem mi = (MenuItem)sender;

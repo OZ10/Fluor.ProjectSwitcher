@@ -86,6 +86,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -112,6 +115,7 @@
     <Compile Include="Class\Base.cs" />
     <Compile Include="Class\ContextMenu.cs" />
     <Compile Include="Class\ini.cs" />
+    <Compile Include="Class\ObjectCopier.cs" />
     <Compile Include="Class\Parameter.cs" />
     <Compile Include="Class\Project.cs" />
     <Compile Include="Class\ProjectSwitcherSettings.cs" />
@@ -119,9 +123,10 @@
     <Compile Include="Class\SwitcherItem.cs" />
     <Compile Include="Class\TopApplication.cs" />
     <Compile Include="Class\Utilities.cs" />
-    <Compile Include="Message\M_AddOrEditTile.cs" />
+    <Compile Include="Message\M_EditTile.cs" />
     <Compile Include="Message\MessagePopulateProjects.cs" />
     <Compile Include="Message\MessageStatusUpdate.cs" />
+    <Compile Include="Message\M_SettingsHaveBeenChanged.cs" />
     <Compile Include="Message\M_UpdateSelectedTile.cs" />
     <Compile Include="Message\M_ChangeView.cs" />
     <Compile Include="Message\M_GetAssociatedApplications.cs" />
@@ -234,12 +239,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="SampleData\SampleDataSource\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Fluor.ProjectSwitcher.Projects.xml">
       <Link>Fluor.ProjectSwitcher.Projects.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="SwitcherIcon_w1.ico" />
   </ItemGroup>

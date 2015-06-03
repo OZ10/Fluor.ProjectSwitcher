@@ -11,7 +11,7 @@ namespace Fluor.ProjectSwitcher.Class
     public class ProjectSwitcherSettings
     {
         [XmlAttribute]
-        public bool HasBeenUpdated { get; set; }
+        public bool HasBeenChanged { get; set; }
 
         [XmlAttribute]
         public double Version { get; set; }
@@ -24,7 +24,7 @@ namespace Fluor.ProjectSwitcher.Class
 
         public ProjectSwitcherSettings()
         {
-            HasBeenUpdated = false;
+            HasBeenChanged = false;
             Projects = new ObservableCollection<Project>();
             Applications = new ObservableCollection<TopApplication>();
         }

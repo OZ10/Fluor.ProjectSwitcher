@@ -68,7 +68,7 @@ namespace Fluor.ProjectSwitcher
         {
             Button btn = (Button)sender;
             Project selectedTile = (Project)btn.DataContext;
-            Messenger.Default.Send(new Message.M_AddOrEditTile(selectedTile, this));
+            Messenger.Default.Send(new Message.M_EditTile(selectedTile, this));
             //Messenger.Default.Send<Project>(selectedTile);
         }
 

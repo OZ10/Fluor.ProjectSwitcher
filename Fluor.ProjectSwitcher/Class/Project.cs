@@ -59,7 +59,7 @@ namespace Fluor.ProjectSwitcher.Class
         {
         }
 
-        public void Setup(string projectName, IEnumerable<XElement> contextMenus, string miscText, bool isEnabled, Project parentProject, bool isNew)
+        public void Setup(string projectName, ObservableCollection<ContextMenu> contextMenus, string miscText, bool isEnabled, Project parentProject, bool isNew)
         {
             Name = projectName;
             OriginalName = projectName;
@@ -70,7 +70,9 @@ namespace Fluor.ProjectSwitcher.Class
             IsEditMode = Visibility.Collapsed;
             IsNew = isNew;
 
-            GetContextMenus(contextMenus);
+            ContextMenuCollection = contextMenus;
+
+            //GetContextMenus(contextMenus);
 
             //Array colorValues = Enum.GetValues(typeof(tileColors));
             //Random random = new Random();
@@ -81,45 +83,45 @@ namespace Fluor.ProjectSwitcher.Class
             Applications = new ObservableCollection<TopApplication>();
         }
 
-        public void CreateSubProjects(XElement xmlProject, XElement xmlSettings) //, string parentContextMenu)
-        {
-            if (xmlProject.Elements("SUBPROJECT").Any())
-            {
-                // Application has children. Set font to uppercase.
-                //Name = Name.ToUpper();
+        //public void CreateSubProjects(XElement xmlProject, XElement xmlSettings) //, string parentContextMenu)
+        //{
+        //    if (xmlProject.Elements("SUBPROJECT").Any())
+        //    {
+        //        // Application has children. Set font to uppercase.
+        //        //Name = Name.ToUpper();
 
-                Project subProject;
+        //        Project subProject;
 
-                foreach (XElement xmlSubProject in xmlProject.Elements("SUBPROJECT"))
-                {
-                    //TODO Does the subproject need to inherit it's parent's context menus??
-                    // Set the context menu parameters to those of the sub project's parent
-                    //string contextMenu = parentContextMenu;
+        //        foreach (XElement xmlSubProject in xmlProject.Elements("SUBPROJECT"))
+        //        {
+        //            //TODO Does the subproject need to inherit it's parent's context menus??
+        //            // Set the context menu parameters to those of the sub project's parent
+        //            //string contextMenu = parentContextMenu;
 
-                    //subProject = new Project(xmlSubProject.Attribute("NAME").Value,
-                    //                         xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
-                    //                         xmlSubProject.Attribute("MISCTEXT").Value,
-                    //                         true,
-                    //                         this,
-                    //                         false);
+        //            //subProject = new Project(xmlSubProject.Attribute("NAME").Value,
+        //            //                         xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
+        //            //                         xmlSubProject.Attribute("MISCTEXT").Value,
+        //            //                         true,
+        //            //                         this,
+        //            //                         false);
 
-                    subProject = new Project();
-                    subProject.Setup(xmlSubProject.Attribute("NAME").Value,
-                                             xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
-                                             xmlSubProject.Attribute("MISCTEXT").Value,
-                                             true,
-                                             this,
-                                             false);
+        //            subProject = new Project();
+        //            subProject.Setup(xmlSubProject.Attribute("NAME").Value,
+        //                                     xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
+        //                                     xmlSubProject.Attribute("MISCTEXT").Value,
+        //                                     true,
+        //                                     this,
+        //                                     false);
 
-                    // Get any associations associated with this subproject
-                    GetAssociations(subProject, xmlSettings);
+        //            // Get any associations associated with this subproject
+        //            GetAssociations(subProject, xmlSettings);
 
-                    SubItems.Add(subProject);
+        //            SubItems.Add(subProject);
 
-                    subProject.CreateSubProjects(xmlSubProject, xmlSettings); //, contextMenu);
-                }
-            } 
-        }
+        //            subProject.CreateSubProjects(xmlSubProject, xmlSettings); //, contextMenu);
+        //        }
+        //    } 
+        //}
 
         public void ChangeIsActiveForSubProjects(string selectedProjectName)
         {
@@ -150,5 +152,25 @@ namespace Fluor.ProjectSwitcher.Class
                 }
             }
         }
+
+        //public Project Clone()
+        //{
+        //    ObservableCollection<Association> clonedAssociations = new ObservableCollection<Association>();
+        //    ObservableCollection<TopApplication> clonedApplications = new ObservableCollection<TopApplication>();
+        //    ObservableCollection<Parameter> clonedParameters = new ObservableCollection<Parameter>();
+
+        //    foreach (var association in Associations)
+        //    {
+        //        Association clonedAssociation = new Association();
+        //        clonedAssociation.Setup(association.ProjectName, association.Name);
+        //        clonedAssociation.
+        //        //clonedAssociations.Add(new Association())
+        //    }
+
+        //    Project clonedProject = new Project();
+        //    clonedProject.Setup(Name, ContextMenuCollection, MiscText, IsEnabled, (Project)ParentItem, IsNew);
+
+        //    return this;
+        //}
     }
 }

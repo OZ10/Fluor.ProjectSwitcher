@@ -112,7 +112,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoBackToParent);
             Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateProjects);
             //Messenger.Default.Register<Project>(this, AddOrEditProject);
-            Messenger.Default.Register<Message.M_AddOrEditTile>(this, SaveChangesToProject);
+            Messenger.Default.Register<Message.M_EditTile>(this, SaveChangesToProject);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
             Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, TileClicked);
 
@@ -292,6 +292,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void RefreshTiles(Project project)
         {
+            //TODO Refactor
             if (project != null)
             {
                 if (project.SubItems.Any())
@@ -309,10 +310,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
             else
             {
-                foreach (Project proj in ProjectsCollection.Where((p) => p.IsNew == true))
+                TopLevelTileCollection = new ObservableCollection<Button>();
+                ActiveTileCollection = new ObservableCollection<Button>();
+
+                foreach (Project proj in ProjectsCollection)
                 {
-                    Button tile = CreateTile(proj);
-                    TopLevelTileCollection.Add(tile);
+                    Button tvi = CreateTile(proj);
+
+                    TopLevelTileCollection.Add(tvi);
+                    ActiveTileCollection.Add(tvi);
                 }
             }
             
@@ -437,13 +443,27 @@ namespace Fluor.ProjectSwitcher.ViewModel
         //    Messenger.Default.Send(new Message.M_AddOrEditTile(project, this));
         //}
 
-        private void SaveChangesToProject(Message.M_AddOrEditTile msg)
+        private void SaveChangesToProject(Message.M_EditTile msg)
         {
+            //TODO Refactor
             if (msg.Sender is VM_Edit)
             {
                 Project project = msg.SelectedTile;
 
-                if (project.IsNew)
+                if (project.IsDeleted)
+                {
+                    if (SelectedTile != null)
+                    {
+                        // There is a tile selected so remove this new project to it's collection of sub projects
+                        SelectedTile.SubItems.Remove(project);
+                    }
+                    else
+                    {
+                        // No selected tile so project must be top level
+                        ProjectsCollection.Remove(project);
+                    }
+                }
+                else if (project.IsNew)
                 {
                     if (SelectedTile != null)
                     {
@@ -456,10 +476,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         ProjectsCollection.Add(project);
                     }
 
-                    RefreshTiles(SelectedTile);
                     //UpdateTiles();
                 }
-                Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+                RefreshTiles(SelectedTile);
+                Messenger.Default.Send(new Message.M_SettingsHaveBeenChanged(true));
+                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
             }
         }
 

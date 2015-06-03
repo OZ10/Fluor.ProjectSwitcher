@@ -121,14 +121,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private Visibility switcherButtonVisibility;
-        public Visibility SwitcherButtonVisibility
+        private Visibility mainViewButtonsVisibility;
+        public Visibility MainViewButtonsVisibility
         {
-            get { return switcherButtonVisibility; }
+            get { return mainViewButtonsVisibility; }
             set
             {
-                switcherButtonVisibility = value;
-                RaisePropertyChanged("SwitcherButtonVisibility");
+                mainViewButtonsVisibility = value;
+                RaisePropertyChanged("MainViewButtonsVisibility");
             }
         }
 
@@ -164,12 +164,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //IsAddNewTabSelected = false;
 
             BreadcrumbCollection = new ObservableCollection<Button>();
-            SwitcherButtonVisibility = Visibility.Visible;
+            MainViewButtonsVisibility = Visibility.Visible;
 
             Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
+            Messenger.Default.Register< Message.M_SettingsHaveBeenChanged>(this, SettingsHaveChanged);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
         }
 
@@ -587,10 +588,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void SaveAndClose()
         {
-            if (ProjectSwitcherSettings.HasBeenUpdated)
+            if (ProjectSwitcherSettings.HasBeenChanged)
             {
                 ProjectSwitcherSettings.UserVersion += 1;
-                ProjectSwitcherSettings.HasBeenUpdated = false;
+                ProjectSwitcherSettings.HasBeenChanged = false;
 
                 Serialize(ProjectSwitcherSettings);
 
@@ -604,11 +605,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // Change view message - hide the switcher button if the Add New view is shown
             if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayAddNewTab)
             {
-                SwitcherButtonVisibility = Visibility.Collapsed;
+                MainViewButtonsVisibility = Visibility.Collapsed;
             }
             else
             {
-                SwitcherButtonVisibility = Visibility.Visible;
+                MainViewButtonsVisibility = Visibility.Visible;
             }
         }
 
@@ -619,6 +620,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         //    StatusTextCollection.Add(message);
         //}
 
+        private void SettingsHaveChanged(Message.M_SettingsHaveBeenChanged msg)
+        {
+            if (ProjectSwitcherSettings != null)
+            {
+                ProjectSwitcherSettings.HasBeenChanged = msg.SettingsHaveChanged;
+            }
+        }
 
         private void UpdateStatusBar(string message)
         {

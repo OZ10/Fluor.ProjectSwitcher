@@ -33,6 +33,9 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlIgnore]
         public bool IsNew { get; set; }
 
+        [XmlIgnore]
+        public bool IsDeleted { get; set; }
+
         private string miscText;
         [XmlAttribute()]
         public string MiscText
@@ -54,7 +57,7 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        private Visibility miscTextVisibility;
+        private Visibility miscTextVisibility = Visibility.Collapsed;
         [XmlIgnore]
         public Visibility MiscTextVisibility
         {
