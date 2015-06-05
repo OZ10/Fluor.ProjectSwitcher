@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="500" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}" d:IsHidden="False" FontSize="14">
+             d:DesignHeight="300" d:DesignWidth="500" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}" d:IsHidden="False" FontSize="14" Style="{DynamicResource VisibleAnimation}">
     <!--<Grid>
         <ItemsControl Name="icAddNew" ItemsSource="{Binding SelectedItemCollection}">
             <ItemsControl.ItemsPanel>
@@ -99,7 +99,7 @@
             <DataGrid Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedAssociation.Parameters}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}" CanUserAddRows="False"/>
 
             <TextBlock Text="Context Menus" VerticalAlignment="Center" Grid.Row="3"/>
-            <Button x:Name="btnAddNewContextMenu" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Height="20" Padding="5" ToolTip="Add New Parameter" Click="btnAddNewParameter_Click"/>
+            <Button x:Name="btnAddNewContextMenu" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Height="20" Padding="5" ToolTip="Add New Context Menu" Click="btnAddNewContextMenu_Click_1"/>
             <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedAssociation.ContextMenuCollection}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}" CanUserAddRows="False"/>
         </Grid>
         

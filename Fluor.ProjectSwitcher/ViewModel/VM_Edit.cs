@@ -429,6 +429,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
             SelectedAssociation.Parameters.Add(p);
         }
 
+        public void AddNewAssociationContextMenu()
+        {
+            Class.ContextMenu cm = new Class.ContextMenu();
+            cm.Setup(Class.ContextMenu.ContextMenuTypeEnum.PATH, "", "");
+
+            if (SelectedAssociation.ContextMenuCollection == null) SelectedAssociation.ContextMenuCollection = new ObservableCollection<Class.ContextMenu>();
+            SelectedAssociation.ContextMenuCollection.Add(cm);
+        }
+
         public void OkButton_Clicked()
         {
             if (EditContextMenuVisibility == Visibility.Visible)

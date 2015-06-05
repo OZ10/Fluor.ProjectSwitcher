@@ -58,9 +58,17 @@ namespace Fluor.ProjectSwitcher
         private void btnTileMain_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            Project selectedTile = (Project)btn.DataContext;
-            //Messenger.Default.Send<Project>(selectedTile);
-            Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedTile, this));
+            Project selectedProject = btn.DataContext as Project;
+            
+            if (selectedProject != null)
+            {
+                Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedProject, this));
+            }
+            else
+            {
+                TopApplication selectedApplication = btn.DataContext as TopApplication;
+                Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedApplication, this));
+            }
         }
 
         // Edit button click on tile

@@ -38,9 +38,16 @@
     <Color x:Key="SubColor">#FF00A8CD</Color>
     <!--60%-->
     <Color x:Key="SubColor2">#9900A8CD</Color>
+    <!--40%-->
+    <Color x:Key="SubColor3">#6600A8CD</Color>
+    <!--20%-->
+    <Color x:Key="SubColor4">#3300A8CD</Color>
+    
     <SolidColorBrush x:Key="SubColorBrush" Color="{StaticResource SubColor}"/>
     <SolidColorBrush x:Key="SubColorBrush2" Color="{StaticResource SubColor2}"/>
-
+    <SolidColorBrush x:Key="SubColorBrush3" Color="{StaticResource SubColor3}"/>
+    <SolidColorBrush x:Key="SubColorBrush4" Color="{StaticResource SubColor4}"/>
+    
     <Color x:Key="CloseButtonBackGroundColor">#FF003264</Color>
     <SolidColorBrush x:Key="CloseButtonBackGroundBrush" Color="{StaticResource CloseButtonBackGroundColor}"/>
 

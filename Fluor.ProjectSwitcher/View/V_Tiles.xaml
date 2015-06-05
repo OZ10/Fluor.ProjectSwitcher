@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="Fluor.ProjectSwitcher.View.V_Tiles" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Projects, Mode=OneWay, Source={StaticResource Locator}}">
+             d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Projects, Mode=OneWay, Source={StaticResource Locator}}" Style="{DynamicResource VisibleAnimation}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,21 +18,34 @@
                     <StackPanel/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+            <!--<ItemsControl.Triggers>
+                <Trigger Property="Visibility" Value="Visible">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:0.3" To="1" Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    
+                </Trigger>
+			</ItemsControl.Triggers>-->
         </ItemsControl>
-        <Button x:Name="btnAddNew" Grid.Row="1" Content="{DynamicResource PlusIcon}" BorderBrush="#33000000" BorderThickness="1,0,0,1" Background="White" Height="50" Visibility="Visible" Click="btnAddNew_Click" Padding="15" Foreground="{DynamicResource TextBlack87Brush}">
+        <Button x:Name="btnAddNew" Grid.Row="1" Content="{DynamicResource PlusIcon}" Height="{Binding AddNewButtonHeight}" Click="btnAddNew_Click" Padding="15">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.BasedOn>
                         <Style TargetType="{x:Type Button}">
-                            <Setter Property="MinHeight" Value="25"/>
+                            <Setter Property="MinWidth" Value="350"/>
+                            <Setter Property="MinHeight" Value="15"/>
                             <Setter Property="FontWeight" Value="Bold"/>
                             <Setter Property="FontSize" Value="{DynamicResource UpperCaseContentFontSize}"/>
                             <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
-                            <Setter Property="Background" Value="{DynamicResource GrayBrush10}"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-                            <Setter Property="Padding" Value="5,6"/>
-                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="BorderBrush" Value="#33000000"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextBlack87Brush}"/>
+                            <!--<Setter Property="Padding" Value="1,0,0,1"/>-->
+                            <Setter Property="BorderThickness" Value="1,0,0,1"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type Button}">
@@ -43,8 +56,23 @@
                                         </Grid>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush8}"/>
+                                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource SubColorBrush4}"/>
+                                                <!--<Setter Property="Foreground" Value="White"/>-->
                                                 <!--<Setter Property="Foreground"  Value="{DynamicResource SubColorBrush}" />-->
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation BeginTime="0:0:0.3" Duration="0:0:0.3" To="50" Storyboard.TargetProperty="Height"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="0:0:0.1" To="15" Storyboard.TargetProperty="Height"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
                                             </Trigger>
                                             <Trigger Property="IsPressed" Value="True">
                                                 <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush7}"/>

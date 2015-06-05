@@ -10,11 +10,18 @@ namespace Fluor.ProjectSwitcher.Message
     public class M_UpdateSelectedTile
     {
         public object Sender { get; set; }
-        public Project SelectedTile { get; set; }
+        public Project SelectedProject { get; set; }
+        public TopApplication SelectedApplication { get; set; }
 
-        public M_UpdateSelectedTile(Project selectedTile, object sender)
+        public M_UpdateSelectedTile(Project selectedProject, object sender)
         {
-            SelectedTile = selectedTile;
+            SelectedProject = selectedProject;
+            Sender = sender;
+        }
+
+        public M_UpdateSelectedTile(TopApplication selectedApplication, object sender)
+        {
+            SelectedApplication = selectedApplication;
             Sender = sender;
         }
     }

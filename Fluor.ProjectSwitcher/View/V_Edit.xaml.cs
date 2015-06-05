@@ -103,6 +103,11 @@ namespace Fluor.ProjectSwitcher.View
             vm.DeleteProjectButton_Clicked();
         }
 
+        private void btnAddNewContextMenu_Click_1(object sender, RoutedEventArgs e)
+        {
+            vm.AddNewAssociationContextMenu();
+        }
+
         //private void muApplication_Click(object sender, RoutedEventArgs e)
         //{
         //    MenuItem mi = (MenuItem)sender;

@@ -102,6 +102,21 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        double addNewButtonHeight;
+        public double AddNewButtonHeight
+        {
+            get
+            {
+                return addNewButtonHeight;
+            }
+            set
+            {
+                addNewButtonHeight = value;
+
+                RaisePropertyChanged("AddNewButtonHeight");
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VM_Tiles"/> class.
         /// </summary>
@@ -149,6 +164,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             TopLevelTileCollection = new ObservableCollection<Button>();
             ActiveTileCollection = new ObservableCollection<Button>();
 
+            AddNewButtonHeight = SetAddNewButtonHeight();
+
             foreach (Project project in ProjectsCollection)
             {
                 Button tile = CreateTile(project);
@@ -157,6 +174,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
 
             ActiveTileCollection = TopLevelTileCollection;
+        }
+
+        private double SetAddNewButtonHeight()
+        {
+            if (ProjectsCollection.Any())
+            {
+                return 15;
+            }
+            else
+            {
+                return 50;
+            }
         }
 
         /// <summary>
@@ -196,7 +225,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             if (msg.Sender != this)
             {
                 // Try to cast the item as a Project
-                Project project = msg.SelectedTile ;
+                Project project = msg.SelectedProject as Project;
 
                 if (project != null)
                 {
@@ -219,6 +248,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                     GetAssociatedApplications();
 
+                    //DisplayTileTab();
+
                     // TODO Is this message required? switcherItem already has a collection of context menus.
                     //GetContextMenus(switcherItem);
                     //Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(switcherItem.ContextMenuCollection));
@@ -227,7 +258,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 {
                     // Selected tile must be an application. Send a message to the main view model containing the selected application
                     //TopApplication application = switcherItem as TopApplication;
-                    //Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, application));
+                    Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, msg.SelectedApplication));
                 }
             }
             
@@ -252,43 +283,48 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 }
                 else
                 {
+                    DisplayTileTab();
                     DisplayApplicationsAsTiles();
                 }
             }
-        }
-
-        /// <summary>
-        /// Handles the Clicked event of the Tile control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void Tile_Clicked(object sender, RoutedEventArgs e)
-        {
-            Button tile = (Button)sender;
-            SwitcherItem switcherItem = (SwitcherItem)tile.DataContext;
-
-            // Try to cast the item as a Project
-            Project project = switcherItem as Project;
-
-            if (project != null)
-            {
-                RefreshTiles(project);
-
-                SelectedTile = project;
-
-                ChangeActiveProject();
-
-                // TODO Is this message required? switcherItem already has a collection of context menus.
-                //GetContextMenus(switcherItem);
-                //Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(switcherItem.ContextMenuCollection));
-            }
             else
             {
-                // Selected tile must be an application. Send a message to the main view model containing the selected application
-                TopApplication application = switcherItem as TopApplication;
-                Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, application));
+                DisplayTileTab();
             }
         }
+
+        ///// <summary>
+        ///// Handles the Clicked event of the Tile control.
+        ///// </summary>
+        ///// <param name="sender">The source of the event.</param>
+        ///// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        //private void Tile_Clicked(object sender, RoutedEventArgs e)
+        //{
+        //    Button tile = (Button)sender;
+        //    SwitcherItem switcherItem = (SwitcherItem)tile.DataContext;
+
+        //    // Try to cast the item as a Project
+        //    Project project = switcherItem as Project;
+
+        //    if (project != null)
+        //    {
+        //        RefreshTiles(project);
+
+        //        SelectedTile = project;
+
+        //        ChangeActiveProject();
+
+        //        // TODO Is this message required? switcherItem already has a collection of context menus.
+        //        //GetContextMenus(switcherItem);
+        //        //Messenger.Default.Send<GenericMessage<ObservableCollection<MenuItem>>>(new GenericMessage<ObservableCollection<MenuItem>>(switcherItem.ContextMenuCollection));
+        //    }
+        //    else
+        //    {
+        //        // Selected tile must be an application. Send a message to the main view model containing the selected application
+        //        TopApplication application = switcherItem as TopApplication;
+        //        Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, application));
+        //    }
+        //}
 
         private void RefreshTiles(Project project)
         {
@@ -394,20 +430,23 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 }
                 else
                 {
-                    // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
-                    ActiveTileCollection = new ObservableCollection<Button>();
-
-                    // Create a tile for each of the item's subitems
-                    foreach (SwitcherItem subProject in switcherItem.SubItems)
+                    if (switcherItem.SubItems.Any())
                     {
-                        Button tile = CreateTile(subProject);
-                        ActiveTileCollection.Add(tile);
+                        // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
+                        ActiveTileCollection = new ObservableCollection<Button>();
+
+                        // Create a tile for each of the item's subitems
+                        foreach (SwitcherItem subProject in switcherItem.SubItems)
+                        {
+                            Button tile = CreateTile(subProject);
+                            ActiveTileCollection.Add(tile);
+                        }
+
+                        SelectedTile = switcherItem;
+
+                        // Send a message to the main view to update the breadcrumb
+                        Messenger.Default.Send(new Message.M_UpdateSelectedTile(SelectedTile, this));
                     }
-
-                    SelectedTile = switcherItem;
-
-                    // Send a message to the main view to update the breadcrumb
-                    Messenger.Default.Send(new Message.M_UpdateSelectedTile(SelectedTile, this));
                 }
             }
         }
@@ -497,6 +536,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayTilesTab)
             {
+                // Toggle off & then on again to trigger visibility animation
+                IsTileTabSelected = false;
                 IsTileTabSelected = true;
             }
             else

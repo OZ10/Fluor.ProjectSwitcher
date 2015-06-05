@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Input;
 using System;
 using System.Windows.Controls;
+using System.IO;
 
 namespace Fluor.ProjectSwitcher
 {
@@ -134,6 +135,22 @@ namespace Fluor.ProjectSwitcher
             if (result == true)
             {
                 vm.LoadSettingsManually(ofd.FileName);
+                flySettings.IsOpen = false;
+            }
+        }
+
+        private void miExportSettingsFile_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog sfd = new Microsoft.Win32.SaveFileDialog();
+            sfd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            sfd.Filter = "XML Files (*.xml)|*.xml";
+            sfd.FileName = "Fluor.ProjectSwitcher.Projects_Export.xml";
+            //sfd.
+            bool? result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                File.Copy("Fluor.ProjectSwitcher.Projects.xml", sfd.FileName, true);
                 flySettings.IsOpen = false;
             }
         }

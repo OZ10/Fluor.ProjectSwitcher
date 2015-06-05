@@ -14,7 +14,7 @@
     </Controls:MetroWindow.DataContext>
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="flySettings" Header="settings" Position="Left" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
+            <Controls:Flyout x:Name="flySettings" Header="Settings" Position="Left" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
@@ -30,6 +30,11 @@
                         <MenuItem x:Name="miLoadSettingsFile" Header="Load Settings File" Click="miLoadSettingsFile_Click" FontSize="12">
                             <MenuItem.Icon>
                                 <Path Data="{DynamicResource Load}" Style="{DynamicResource MenuItemIcon}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="miExportSettingsFile" Header="Export Settings File" Click="miExportSettingsFile_Click" FontSize="12">
+                            <MenuItem.Icon>
+                                <Path Data="{DynamicResource Export}" Style="{DynamicResource MenuItemIcon}"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem x:Name="miRefresh" Header="Refresh After Changes" FontSize="12" Click="miRefresh_Click">
@@ -54,25 +59,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--<Rectangle Grid.ColumnSpan="4" Fill="{DynamicResource HighlightBrush}" />
-        <Label Content="Projects" Grid.Column="1" Margin="20,0,0,0" Foreground="White" />
-        <Label Content="Applications" Grid.Column="2" Margin="20,0,0,0" Foreground="White" />-->
-        <!--<Rectangle Fill="{DynamicResource HighlightBrush}" Width="Auto"/>-->
-        <!--<Button Style="{DynamicResource BackButton}" HorizontalAlignment="Left"/>-->
+
         <Grid Background="{DynamicResource HighlightBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
-            <!--<Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.ColumnSpan="2" Width="2"/>
-            <Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.Column="1" Width="2" HorizontalAlignment="Right"/>
-            <Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.Column="2" Width="2" HorizontalAlignment="Right"/>
-            <Rectangle Fill="{DynamicResource CloseButtonBackGroundBrush}" Grid.Column="3" Grid.ColumnSpan="2" Width="2"/>-->
-            <Button x:Name="btnSettings" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" ToolTip="SETTINGS" Visibility="{Binding MainViewButtonsVisibility}"/>
-            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource HomeIcon}" Click="btnHome_Click" ToolTip="HOME" Visibility="{Binding MainViewButtonsVisibility}"/>
+
+            <Button x:Name="btnSettings" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" ToolTip="Settings" Visibility="{Binding MainViewButtonsVisibility}"/>
+            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource HomeIcon}" Click="btnHome_Click" ToolTip="Home" Visibility="{Binding MainViewButtonsVisibility}"/>
             <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{Binding Mode=OneWay, Source={StaticResource MetroBreadCrumbButtonStyle}}" VerticalAlignment="Center" Grid.Column="2" Visibility="{Binding MainViewButtonsVisibility}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -80,32 +77,16 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <!--<Button Name="btnEditMode" Content="{DynamicResource EditIcon}" Click="miAdmin_Click" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="EDIT MODE"/>-->
-            <!--<Rectangle Grid.Column="4" Fill="{DynamicResource CloseButtonBackGroundBrush}" />-->
-            <Button x:Name="btnClose" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="CLOSE" Foreground="White"/>
+            <Button x:Name="btnClose" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="Close" Foreground="White"/>
         </Grid>
 
         <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>
-        <!--<TabControl Grid.Row="1">
-            <TabItem Name="tbiTiles" Header="Tiles" IsSelected="{Binding IsTileTabSelected}" Visibility="Collapsed">
-                <View:V_Tiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </TabItem>
-            <TabItem Name="tbiApplications" Header="Apps" IsSelected="{Binding IsApplicationsTabSelected}" Visibility="Collapsed">
-                <View:V_Applications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </TabItem>
-            <TabItem Name="tbiAddNew" Header="Add New" IsSelected="{Binding IsAddNewTabSelected}" Visibility="Collapsed">
-                <View:V_AddNew Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </TabItem>
-        </TabControl>-->
 
         <View:V_Tiles Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsTileTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <View:V_Applications Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <View:V_Edit Grid.Row="1" Grid.Column="2" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsAddNewTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-        <!--<Rectangle Grid.Row="1" Grid.Column="1" Width="1" HorizontalAlignment="Right" Stroke="{DynamicResource AccentColorBrush4}"/>-->
-        <!--<Label Name="lblPlantName" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="12" Content="{Binding SelectedProject.MiscText}"/>-->
-
-        <Button x:Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="SWITCH PROJECT" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Foreground="White" Background="{DynamicResource SubColorBrush}" RenderTransformOrigin="0.5,0.5" Margin="10" Visibility="{Binding MainViewButtonsVisibility}">
+        <Button x:Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="Switch Project" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Foreground="White" Background="{DynamicResource SubColorBrush}" RenderTransformOrigin="0.5,0.5" Margin="10" Visibility="{Binding MainViewButtonsVisibility}">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -115,15 +96,6 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-
-        <!--<Grid Grid.Row="4" Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock FontSize="12" Height="20" VerticalAlignment="Center" Text="{Binding StatusText}"/>
-            <ListBox Grid.Row="1" Foreground="{DynamicResource TextBlack54Brush}" FontSize="12" Height="10" VerticalAlignment="Center" ItemsSource="{Binding StatusTextCollection}"/>
-        </Grid>-->
         
         <local:StatusWindow x:Name="StatusWindow" Grid.RowSpan="4" Grid.ColumnSpan="4" Visibility="Hidden"/>
         <Rectangle x:Name="recDisable" Grid.RowSpan="3" Grid.ColumnSpan="4" Opacity="0.5" Visibility="Hidden" MouseDown="recDisable_MouseDown">

@@ -224,6 +224,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             ProjectSwitcherSettings = Deserialize(settingFilePath);
             PopulateProjectsAndApplications();
+            ProjectSwitcherSettings.HasBeenChanged = true;
             //UpdateStatusText("Loaded settings user selected settings");
         }
 
@@ -442,15 +443,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             // Collect all the applications that are associated with the newly selected item
 
-            SelectedTile = msg.SelectedTile;
+            SelectedTile = msg.SelectedProject;
 
             if (SelectedTile != null)
             {
                 // A tile has been selected so display the tile tab
                 //Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
 
-                // Change the breadcrumb (title bar) to reflect the newly selected item
-                PopulateBreadCrumb(SelectedTile);
+                if (SelectedTile.SubItems.Any() | SelectedTile.Associations.Any())
+                {
+                    // Change the breadcrumb (title bar) to reflect the newly selected item
+                    PopulateBreadCrumb(SelectedTile);
+                }
+                
 
                 // Get all the associations associated with the selected item
                 //Messenger.Default.Send(new Message.M_GetAssociatedApplications(SelectedTile));
