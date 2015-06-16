@@ -83,46 +83,6 @@ namespace Fluor.ProjectSwitcher.Class
             Applications = new ObservableCollection<TopApplication>();
         }
 
-        //public void CreateSubProjects(XElement xmlProject, XElement xmlSettings) //, string parentContextMenu)
-        //{
-        //    if (xmlProject.Elements("SUBPROJECT").Any())
-        //    {
-        //        // Application has children. Set font to uppercase.
-        //        //Name = Name.ToUpper();
-
-        //        Project subProject;
-
-        //        foreach (XElement xmlSubProject in xmlProject.Elements("SUBPROJECT"))
-        //        {
-        //            //TODO Does the subproject need to inherit it's parent's context menus??
-        //            // Set the context menu parameters to those of the sub project's parent
-        //            //string contextMenu = parentContextMenu;
-
-        //            //subProject = new Project(xmlSubProject.Attribute("NAME").Value,
-        //            //                         xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
-        //            //                         xmlSubProject.Attribute("MISCTEXT").Value,
-        //            //                         true,
-        //            //                         this,
-        //            //                         false);
-
-        //            subProject = new Project();
-        //            subProject.Setup(xmlSubProject.Attribute("NAME").Value,
-        //                                     xmlSubProject.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"),
-        //                                     xmlSubProject.Attribute("MISCTEXT").Value,
-        //                                     true,
-        //                                     this,
-        //                                     false);
-
-        //            // Get any associations associated with this subproject
-        //            GetAssociations(subProject, xmlSettings);
-
-        //            SubItems.Add(subProject);
-
-        //            subProject.CreateSubProjects(xmlSubProject, xmlSettings); //, contextMenu);
-        //        }
-        //    } 
-        //}
-
         public void ChangeIsActiveForSubProjects(string selectedProjectName)
         {
             foreach (Project subProject in SubItems)
@@ -152,25 +112,5 @@ namespace Fluor.ProjectSwitcher.Class
                 }
             }
         }
-
-        //public Project Clone()
-        //{
-        //    ObservableCollection<Association> clonedAssociations = new ObservableCollection<Association>();
-        //    ObservableCollection<TopApplication> clonedApplications = new ObservableCollection<TopApplication>();
-        //    ObservableCollection<Parameter> clonedParameters = new ObservableCollection<Parameter>();
-
-        //    foreach (var association in Associations)
-        //    {
-        //        Association clonedAssociation = new Association();
-        //        clonedAssociation.Setup(association.ProjectName, association.Name);
-        //        clonedAssociation.
-        //        //clonedAssociations.Add(new Association())
-        //    }
-
-        //    Project clonedProject = new Project();
-        //    clonedProject.Setup(Name, ContextMenuCollection, MiscText, IsEnabled, (Project)ParentItem, IsNew);
-
-        //    return this;
-        //}
     }
 }

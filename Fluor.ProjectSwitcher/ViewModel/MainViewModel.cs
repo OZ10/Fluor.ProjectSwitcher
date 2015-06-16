@@ -20,21 +20,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-
-        // TODO Allow associations -- in one xml row -- between mulitple projects and one application. Required for applications which don't require project specific setup
-        //      i.e. notepad is just an exe. Defining a row per project is pointless and messy
-        // TODO Create transitions between project & subproject (currently both are on the same tab)
         // TODO Add code to deal with applications with only one sub application to run - i.e. notepad
         // TODO Fix bug where selected sub apps will launch even if they are not currently displayed - i.e. even with SPEL selected, Drawing Manager will launch because it's selected by default
 
         private TopApplication _selectedApplication;
 
         public ProjectSwitcherSettings ProjectSwitcherSettings { get; set; }
-
-        //public ObservableCollection<Project> ProjectsCollection { get; set; }
-        //public ObservableCollection<SwitcherItem> ApplicationsCollection { get; set; }
-        //public List<Association> Associations { get; set; }
-        //public ObservableCollection<SwitcherItem> AssociatedApplicationCollection { get; set; }
 
         Project selectedTile;
         public Project SelectedTile
@@ -63,49 +54,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 RaisePropertyChanged("ContextMenus");
             }
         }
-
-        //bool isTileTabSelected;
-        //public bool IsTileTabSelected
-        //{
-        //    get
-        //    {
-        //        return isTileTabSelected;
-        //    }
-        //    set
-        //    {
-        //        isTileTabSelected = value;
-
-        //        RaisePropertyChanged("IsTileTabSelected");
-        //    }
-        //}
-
-        //bool isApplicationsTabSelected;
-        //public bool IsApplicationsTabSelected
-        //{
-        //    get
-        //    {
-        //        return isApplicationsTabSelected;
-        //    }
-        //    set
-        //    {
-        //        isApplicationsTabSelected = value;
-        //        RaisePropertyChanged("IsApplicationsTabSelected");
-        //    }
-        //}
-
-        //bool isAddNewTabSelected;
-        //public bool IsAddNewTabSelected
-        //{
-        //    get
-        //    {
-        //        return isAddNewTabSelected;
-        //    }
-        //    set
-        //    {
-        //        isAddNewTabSelected = value;
-        //        RaisePropertyChanged("IsAddNewTabSelected");
-        //    }
-        //}
 
         private ObservableCollection<Button> breadcrumbCollection;
         public ObservableCollection<Button> BreadcrumbCollection
@@ -159,10 +107,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            //IsTileTabSelected = true;
-            //IsApplicationsTabSelected = false;
-            //IsAddNewTabSelected = false;
-
             BreadcrumbCollection = new ObservableCollection<Button>();
             MainViewButtonsVisibility = Visibility.Visible;
 
@@ -181,7 +125,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             try
             {
-                //ProjectSwitcherSettings = Deserialize("Fluor.ProjectSwitcher.Projects.xml");
                 ProjectSwitcherSettings = CheckStatusOfSettingsFile();
 
                 PopulateProjectsAndApplications();
@@ -262,6 +205,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     UpdateStatusBar("closing applications");
                     bool closeResult = await Task.Run(() => CloseApplications());
                 }
+
+                Messenger.Default.Send(new Message.M_SimpleAction(Message.M_SimpleAction.Action.ChangeActiveProject));
 
                 SetProjectSpecificSettings();
 
@@ -455,32 +400,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     // Change the breadcrumb (title bar) to reflect the newly selected item
                     PopulateBreadCrumb(SelectedTile);
                 }
-                
-
-                // Get all the associations associated with the selected item
-                //Messenger.Default.Send(new Message.M_GetAssociatedApplications(SelectedTile));
-
-                //if (SelectedTile.Applications.Any())
-                //{
-                //    if (SelectedTile.Applications.Count == 1)
-                //    {
-                //        // Only one application is associated with the selected item. Pass the application details to the applications tab for display.
-                //        TopApplication application = SelectedTile.Applications[0] as TopApplication;
-                //        Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(application));
-                //        Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
-                //    }
-                //    else
-                //    {
-                //        // Send a message to the Tile view to display associated applications as tiles
-                //        Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayApplicationsAsTiles));
-                //    }
-                //}
             }
-            //else
-            //{
-            //    // Selected tile was null (home button selected), reset the breadcrumb collection.
-            //    BreadcrumbCollection = new ObservableCollection<Button>();
-            //}
         }
 
         /// <summary>

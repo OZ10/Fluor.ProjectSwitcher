@@ -13,8 +13,9 @@ using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class VM_Edit : ViewModelBase 
+    public class VM_Edit : ViewModelBase
     {
+        #region Collections
         private ObservableCollection<TopApplication> applicationsCollection;
         public ObservableCollection<TopApplication> ApplicationsCollection
         {
@@ -70,7 +71,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 RaisePropertyChanged("AvailableExistingAssociationCollection");
             }
         }
-
+        #endregion
+        
         #region bools
 
         bool isAddNewTabSelected;
@@ -96,8 +98,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         }
 
         #endregion
-
-        
 
         #region Selected
 
@@ -248,24 +248,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
 	    #endregion
 
-        
-
         public VM_Edit()
         {
-            //Messenger.Default.Register<Message.MessageAddOrEditTile>(this, DisplayTileDetails);
             Messenger.Default.Register<Message.M_EditTile>(this, ShowProjectDetails);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
             Messenger.Default.Register<ObservableCollection<TopApplication>>(this, PopulateApplications);
             Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateExistingAssociations);
-            //Messenger.Default.Register<Project>(this, AddNewProject);
 
             SetViewVisibility(showEditProject:true);
         }
-
-        //private void AddNewProject(Project obj)
-        //{
-        //    Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
-        //}
 
         private void PopulateApplications(ObservableCollection<TopApplication> msg)
         {
@@ -311,9 +302,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 SelectedItem = msg.SelectedTile;
 
                 EditedItem = ObjectCopier.CloneJson<Project>(SelectedItem);
-
-                //OriginalItem = new Project();
-                //OriginalItem.Setup(SelectedItem.Name, SelectedItem.ContextMenuCollection, SelectedItem.MiscText, SelectedItem.IsEnabled, (Project)SelectedItem.ParentItem, SelectedItem.IsNew);
 
                 Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayAddNewTab));
             }

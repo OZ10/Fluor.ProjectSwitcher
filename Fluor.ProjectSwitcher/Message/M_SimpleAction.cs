@@ -11,6 +11,7 @@ namespace Fluor.ProjectSwitcher.Message
         public enum Action
         {
             DisplayApplicationsAsTiles,
+            ChangeActiveProject,
             RefreshViews
         }
 
