@@ -143,6 +143,32 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 ProjectsCollection = msg;
 
                 CreateTiles();
+
+                // Send a message to the App.xaml.cs to retrieve the pre-Selected Project name (as 
+                // selected from the jumplist menu)
+                Messenger.Default.Send(new NotificationMessageAction<string>("", (preSelectedProject) =>
+                {
+                    if (preSelectedProject != "")
+                    {
+                        // Search through all the projects to find the one with the same name
+                        foreach (var proj in ProjectsCollection)
+                        {
+                            SelectedTile = proj.FindSubProjectByName(proj, preSelectedProject);
+
+                            if (SelectedTile != null) { break; }
+                        }
+                    }
+                }));
+
+                // Select the project if it's been pre-selected or just show the tiles tab
+                if (SelectedTile != null)
+                {
+                    Messenger.Default.Send(new Message.M_UpdateSelectedTile(SelectedTile, this));
+                }
+                else
+                {
+                    Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+                }
             }
             catch (NullReferenceException)
             {
@@ -218,8 +244,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void TileClicked(Message.M_UpdateSelectedTile msg)
         {
-            if (msg.Sender != this)
-            {
+            //if (msg.Sender != this)
+            //{
                 // Try to cast the item as a Project
                 Project project = msg.SelectedProject as Project;
 
@@ -249,7 +275,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     // Selected tile must be an application. Send a message to the main view model containing the selected application
                     Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, msg.SelectedApplication));
                 }
-            }
+            //}
             
         }
 

@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System;
 using System.Windows.Controls;
 using System.IO;
+using System.Windows.Shell;
 
 namespace Fluor.ProjectSwitcher
 {
@@ -29,9 +30,16 @@ namespace Fluor.ProjectSwitcher
             InitializeComponent();
 
             Messenger.Default.Register<Message.MessageStatusUpdate>(this, UpdateStatusWindow);
-            
+            //SetUpJumplist();
             vm.SetupEnvironment();
         }
+
+        //private void SetUpJumplist()
+        //{
+        //    JumpList jumpList = JumpList.GetJumpList(App.Current);
+        //    jumpList.JumpItems.Clear();
+        //    jumpList.Apply();
+        //}
 
         /// <summary>
         /// Handles the Click event of the btnOpenProject control.
@@ -153,6 +161,12 @@ namespace Fluor.ProjectSwitcher
                 File.Copy("Fluor.ProjectSwitcher.Projects.xml", sfd.FileName, true);
                 flySettings.IsOpen = false;
             }
+        }
+
+        private void miResetSize_Click(object sender, RoutedEventArgs e)
+        {
+            this.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+            flySettings.IsOpen = false;
         }
     }
 }

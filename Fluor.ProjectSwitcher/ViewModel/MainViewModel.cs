@@ -15,6 +15,8 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 using System.IO;
+using System.Windows.Shell;
+using System.Reflection;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -130,27 +132,26 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 PopulateProjectsAndApplications();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Doh!");
+                MessageBox.Show(ex.Message);
                 //Messenger.Default.Send<Message.MessageStatusUpdate>(new Message.MessageStatusUpdate(Visibility.Visible, "Doh!"));
             }
         }
 
         private void PopulateProjectsAndApplications()
         {
-            Messenger.Default.Send<ObservableCollection<Project>>(ProjectSwitcherSettings.Projects);
             Messenger.Default.Send<ObservableCollection<TopApplication>>(ProjectSwitcherSettings.Applications);
-            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+            Messenger.Default.Send<ObservableCollection<Project>>(ProjectSwitcherSettings.Projects);
         }
 
         private ProjectSwitcherSettings CheckStatusOfSettingsFile()
         {
-            ProjectSwitcherSettings settings = Deserialize("Fluor.ProjectSwitcher.Projects.xml");
+            ProjectSwitcherSettings settings = Deserialize(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects.xml");
 
-            if (File.Exists("Fluor.ProjectSwitcher.Projects_Backup.xml"))
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects_Backup.xml"))
             {
-                ProjectSwitcherSettings settingsBackup = Deserialize("Fluor.ProjectSwitcher.Projects_Backup.xml");
+                ProjectSwitcherSettings settingsBackup = Deserialize(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects_Backup.xml");
 
                 if (settingsBackup.Version >= settings.Version)
                 {
@@ -171,16 +172,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //UpdateStatusText("Loaded settings user selected settings");
         }
 
-        static public void Serialize(ProjectSwitcherSettings d)
+        static private void Serialize(ProjectSwitcherSettings d)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
-            using (TextWriter writer = new StreamWriter(@"Fluor.ProjectSwitcher.Projects.xml"))
+            using (TextWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects.xml"))
             {
                 serializer.Serialize(writer, d);
             }
         }
 
-        public static ProjectSwitcherSettings Deserialize(string filePath)
+        private static ProjectSwitcherSettings Deserialize(string filePath)
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
             TextReader reader = new StreamReader(@filePath);
@@ -242,7 +243,31 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 }
             }
 
-            //}
+            AddSelectedProjectToJumpList(selectedProject);
+        }
+
+        private static void AddSelectedProjectToJumpList(Project selectedProject)
+        {
+            JumpTask task = new JumpTask
+            {
+                Title = selectedProject.Name,
+                Arguments = selectedProject.Name,
+                Description = "Open with " + selectedProject.Name + " selected",
+                IconResourcePath =System.AppDomain.CurrentDomain.BaseDirectory + "SwitcherIcon_w1.ico", //Assembly.GetEntryAssembly().CodeBase,
+                ApplicationPath = Assembly.GetEntryAssembly().CodeBase
+            };
+
+            JumpList jl = JumpList.GetJumpList(App.Current);
+
+            if (jl == null)
+            {
+                jl = new JumpList();
+            }
+
+            //jl.JumpItems.Add(task);
+            //JumpList.SetJumpList(App.Current, jl);
+            JumpList.AddToRecentCategory(task);
+            jl.Apply();
         }
 
         private void SetIni(Parameter parameter)

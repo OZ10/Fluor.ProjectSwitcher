@@ -84,7 +84,7 @@ namespace Fluor.ProjectSwitcher.Class
         {
         }
 
-        public void Setup(string applicationName, XElement installPath, string exe, bool isSelected, bool isVisible, IEnumerable<XElement> contextMenu, bool isEnabled, Fluor.ProjectSwitcher.Class.SubApplication parentApplication)
+        public void Setup(string applicationName, XElement installPath, string exe, bool isSelected, bool isVisible, IEnumerable<XElement> contextMenu, bool isEnabled, string parentApplication)
         {
             Name = applicationName;
             Exe = exe;
@@ -101,16 +101,16 @@ namespace Fluor.ProjectSwitcher.Class
             }
             else
             {
-                InstallPath = parentApplication.InstallPath;
+                //InstallPath = parentApplication.InstallPath;
             }
 
-            if (ParentItem != null && ParentItem.ContextMenuCollection.Any())
-            {
-                foreach (ContextMenu cm in ParentItem.ContextMenuCollection)
-                {
-                    ContextMenuCollection.Add(cm);
-                }
-            }
+            //if (ParentItem != null && ParentItem.ContextMenuCollection.Any())
+            //{
+            //    foreach (ContextMenu cm in ParentItem.ContextMenuCollection)
+            //    {
+            //        ContextMenuCollection.Add(cm);
+            //    }
+            //}
 
             GetContextMenus(contextMenu);
         }

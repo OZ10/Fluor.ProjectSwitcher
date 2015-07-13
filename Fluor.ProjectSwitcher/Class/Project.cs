@@ -59,7 +59,7 @@ namespace Fluor.ProjectSwitcher.Class
         {
         }
 
-        public void Setup(string projectName, ObservableCollection<ContextMenu> contextMenus, string miscText, bool isEnabled, Project parentProject, bool isNew)
+        public void Setup(string projectName, ObservableCollection<ContextMenu> contextMenus, string miscText, bool isEnabled, string parentProject, bool isNew)
         {
             Name = projectName;
             OriginalName = projectName;
@@ -111,6 +111,31 @@ namespace Fluor.ProjectSwitcher.Class
                     project.Associations.Add(association);
                 }
             }
+        }
+
+        public Project FindSubProjectByName(Project parentProject, string name)
+        {
+            if (parentProject.Name == name)
+            {
+                return parentProject;
+            }
+            else
+            {
+                foreach (var subProject in parentProject.SubItems)
+                {
+                    if (subProject.Name == name)
+                    {
+                        return subProject;
+                    }
+
+                    if (subProject.SubItems.Any())
+                    {
+                        FindSubProjectByName(subProject, name);
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

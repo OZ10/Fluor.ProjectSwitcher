@@ -53,6 +53,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
+        public TopApplication SelectedApplication { get; set; }
+
         public VM_Applications()
         {
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
@@ -93,6 +95,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             ActiveApplicationCollection = new ObservableCollection<ListBox>();
 
+            SelectedApplication = message.Content;
+
             foreach (TopApplication application in message.Content.SubItems)
             {
                 ListBox lb = new ListBox();
@@ -128,16 +132,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             SwitcherItem selectedApp = (SwitcherItem)msg.Content.DataContext;
             string selectedMenuItem = msg.Content.Header.ToString();
 
-            foreach (TopApplication application in ApplicationsCollection.Where(sa => sa == selectedApp.ParentItem))
+            foreach (SubApplication subApp in SelectedApplication.SubItems.Where(sa => sa.Name == selectedApp.ParentItem))
             {
-                foreach (SubApplication subApp in application.SubItems)
+                //TODO This only goes one level deep on subapps. Should recurse through all subitems.
+                foreach (SubApplication subApp2 in subApp.SubItems) //.Where(sa => sa.Name == selectedApp.ParentItem))
                 {
-                    subApp.IsSelected = false;
+                    subApp2.IsSelected = false;
 
                     switch (selectedMenuItem)
                     {
                         case "select all":
-                            subApp.IsSelected = true;
+                            subApp2.IsSelected = true;
                             break;
 
                         //case "select none":
@@ -145,23 +150,22 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         //    break;
 
                         case "select only this":
-                            if (subApp == selectedApp)
+                            if (subApp2 == selectedApp)
                             {
-                                subApp.IsSelected = true;
+                                subApp2.IsSelected = true;
                             }
                             break;
 
                         case "select all except this":
-                            if (subApp != selectedApp)
+                            if (subApp2 != selectedApp)
                             {
-                                subApp.IsSelected = true;
+                                subApp2.IsSelected = true;
                             }
                             break;
 
                         default:
                             break;
                     }
-
                 }
             }
         }

@@ -27,8 +27,8 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlAttribute()]
         public bool IsEnabled { get; set; }
 
-        [XmlIgnore]
-        public SwitcherItem ParentItem { get; set; }
+        [XmlAttribute()]
+        public string ParentItem { get; set; }
 
         [XmlIgnore]
         public bool IsNew { get; set; }

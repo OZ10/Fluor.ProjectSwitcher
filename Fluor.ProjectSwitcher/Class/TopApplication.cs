@@ -32,7 +32,7 @@ namespace Fluor.ProjectSwitcher.Class
             //TileColor = (SolidColorBrush)System.Windows.Application.Current.Resources["WindowTitleColorBrush"];
         }
 
-        public void GetSubApplications(XElement xmlApplication, SubApplication parentApplication) // string parentInstallPath, string parentContextMenu)
+        public void GetSubApplications(XElement xmlApplication, string parentApplication) // string parentInstallPath, string parentContextMenu)
         {
             if (xmlApplication.Elements("SUBAPPLICATION").Any())
             {
@@ -51,7 +51,7 @@ namespace Fluor.ProjectSwitcher.Class
 
                     SubItems.Add(subApplication);
 
-                    subApplication.GetSubApplications(xmlSubApplication, subApplication); // installPath, contextMenu);
+                    subApplication.GetSubApplications(xmlSubApplication, subApplication.Name); // installPath, contextMenu);
                 }
             }
         }

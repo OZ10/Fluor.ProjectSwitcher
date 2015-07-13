@@ -5,7 +5,7 @@
         xmlns:View="clr-namespace:Fluor.ProjectSwitcher.View"      
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"  x:Class="Fluor.ProjectSwitcher.MainWindow"  
-        Title="" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="280" MinWidth="370" BorderBrush="Black" FontFamily="Calibri" ShowTitleBar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowSystemMenuOnRightClick="False">
+        Title="" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="280" MinWidth="370" BorderBrush="{DynamicResource HighlightBrush}" FontFamily="Calibri" ShowTitleBar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowSystemMenuOnRightClick="False">
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Controls:MetroWindow.Resources>
@@ -14,29 +14,27 @@
     </Controls:MetroWindow.DataContext>
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="flySettings" Header="Settings" Position="Left" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
-                <Grid>
+            <Controls:Flyout x:Name="flySettings" Position="Left" Width="Auto" IsOpenChanged="flyOut_IsOpenChanged">
+                <Grid Margin="10,0,10,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Rectangle Stroke="White" Height="Auto" Width="1" HorizontalAlignment="Left"/>
-                    <StackPanel Grid.Column="1">
-                        <MenuItem x:Name="miViewSettingsFile" Header="View Settings File" Click="miViewSettingsFile_Click" FontSize="12">
-                            <MenuItem.Icon>
-                                <Path Data="{DynamicResource Settings}" Style="{DynamicResource MenuItemIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="miLoadSettingsFile" Header="Load Settings File" Click="miLoadSettingsFile_Click" FontSize="12">
-                            <MenuItem.Icon>
-                                <Path Data="{DynamicResource Load}" Style="{DynamicResource MenuItemIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="miExportSettingsFile" Header="Export Settings File" Click="miExportSettingsFile_Click" FontSize="12">
-                            <MenuItem.Icon>
-                                <Path Data="{DynamicResource Export}" Style="{DynamicResource MenuItemIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Settings File" Foreground="{DynamicResource TextBlack87Brush}"/>
+                    <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top">
+                        <Button x:Name="miViewSettingsFile" ToolTip="Open" Click="miViewSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource SettingsIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45"/>
+                        <Button x:Name="miLoadSettingsFile" ToolTip="Load" Click="miLoadSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource LoadIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45"/>
+                        <Button x:Name="miExportSettingsFile" ToolTip="Export" Click="miExportSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource ExportIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45"/>
+                    </StackPanel>
+                    <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="2"/>
+                    <TextBlock Text="Misc" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="2"/>
+                    <StackPanel Grid.Row="3">
                         <MenuItem x:Name="miRefresh" Header="Refresh After Changes" FontSize="12" Click="miRefresh_Click">
                             <MenuItem.Icon>
                                 <Path Data="{DynamicResource Refresh}" Style="{DynamicResource MenuItemIcon}"/>
@@ -45,6 +43,11 @@
                         <MenuItem x:Name="miCloseAllApps" Header="Close All Open Apps" Click="miCloseAllApps_Click" FontSize="12">
                             <MenuItem.Icon>
                                 <Path Data="{DynamicResource Close}" Style="{DynamicResource MenuItemIcon}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="miResetSize" Header="Reset Window Size" FontSize="12" Click="miResetSize_Click">
+                            <MenuItem.Icon>
+                                <Path Data="{DynamicResource Restore}" Style="{DynamicResource MenuItemIcon}"/>
                             </MenuItem.Icon>
                         </MenuItem>
                     </StackPanel>
