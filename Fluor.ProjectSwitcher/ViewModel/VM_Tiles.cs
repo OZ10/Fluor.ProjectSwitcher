@@ -282,11 +282,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private void GetAssociatedApplications()
         {
             // Only get associated applications if they haven't already been gathered (i.e. the selected tiles application collection is empty)
-            if (SelectedTile.Applications.Any() == false)
-            {
+            // Update 17/07/15: Always gather applications incase application details have been edited
+            //if (SelectedTile.Applications.Any() == false)
+            //{
                 // Get all the associations associated with the selected item
                 Messenger.Default.Send(new Message.M_GetAssociatedApplications(SelectedTile));
-            }
+            //}
 
             if (SelectedTile.Applications.Any())
             {

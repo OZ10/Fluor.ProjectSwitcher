@@ -67,6 +67,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void GetAssociatedApplications(Message.M_GetAssociatedApplications msg)
         {
+            // Clear SelectedProject's applications collection 
+            msg.SelectedProject.Applications = new ObservableCollection<TopApplication>();
+
             // Get all the associations associated with the selected item
             foreach (Association association in msg.SelectedProject.Associations) //.Where(ass => ass.ProjectName == SelectedTile.Name))
             {

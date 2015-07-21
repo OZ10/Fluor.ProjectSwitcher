@@ -27,6 +27,11 @@ namespace Fluor.ProjectSwitcher.Class
             {
                 isSelected = value;
 
+                if (isSelected == true)
+                {
+                    IsVisible = true;
+                }
+
                 if (SubItems != null)
                 {
                     foreach (SubApplication subApplication in SubItems)
@@ -40,8 +45,15 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
+        private Visibility visibility;
         [XmlIgnore]
-        public Visibility Visibility { get; set; }
+        public Visibility Visibility { get { return visibility; }
+            set
+            {
+                visibility = value;
+                RaisePropertyChanged("Visibility");
+            }
+        }
 
         private bool isVisible;
         [XmlAttribute]
@@ -62,7 +74,10 @@ namespace Fluor.ProjectSwitcher.Class
                 else
                 {
                     Visibility = System.Windows.Visibility.Collapsed;
+                    IsSelected = false;
                 }
+
+                RaisePropertyChanged("IsVisible");
             }
         }
 
@@ -84,7 +99,7 @@ namespace Fluor.ProjectSwitcher.Class
         {
         }
 
-        public void Setup(string applicationName, XElement installPath, string exe, bool isSelected, bool isVisible, IEnumerable<XElement> contextMenu, bool isEnabled, string parentApplication)
+        public void Setup(string applicationName, string installPath, string exe, bool isSelected, bool isVisible, bool isEnabled, string parentApplication)
         {
             Name = applicationName;
             Exe = exe;
@@ -92,17 +107,18 @@ namespace Fluor.ProjectSwitcher.Class
             IsVisible = isVisible;
             ParentItem = parentApplication;
             IsEnabled = isEnabled;
+            InstallPath = installPath;
 
-            if (installPath.Attribute("TYPE").Value != "")
-            {
-                Parameter parameter = new Parameter();
-                parameter.Setup((Parameter.ParameterTypeEnum)Enum.Parse(typeof(Parameter.ParameterTypeEnum), installPath.Attribute("TYPE").Value), installPath.Attribute("VALUE").Value, installPath.Attribute("PATH").Value);
-                InstallPath = parameter.GetInstallationPath();
-            }
-            else
-            {
-                //InstallPath = parentApplication.InstallPath;
-            }
+            //if (installPath.Attribute("TYPE").Value != "")
+            //{
+            //    Parameter parameter = new Parameter();
+            //    parameter.Setup((Parameter.ParameterTypeEnum)Enum.Parse(typeof(Parameter.ParameterTypeEnum), installPath.Attribute("TYPE").Value), installPath.Attribute("VALUE").Value, installPath.Attribute("PATH").Value);
+            //    InstallPath = parameter.GetInstallationPath();
+            //}
+            //else
+            //{
+            //    //InstallPath = parentApplication.InstallPath;
+            //}
 
             //if (ParentItem != null && ParentItem.ContextMenuCollection.Any())
             //{
@@ -112,7 +128,7 @@ namespace Fluor.ProjectSwitcher.Class
             //    }
             //}
 
-            GetContextMenus(contextMenu);
+            //GetContextMenus(contextMenu);
         }
     }
 }

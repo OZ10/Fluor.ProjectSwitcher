@@ -168,5 +168,11 @@ namespace Fluor.ProjectSwitcher
             this.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
             flySettings.IsOpen = false;
         }
+
+        private void miEditApps_Click(object sender, RoutedEventArgs e)
+        {
+            Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayEditApplicationsTab));
+            flySettings.IsOpen = false;
+        }
     }
 }

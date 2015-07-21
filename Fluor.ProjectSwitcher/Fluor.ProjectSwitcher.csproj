@@ -28,8 +28,8 @@
     <PublisherName>Fluor</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>3.7.0.1</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>3.8.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -119,6 +119,7 @@
     <Compile Include="Class\Parameter.cs" />
     <Compile Include="Class\Project.cs" />
     <Compile Include="Class\ProjectSwitcherSettings.cs" />
+    <Compile Include="Class\Serialization.cs" />
     <Compile Include="Class\SubApplication.cs" />
     <Compile Include="Class\SwitcherItem.cs" />
     <Compile Include="Class\TopApplication.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Message\M_SimpleAction.cs" />
     <Compile Include="ViewModel\VM_Edit.cs" />
     <Compile Include="ViewModel\VM_Applications.cs" />
+    <Compile Include="ViewModel\VM_EditApplications.cs" />
     <Compile Include="ViewModel\VM_Tiles.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\V_Edit.xaml.cs">
@@ -140,6 +142,9 @@
     </Compile>
     <Compile Include="View\V_Applications.xaml.cs">
       <DependentUpon>V_Applications.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\V_EditApplications.xaml.cs">
+      <DependentUpon>V_EditApplications.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\V_Tiles.xaml.cs">
       <DependentUpon>V_Tiles.xaml</DependentUpon>
@@ -179,6 +184,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\V_Applications.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\V_EditApplications.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,7 +252,7 @@
   <ItemGroup>
     <Content Include="..\Fluor.ProjectSwitcher.Projects.xml">
       <Link>Fluor.ProjectSwitcher.Projects.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="SwitcherIcon_w1.ico" />
   </ItemGroup>

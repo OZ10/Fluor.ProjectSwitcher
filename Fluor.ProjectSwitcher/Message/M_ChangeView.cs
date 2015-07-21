@@ -13,6 +13,7 @@ namespace Fluor.ProjectSwitcher.Message
             DisplayTilesTab,
             DisplayApplicationsTab,
             DisplayAddNewTab,
+            DisplayEditApplicationsTab,
         }
 
         public ViewToSelect View { get; set; }

@@ -17,15 +17,42 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlAttribute("ContextMenuType")]
         public ContextMenuTypeEnum Type { get; set; }
 
+        private string _value;
         [XmlAttribute("Value")]
-        public string Value { get; set; }
+        public string Value
+        {
+            get { return _value; }
+            set
+            {
+                _value = value;
+                EditedValue = _value;
+            }
+        }
 
+        private string name;
         [XmlAttribute()]
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                EditedName = name;
+            }
+        }
+
+        [XmlIgnore]
+        public string EditedValue { get; set; }
+
+        [XmlIgnore]
+        public string EditedName { get; set; }
+
+        [XmlIgnore]
+        public bool IsNew { get; set; }
 
         public ContextMenu()
         {
-            
+            IsNew = false;
         }
 
         public void Setup(ContextMenuTypeEnum type, string value, string displayName)
@@ -33,6 +60,18 @@ namespace Fluor.ProjectSwitcher.Class
             Type = type;
             Value = value;
             Name = displayName;
+        }
+
+        public void Update()
+        {
+            Name = EditedName;
+            Value = EditedValue;
+        }
+
+        public void CancelUpdate()
+        {
+            EditedName = Name;
+            EditedValue = Value;
         }
     }
 }

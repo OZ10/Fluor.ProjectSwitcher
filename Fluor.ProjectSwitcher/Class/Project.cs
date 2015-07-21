@@ -40,6 +40,7 @@ namespace Fluor.ProjectSwitcher.Class
         }
 
         private ObservableCollection<TopApplication> _applications;
+        [XmlIgnore]
         public ObservableCollection<TopApplication> Applications
         {
             get

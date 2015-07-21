@@ -25,17 +25,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
         // TODO Add code to deal with applications with only one sub application to run - i.e. notepad
         // TODO Fix bug where selected sub apps will launch even if they are not currently displayed - i.e. even with SPEL selected, Drawing Manager will launch because it's selected by default
 
+        private static string SettingsFileName = "Fluor.ProjectSwitcher.Projects.xml";
+        private static string SettingsFileBackupName = "Fluor.ProjectSwitcher.Projects_Backup.xml";
+        private static string InstallDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
         private TopApplication _selectedApplication;
 
         public ProjectSwitcherSettings ProjectSwitcherSettings { get; set; }
 
         Project selectedTile;
         public Project SelectedTile
-        {
-            get
-            {
-                return selectedTile;
-            }
+        {   
+            get { return selectedTile; }
             set
             {
                 selectedTile = value;
@@ -45,11 +46,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private ObservableCollection<MenuItem> contextMenus;
         public ObservableCollection<MenuItem> ContextMenus
-        {
-            get
-            {
-                return contextMenus;
-            }
+        {   
+            get { return contextMenus; }
             set
             {
                 contextMenus = value;
@@ -59,11 +57,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private ObservableCollection<Button> breadcrumbCollection;
         public ObservableCollection<Button> BreadcrumbCollection
-        {
-            get
-            {
-                return breadcrumbCollection;
-            }
+        {   
+            get { return breadcrumbCollection; }
             set
             {
                 breadcrumbCollection = value;
@@ -79,6 +74,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 mainViewButtonsVisibility = value;
                 RaisePropertyChanged("MainViewButtonsVisibility");
+            }
+        }
+
+        private string version;
+        public string Version
+        {
+            get { return version; }
+            set
+            {
+                version = value;
+                RaisePropertyChanged("Version");
             }
         }
 
@@ -112,11 +118,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
             BreadcrumbCollection = new ObservableCollection<Button>();
             MainViewButtonsVisibility = Visibility.Visible;
 
+            version = "v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
             Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
-            Messenger.Default.Register< Message.M_SettingsHaveBeenChanged>(this, SettingsHaveChanged);
+            Messenger.Default.Register<Message.M_SettingsHaveBeenChanged>(this, SettingsHaveChanged);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
         }
 
@@ -147,15 +155,18 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private ProjectSwitcherSettings CheckStatusOfSettingsFile()
         {
-            ProjectSwitcherSettings settings = Deserialize(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects.xml");
+            ProjectSwitcherSettings settings = Serialization.Deserialize(InstallDirectory + SettingsFileName);
 
-            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects_Backup.xml"))
+            if (File.Exists(InstallDirectory + SettingsFileBackupName))
             {
-                ProjectSwitcherSettings settingsBackup = Deserialize(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects_Backup.xml");
+                ProjectSwitcherSettings settingsBackup = Serialization.Deserialize(InstallDirectory + SettingsFileBackupName);
 
-                if (settingsBackup.Version >= settings.Version)
+                if (settingsBackup.UserVersion > settings.UserVersion)
                 {
                     //UpdateStatusText("Loaded settings from backup");
+
+                    // Overwrite the settings file with this backup file
+                    Serialization.Serialize(settingsBackup, InstallDirectory + SettingsFileName);
                     return settingsBackup;
                 }
             }
@@ -166,29 +177,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void LoadSettingsManually(string settingFilePath)
         {
-            ProjectSwitcherSettings = Deserialize(settingFilePath);
+            ProjectSwitcherSettings = Serialization.Deserialize(settingFilePath);
             PopulateProjectsAndApplications();
             ProjectSwitcherSettings.HasBeenChanged = true;
             //UpdateStatusText("Loaded settings user selected settings");
         }
 
-        static private void Serialize(ProjectSwitcherSettings d)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
-            using (TextWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "Fluor.ProjectSwitcher.Projects.xml"))
-            {
-                serializer.Serialize(writer, d);
-            }
-        }
-
-        private static ProjectSwitcherSettings Deserialize(string filePath)
-        {
-            XmlSerializer deserializer = new XmlSerializer(typeof(ProjectSwitcherSettings));
-            TextReader reader = new StreamReader(@filePath);
-            object obj = deserializer.Deserialize(reader);
-            reader.Close();
-            return (ProjectSwitcherSettings)obj;
-        }
+        
 
         /// <summary>
         /// Closes any open applications and opens new ones.
@@ -253,7 +248,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 Title = selectedProject.Name,
                 Arguments = selectedProject.Name,
                 Description = "Open with " + selectedProject.Name + " selected",
-                IconResourcePath =System.AppDomain.CurrentDomain.BaseDirectory + "SwitcherIcon_w1.ico", //Assembly.GetEntryAssembly().CodeBase,
+                IconResourcePath = InstallDirectory + "SwitcherIcon_w1.ico", //Assembly.GetEntryAssembly().CodeBase,
                 ApplicationPath = Assembly.GetEntryAssembly().CodeBase
             };
 
@@ -543,17 +538,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 ProjectSwitcherSettings.UserVersion += 1;
                 ProjectSwitcherSettings.HasBeenChanged = false;
 
-                Serialize(ProjectSwitcherSettings);
+                Serialization.Serialize(ProjectSwitcherSettings, InstallDirectory + SettingsFileName);
 
                 // Backup file
-                File.Copy("Fluor.ProjectSwitcher.Projects.xml", "Fluor.ProjectSwitcher.Projects_Backup.xml", true);
+                File.Copy(SettingsFileName, SettingsFileBackupName, true);
             }
         }
 
         private void ChangeView(Message.M_ChangeView msg)
         {
             // Change view message - hide the switcher button if the Add New view is shown
-            if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayAddNewTab)
+            if (msg.View == Message.M_ChangeView.ViewToSelect.DisplayAddNewTab | msg.View == Message.M_ChangeView.ViewToSelect.DisplayEditApplicationsTab)
             {
                 MainViewButtonsVisibility = Visibility.Collapsed;
             }

@@ -16,8 +16,15 @@ namespace Fluor.ProjectSwitcher.Class
 {
     public class SwitcherItem : Class.Base 
     {
+        private string name;
         [XmlAttribute()]
-        public string Name { get; set; } // Current name of the project
+        public string Name { get { return name; }
+            set
+            {
+                name = value;
+                RaisePropertyChanged("Name");
+            }
+        } // Current name of the project
 
         [XmlIgnore]
         public string OriginalName { get; set; } // Used to store the name before it's modified in the Edit view
