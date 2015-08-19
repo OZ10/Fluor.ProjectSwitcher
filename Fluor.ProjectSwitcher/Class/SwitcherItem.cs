@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
-    public class SwitcherItem : Class.Base 
+    public class SwitcherItem : Base
     {
         private string name;
         [XmlAttribute()]

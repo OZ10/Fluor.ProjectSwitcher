@@ -10,11 +10,11 @@ namespace Fluor.ProjectSwitcher.View
     /// </summary>
     public partial class V_Edit : UserControl
     {
-        public ViewModel.VM_Edit vm
+        public ViewModel.VM_EditTile vm
         {
             get
             {
-                return (ViewModel.VM_Edit)DataContext;
+                return (ViewModel.VM_EditTile)DataContext;
             }
         }
 
@@ -25,9 +25,6 @@ namespace Fluor.ProjectSwitcher.View
 
         private void btnEditOk_Click(object sender, RoutedEventArgs e)
         {
-            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.DisplayTilesTab));
-            //Messenger.Default.Send<Message.M_SimpleAction>(new Message.M_SimpleAction(Message.M_SimpleAction.Action.RefreshViews));
-            //Messenger.Default.Send<Message.MessageSaveChangesToTile>(new Message.MessageSaveChangesToTile(null, this));
             vm.OkButton_Clicked();
         }
 

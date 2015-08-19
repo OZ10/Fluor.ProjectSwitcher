@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
-    public class VM_Edit : ViewModelBase
+    public class VM_EditTile : ViewModelBase
     {
         #region Collections
         private ObservableCollection<TopApplication> applicationsCollection;
@@ -248,7 +248,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
 	    #endregion
 
-        public VM_Edit()
+        public VM_EditTile()
         {
             Messenger.Default.Register<Message.M_EditTile>(this, ShowProjectDetails);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
@@ -368,9 +368,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 // Create new association and add a new parameter
                 Class.Association association = CreateNewAssociation(selectedApplication);
-                Class.Parameter parameter = CreateNewParameter();
+                //Class.Parameter parameter = CreateNewParameter();
 
-                association.Parameters.Add(parameter);
+                //association.Parameters.Add(parameter);
 
                 //// Add new association to the SelectedItem's association collection
                 //SelectedItem.Associations.Add(association);

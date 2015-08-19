@@ -6,28 +6,80 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Applications, Mode=OneWay, Source={StaticResource Locator}}" Style="{DynamicResource VisibleAnimation}">
     <Grid>
-        <ItemsControl Name="icApplications" ItemsSource="{Binding ActiveApplicationCollection}">
+        <ItemsControl Name="icApplications" ItemsSource="{Binding ActiveApplicationCollection}" ItemTemplate="{DynamicResource MetroApplicationTile}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <!--<TreeView Name="tvApps" BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" BorderThickness="0,2,0,2" Padding="0,5,0,0" ItemsSource="{Binding ApplicationsCollection}" ItemContainerStyle="{DynamicResource MetroTreeViewItemCustom}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
-                    <CheckBox Name="chkApplication" Content="{Binding Name}" IsChecked="{Binding IsSelected}" MouseRightButtonUp="chkApplication_MouseRightButtonUp" />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <TreeView.ContextMenu>
-                <ContextMenu ItemsSource="{Binding ApplicationContextMenus}" ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}">
-                    <ContextMenu.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <EventSetter Event="Click" Handler="muApplication_Click"/>
-                        </Style>
-                    </ContextMenu.ItemContainerStyle>
-                </ContextMenu>
-            </TreeView.ContextMenu>
-        </TreeView>-->
     </Grid>
+
+    <UserControl.Resources>
+
+        <ControlTemplate x:Key="ApplicationListTemplate">
+            <Grid Margin="5,0,5,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Margin="0,0,0,1" Padding="5" Background="White" FontSize="18" FontWeight="Normal" Foreground="Black">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
+                            <ContextMenu.ItemTemplate>
+                                <DataTemplate>
+                                    <MenuItem Header="{Binding Name}" CommandParameter="{Binding Value}" Icon="{DynamicResource ContextMenuIcon_Path}" />
+                                </DataTemplate>
+                            </ContextMenu.ItemTemplate>
+                            <ContextMenu.ItemContainerStyle>
+                                <Style TargetType="{x:Type MenuItem}">
+                                    <EventSetter Event="MenuItem.Click" Handler="muApplication_Click"/>
+                                </Style>
+                            </ContextMenu.ItemContainerStyle>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
+
+                <Border BorderBrush="#33000000" BorderThickness="1,0,0,1" Margin="0,0,0,1"/>
+                <ListBox Grid.Row="1" ItemsSource="{Binding SubItems}" BorderBrush="{DynamicResource AccentColorBrush4}" BorderThickness="1,0,0,0" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}">
+                    <!--Background="{DynamicResource AccentColorBrush4}"-->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Visibility="{Binding Visibility}" Padding="5" FontSize="14" Foreground="{DynamicResource TextBlack87Brush}">
+                                <CheckBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="miSelectAll" Header="select all" Click="MenuItem_Click">
+                                            <MenuItem.Icon>
+                                                <Path Data="{DynamicResource SelectAll}" Style="{DynamicResource MenuItemIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem x:Name="miSelectNone" Header="select none" Click="MenuItem_Click">
+                                            <MenuItem.Icon>
+                                                <Path Data="{DynamicResource Minus}" Style="{DynamicResource MenuItemIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem x:Name="miSelectOnlyThis" Header="select only this" Click="MenuItem_Click">
+                                            <MenuItem.Icon>
+                                                <Path Data="{DynamicResource SelectThisOnly}" Style="{DynamicResource MenuItemIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem x:Name="miSelectAllExceptThis" Header="select all except this" Click="MenuItem_Click">
+                                            <MenuItem.Icon>
+                                                <Path Data="{DynamicResource SelectAllExceptThis}" Style="{DynamicResource MenuItemIcon}"/>
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </CheckBox.ContextMenu>
+                            </CheckBox>
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Border Grid.Row="1" BorderBrush="#33000000" BorderThickness="1,0,0,1"/>
+            </Grid>
+        </ControlTemplate>
+        <DataTemplate x:Key="MetroApplicationTile" DataType="ListBox">
+            <ListBox Template="{DynamicResource ApplicationListTemplate}"  />
+        </DataTemplate>
+    </UserControl.Resources>
 </UserControl>

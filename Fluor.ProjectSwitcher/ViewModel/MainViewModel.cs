@@ -1,22 +1,20 @@
+using Fluor.ProjectSwitcher.Class;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using Ini;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using GalaSoft.MvvmLight.Messaging;
-using System.Xml.Linq;
-using System.Linq;
-using System.Collections.Generic;
-using Fluor.ProjectSwitcher.Class;
-using System.ComponentModel;
 using System.Windows.Controls;
-using System.Xml.Serialization;
-using System.IO;
 using System.Windows.Shell;
-using System.Reflection;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -55,8 +53,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Button> breadcrumbCollection;
-        public ObservableCollection<Button> BreadcrumbCollection
+        private ObservableCollection<SwitcherItem> breadcrumbCollection;
+        public ObservableCollection<SwitcherItem> BreadcrumbCollection
         {   
             get { return breadcrumbCollection; }
             set
@@ -115,15 +113,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            BreadcrumbCollection = new ObservableCollection<Button>();
+            BreadcrumbCollection = new ObservableCollection<SwitcherItem>();
             MainViewButtonsVisibility = Visibility.Visible;
 
             version = "v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, ChangeSelectedTile);
-            Messenger.Default.Register<NotificationMessageAction<string>>(this, GetContextMenuParameters);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
-            Messenger.Default.Register<GenericMessage<ObservableCollection<MenuItem>>>(this, UpdateSelectedProjectContextMenus);
             Messenger.Default.Register<Message.M_SettingsHaveBeenChanged>(this, SettingsHaveChanged);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
         }
@@ -183,8 +179,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             //UpdateStatusText("Loaded settings user selected settings");
         }
 
-        
-
         /// <summary>
         /// Closes any open applications and opens new ones.
         /// </summary>
@@ -192,7 +186,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (SelectedTile != null)
             {
-                // Show status grid which overs all controls
+                // Show status grid which over all controls
                 Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible));
 
                 // Only close open applcations if the selected project is not the active project
@@ -406,15 +400,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="msg">Message containing the selected item.</param>
         private void ChangeSelectedTile(Message.M_UpdateSelectedTile msg)
         {
-            // Collect all the applications that are associated with the newly selected item
+            // Only change the selectedtile if a project tile has been selected
+            // do nothing and keep the previously selected tile if an application tile has been selected
 
-            SelectedTile = msg.SelectedProject;
+            SelectedTile = msg?.SelectedProject;
 
             if (SelectedTile != null)
             {
-                // A tile has been selected so display the tile tab
-                //Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
-
                 if (SelectedTile.SubItems.Any() | SelectedTile.Associations.Any())
                 {
                     // Change the breadcrumb (title bar) to reflect the newly selected item
@@ -429,22 +421,22 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="switcherItem">The switcher item to be added.</param>
         private void PopulateBreadCrumb(SwitcherItem switcherItem)
         {
-            Button btn = new Button();
-            btn.Style = (Style)System.Windows.Application.Current.Resources["MetroBreadCrumbButtonStyle"];
-            btn.DataContext = switcherItem;
+            //Button btn = new Button();
+            //btn.Style = (Style)System.Windows.Application.Current.Resources["MetroBreadCrumbButtonStyle"];
+            //btn.DataContext = switcherItem;
 
             // Check if the breadcrumb collection already has items
             // Method: Add each item one by one to a new temp collection until the item which has been select (passed in) is found
             // Then overwrite the Breadcrumb collection with the temp collection - therefore any item after the selected item will be removed.
             if (BreadcrumbCollection.Any())
             {
-                ObservableCollection<Button> tempCollection = new ObservableCollection<Button>();
+                ObservableCollection<SwitcherItem> tempCollection = new ObservableCollection<SwitcherItem>();
 
-                foreach (Button b in BreadcrumbCollection)
+                foreach (SwitcherItem s in BreadcrumbCollection)
                 {
-                    if (b.DataContext != btn.DataContext)
+                    if (s != switcherItem)
                     {
-                        tempCollection.Add(b);
+                        tempCollection.Add(s);
                     }
                     else
                     {
@@ -455,48 +447,47 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 BreadcrumbCollection = tempCollection;
             }
 
-            BreadcrumbCollection.Add(btn);
+            BreadcrumbCollection.Add(switcherItem);
         }
 
         public void ResetBreadCrumb()
         {
-            BreadcrumbCollection = new ObservableCollection<Button>();
+            BreadcrumbCollection = new ObservableCollection<SwitcherItem>();
         }
 
-        /// <summary>
-        /// Gather & returns all context menus associated with the selected item.
-        /// </summary>
-        /// <param name="getContextMenuMessage">The get context menu message.</param>
-        private void GetContextMenuParameters(NotificationMessageAction<string> msg)
-        {
-            // Message sent by either the projects or the applications view
+        ///// <summary>
+        ///// Gather & returns all context menus associated with the selected item.
+        ///// </summary>
+        ///// <param name="getContextMenuMessage">The get context menu message.</param>
+        //private void GetContextMenuParameters(NotificationMessageAction<string> msg)
+        //{
+        //    // Message sent by either the projects or the applications view
 
-            string contextMenus = "";
+        //    string contextMenus = "";
 
-            Project project = msg.Sender as Project;
-            //contextMenus = SetContextMenuValue(contextMenus, switcherItem.ContextMenus);
+        //    Project project = msg.Sender as Project;
 
-            if (project != null)
-            {
-                // Get all associtions associated with the selected item
-                foreach (Association association in project.Associations) //.Where(ass => ass.ProjectName == msg.Notification))
-                {
-                    if (association.ContextMenuCollection != null)
-                    {
-                        foreach (Class.ContextMenu contextMenu in association.ContextMenuCollection)
-                        {
-                            project.AddContextMenu(contextMenu);
-                        }
-                    }
-                    
-                    //contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
-                }
-            }
+        //    if (project != null)
+        //    {
+        //        // Get all associtions associated with the selected item
+        //        foreach (Association association in project?.Associations) //.Where(ass => ass.ProjectName == msg.Notification))
+        //        {
+        //            if (association.ContextMenuCollection != null)
+        //            {
+        //                foreach (Class.ContextMenu contextMenu in association.ContextMenuCollection)
+        //                {
+        //                    project.AddContextMenu(contextMenu);
+        //                }
+        //            }
 
-            // Return contextmenus to sender
-            //TODO This no longer needs to be an Action message
-            msg.Execute(contextMenus);
-        }
+        //            //contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
+        //        }
+        //    }
+
+        //    // Return contextmenus to sender
+        //    //TODO This no longer needs to be an Action message
+        //    msg.Execute(contextMenus);
+        //}
 
         /// <summary>
         /// Combines context menu values (strings) into one string.
@@ -524,11 +515,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             _selectedApplication = (TopApplication)message.Content;
             Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
-        }
-
-        private void UpdateSelectedProjectContextMenus(GenericMessage<ObservableCollection<MenuItem>> msg)
-        {
-            ContextMenus = msg.Content;
         }
 
         public void SaveAndClose()

@@ -29,7 +29,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>3.8.0.0</ApplicationVersion>
+    <ApplicationVersion>3.8.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -132,13 +132,13 @@
     <Compile Include="Message\M_ChangeView.cs" />
     <Compile Include="Message\M_GetAssociatedApplications.cs" />
     <Compile Include="Message\M_SimpleAction.cs" />
-    <Compile Include="ViewModel\VM_Edit.cs" />
+    <Compile Include="ViewModel\VM_EditTile.cs" />
     <Compile Include="ViewModel\VM_Applications.cs" />
     <Compile Include="ViewModel\VM_EditApplications.cs" />
     <Compile Include="ViewModel\VM_Tiles.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="View\V_Edit.xaml.cs">
-      <DependentUpon>V_Edit.xaml</DependentUpon>
+    <Compile Include="View\V_EditTile.xaml.cs">
+      <DependentUpon>V_EditTile.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\V_Applications.xaml.cs">
       <DependentUpon>V_Applications.xaml</DependentUpon>
@@ -179,7 +179,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\V_Edit.xaml">
+    <Page Include="View\V_EditTile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

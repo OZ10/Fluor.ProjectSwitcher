@@ -28,22 +28,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<Button> topLevelTileCollection;
-        public ObservableCollection<Button> TopLevelTileCollection
-        {
-            get
-            {
-                return topLevelTileCollection;
-            }
-            set
-            {
-                topLevelTileCollection = value;
-                RaisePropertyChanged("TopLevelProjectTileCollection");
-            }
-        }
-
-        private ObservableCollection<Button> activeTileCollection;
-        public ObservableCollection<Button> ActiveTileCollection
+        private ObservableCollection<SwitcherItem> activeTileCollection;
+        public ObservableCollection<SwitcherItem> ActiveTileCollection
         {
             get
             {
@@ -67,20 +53,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 selectedTile = value;
                 RaisePropertyChanged("SelectedTile");
-            }
-        }
-
-        private Visibility isEditMode;
-        public Visibility IsEditMode
-        {
-            get
-            {
-                return isEditMode;
-            }
-            set
-            {
-                isEditMode = value;
-                RaisePropertyChanged("IsEditMode");
             }
         }
 
@@ -119,17 +91,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         public VM_Tiles()
         {
-            Messenger.Default.Register<GenericMessage<Grid>>(this, DisplayContextMenus);
             Messenger.Default.Register<GenericMessage<SwitcherItem>>(this, GoBackToParent);
             Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateProjects);
             Messenger.Default.Register<Message.M_EditTile>(this, SaveChangesToProject);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
             Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, TileClicked);
             Messenger.Default.Register<Message.M_SimpleAction>(this, ChangeActiveProject);
-
-            Messenger.Default.Register<GenericMessage<bool>>(this, SetEditMode);
-
-            IsEditMode = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -183,19 +150,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="msg">Message containing a collection of projects.</param>
         private void CreateTiles()
         {
-            TopLevelTileCollection = new ObservableCollection<Button>();
-            ActiveTileCollection = new ObservableCollection<Button>();
+            ActiveTileCollection = new ObservableCollection<SwitcherItem>(ProjectsCollection);
 
             AddNewButtonHeight = SetAddNewButtonHeight();
-
-            foreach (Project project in ProjectsCollection)
-            {
-                Button tile = CreateTile(project);
-
-                TopLevelTileCollection.Add(tile);
-            }
-
-            ActiveTileCollection = TopLevelTileCollection;
         }
 
         private double SetAddNewButtonHeight()
@@ -216,67 +173,31 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="msg">Message containing a collection of applications.</param>
         private void DisplayApplicationsAsTiles()
         {
-            ActiveTileCollection = new ObservableCollection<Button>();
-
-            foreach (TopApplication application in SelectedTile.Applications) //  ApplicationsCollection)
-            {
-                Button tile = CreateTile(application);
-
-                ActiveTileCollection.Add(tile);
-            }
-        }
-
-        /// <summary>
-        /// Creates a tile.
-        /// </summary>
-        /// <param name="switcherItem">The switcher item (project/application).</param>
-        /// <returns></returns>
-        private Button CreateTile(SwitcherItem switcherItem)
-        {
-            //TODO See if style can be set in XMAL
-            Button tile = new Button();
-            //tile.Click += new RoutedEventHandler(Tile_Clicked);
-            tile.DataContext = switcherItem;
-            tile.Style = (Style)System.Windows.Application.Current.Resources["MetroTileCustom"];
-
-            return tile;
+            ActiveTileCollection = new ObservableCollection<SwitcherItem>(SelectedTile.Applications);
         }
 
         private void TileClicked(Message.M_UpdateSelectedTile msg)
         {
-            //if (msg.Sender != this)
-            //{
-                // Try to cast the item as a Project
-                Project project = msg.SelectedProject as Project;
+            // Try to cast the item as a Project
+            Project project = msg.SelectedProject as Project;
 
-                if (project != null)
+            if (project != null)
+            {
+                if (project.SubItems.Any())
                 {
-                    if (project.SubItems.Any())
-                    {
-                        // Reset the active tile collection and add all subitems of the selected tile
-                        ActiveTileCollection = new ObservableCollection<Button>();
-
-                        foreach (SwitcherItem subProject in project.SubItems)
-                        {
-                            Button tvi = CreateTile(subProject);
-
-                            ActiveTileCollection.Add(tvi);
-                        }
-                    }
-
-                    SelectedTile = project;
-
-                    //ChangeActiveProject();
-
-                    GetAssociatedApplications();
+                    // Reset the active tile collection and add all subitems of the selected tile
+                    ActiveTileCollection = new ObservableCollection<SwitcherItem>(project.SubItems);
                 }
-                else
-                {
-                    // Selected tile must be an application. Send a message to the main view model containing the selected application
-                    Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, msg.SelectedApplication));
-                }
-            //}
-            
+
+                SelectedTile = project;
+
+                GetAssociatedApplications();
+            }
+            else
+            {
+                // Selected tile must be an application. Send a message to the main view model containing the selected application
+                Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, msg.SelectedApplication));
+            }
         }
 
         private void GetAssociatedApplications()
@@ -311,34 +232,17 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void RefreshTiles(Project project)
         {
-            //TODO Refactor
             if (project != null)
             {
                 if (project.SubItems.Any())
                 {
                     // Reset the active tile collection and add all subitems of the selected tile
-                    ActiveTileCollection = new ObservableCollection<Button>();
-
-                    foreach (SwitcherItem subProject in project.SubItems)
-                    {
-                        Button tvi = CreateTile(subProject);
-
-                        ActiveTileCollection.Add(tvi);
-                    }
+                    ActiveTileCollection = new ObservableCollection<SwitcherItem>(project.SubItems);
                 }
             }
             else
             {
-                TopLevelTileCollection = new ObservableCollection<Button>();
-                ActiveTileCollection = new ObservableCollection<Button>();
-
-                foreach (Project proj in ProjectsCollection)
-                {
-                    Button tvi = CreateTile(proj);
-
-                    TopLevelTileCollection.Add(tvi);
-                    ActiveTileCollection.Add(tvi);
-                }
+                ActiveTileCollection = new ObservableCollection<SwitcherItem>(ProjectsCollection);
             }
             
         }
@@ -368,28 +272,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Displays the context menus. Triggered by a right-click on a tile.
         /// </summary>
         /// <param name="msg">Message containing the grid control contained within tile that has been clicked.</param>
-        public void DisplayContextMenus(GenericMessage<Grid> msg)
+        public void DisplayContextMenus(Grid grid)
         {
-            Grid grid = (Grid)msg.Content;
-
             SwitcherItem switcherItem = (SwitcherItem)grid.DataContext;
 
-            GetContextMenus(switcherItem);
             grid.ContextMenu.ItemsSource = switcherItem.ContextMenuCollection;
-        }
-
-        /// <summary>
-        /// Get the context menus associated with the selected item.
-        /// </summary>
-        /// <param name="switcherItem">The switcher item.</param>
-        private void GetContextMenus(SwitcherItem switcherItem)
-        {
-            // Send a message containing the switcher item's name to the main view model. The main view model returns the context
-            // menu parameters as listed in the associations section
-            Messenger.Default.Send(new NotificationMessageAction<string>(switcherItem, switcherItem.Name, (contextMenuParameters) =>
-            {
-                //switcherItem.CreateContextMenus(contextMenuParameters);
-            }));
         }
 
         /// <summary>
@@ -398,17 +285,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="msg">Message containing the selected item.</param>
         public void GoBackToParent(GenericMessage<SwitcherItem> msg)
         {
-            if (msg.Sender is Fluor.ProjectSwitcher.App | msg.Sender is MainWindow)
+            if (msg.Sender is App | msg.Sender is MainWindow)
             {
                 DisplayTileTab();
 
-                //SwitcherItem switcherItem = (SwitcherItem)msg.Content;
                 Project switcherItem = msg.Content as Project;
 
                 if (switcherItem == null)
                 {
-                    // Selected item had no parent. Reset to top level projects
-                    ActiveTileCollection = TopLevelTileCollection;
+                    // Selected item has no parent. Reset active tile collection to all projects
+                    ActiveTileCollection = new ObservableCollection<SwitcherItem>(ProjectsCollection);
                     SelectedTile = null;
                 }
                 else
@@ -416,14 +302,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     if (switcherItem.SubItems.Any())
                     {
                         // TODO Sure this can be done in the better way. Think you can link a class to a control template so I wouldn't have to create a new tile object each time.
-                        ActiveTileCollection = new ObservableCollection<Button>();
-
-                        // Create a tile for each of the item's subitems
-                        foreach (SwitcherItem subProject in switcherItem.SubItems)
-                        {
-                            Button tile = CreateTile(subProject);
-                            ActiveTileCollection.Add(tile);
-                        }
+                        ActiveTileCollection = new ObservableCollection<SwitcherItem>(switcherItem.SubItems);
 
                         SelectedTile = switcherItem;
 
@@ -434,69 +313,52 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private void SetEditMode(GenericMessage<bool> msg)
-        {
-            //TODO This needs to be refactored 
-            if (IsEditMode == Visibility.Collapsed)
-            {
-                IsEditMode = Visibility.Visible;
-
-                foreach (Button tile in ActiveTileCollection)
-                {
-                    SwitcherItem swi = (SwitcherItem)tile.DataContext;
-                    swi.IsEditMode = IsEditMode;
-                }
-            }
-            else
-            {
-                IsEditMode = Visibility.Collapsed;
-
-                foreach (Button tile in ActiveTileCollection)
-                {
-                    SwitcherItem swi = (SwitcherItem)tile.DataContext;
-                    swi.IsEditMode = IsEditMode;
-                }
-            }
-        }
-
         private void SaveChangesToProject(Message.M_EditTile msg)
         {
-            //TODO Refactor
-            if (msg.Sender is VM_Edit)
+            if (msg.Sender is VM_EditTile)
             {
                 Project project = msg.SelectedTile;
 
                 if (project.IsDeleted)
                 {
-                    if (SelectedTile != null)
-                    {
-                        // There is a tile selected so remove this new project to it's collection of sub projects
-                        SelectedTile.SubItems.Remove(project);
-                    }
-                    else
-                    {
-                        // No selected tile so project must be top level
-                        ProjectsCollection.Remove(project);
-                    }
+                    DeleteProject(project);
                 }
                 else if (project.IsNew)
                 {
-                    if (SelectedTile != null)
-                    {
-                        // There is a tile selected so add this new project to it's collection of sub projects
-                        SelectedTile.SubItems.Add(project);
-                    }
-                    else
-                    {
-                        // No selected tile so project must be top level
-                        ProjectsCollection.Add(project);
-                    }
-
-                    //UpdateTiles();
+                    AddNewProject(project);
                 }
+
                 RefreshTiles(SelectedTile);
                 Messenger.Default.Send(new Message.M_SettingsHaveBeenChanged(true));
                 Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+            }
+        }
+
+        private void AddNewProject(Project project)
+        {
+            if (SelectedTile != null)
+            {
+                // There is a tile selected so add this new project to it's collection of sub projects
+                SelectedTile.SubItems.Add(project);
+            }
+            else
+            {
+                // No selected tile so project must be top level
+                ProjectsCollection.Add(project);
+            }
+        }
+
+        private void DeleteProject(Project project)
+        {
+            if (SelectedTile != null)
+            {
+                // There is a tile selected so remove this new project from it's collection of sub projects
+                SelectedTile.SubItems.Remove(project);
+            }
+            else
+            {
+                // No selected tile so project must be top level
+                ProjectsCollection.Remove(project);
             }
         }
 

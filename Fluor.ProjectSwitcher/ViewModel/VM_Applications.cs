@@ -25,8 +25,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
             }
         }
 
-        private ObservableCollection<ListBox> activeApplicationCollection;
-        public ObservableCollection<ListBox> ActiveApplicationCollection
+        private ObservableCollection<TopApplication> activeApplicationCollection;
+        public ObservableCollection<TopApplication> ActiveApplicationCollection
         {
             get
             {
@@ -59,7 +59,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateApplicationsCollection);
             Messenger.Default.Register<GenericMessage<MenuItem>>(this, SelectApplications);
-            Messenger.Default.Register<GenericMessage<TextBlock>>(this, DisplayContextMenus);
             Messenger.Default.Register<ObservableCollection<TopApplication>>(this, PopulateApplications);
             Messenger.Default.Register<Message.M_GetAssociatedApplications>(this, GetAssociatedApplications);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
@@ -91,31 +90,16 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void UpdateApplicationsCollection(GenericMessage<TopApplication> message)
         {
-            //check = false;
-            // ApplicationsCollection = message.Content.SubItems;
-
             DisplayApplicationsTab();
-
-            ActiveApplicationCollection = new ObservableCollection<ListBox>();
 
             SelectedApplication = message.Content;
 
-            foreach (TopApplication application in message.Content.SubItems)
-            {
-                ListBox lb = new ListBox();
-                lb.Template = (ControlTemplate)System.Windows.Application.Current.Resources["ApplicationListTemplate"];
-                lb.DataContext = application;
-
-                ActiveApplicationCollection.Add(lb);
-            }
+            ActiveApplicationCollection = new ObservableCollection<TopApplication>(message.Content.SubItems);
         }
 
-        public void DisplayContextMenus(GenericMessage<TextBlock> msg)
+        public void DisplayContextMenus(TextBlock tb)
         {
             // Triggered by a right-click on an application.
-
-            TextBlock tb = (TextBlock)msg.Content;
-
             SubApplication subApplication = (SubApplication)tb.DataContext;  //GetSelectedApplication(applicationName);
 
             //ApplicationContextMenus = new ObservableCollection<MenuItem>();

@@ -5,23 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500" DataContext="{Binding AddNew, Mode=OneWay, Source={StaticResource Locator}}" d:IsHidden="False" FontSize="14" Style="{DynamicResource VisibleAnimation}">
-    <!--<Grid>
-        <ItemsControl Name="icAddNew" ItemsSource="{Binding SelectedItemCollection}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
-    </Grid>-->
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <!--<TabControl>-->
-        <!--<TabItem Header="Project">-->
         <Grid Visibility="{Binding EditProjectVisibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="200"/>
@@ -42,8 +31,6 @@
             <TextBlock Grid.Row="1" Text="Context Menus"  VerticalAlignment="Bottom"/>
             <Button Grid.Row="1" Name="btnAddnewContextMenu" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="20" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Click="btnAddnewContextMenu_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5,5,5,5" ToolTip="Add New Context Menu"/>
             <ListBox Grid.Row="2" ItemsSource="{Binding EditedItem.ContextMenuCollection}" FontSize="12" ItemTemplate="{DynamicResource ListViewItemWithEditButton}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource AccentColorBrush3}" />
-
-            <!--<Rectangle Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Stroke="{DynamicResource AccentColorBrush3}" StrokeThickness="2" Width="1"/>-->
             
             <TextBlock Grid.Row="1" Text="Associations"  VerticalAlignment="Bottom" Grid.Column="2"/>
             <Button Grid.Row="1" Name="btnAddnewAssociation" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="20" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Bottom" Padding="5,5,5,5" ToolTip="Add New Association" Click="btnAddnewAssociation_Click"/>
@@ -51,12 +38,8 @@
 
             <TextBlock Text="Misc Text"  Grid.Row="4" VerticalAlignment="Center"/>
             <TextBox Text="{Binding EditedItem.MiscText}"  Grid.Row="4" Grid.Column="3" BorderThickness="0"/>
-            <!--<Rectangle Grid.Column="2" Grid.RowSpan="6" Fill="{DynamicResource AccentColorBrush4}"/>-->
-            <!--<Rectangle Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Fill="{DynamicResource AccentColorBrush4}"/>-->
         </Grid>
-
-        
-        
+ 
         <Grid Visibility="{Binding EditContextMenuVisibility}" d:IsHidden="True" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
