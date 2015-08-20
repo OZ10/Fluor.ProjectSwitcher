@@ -135,7 +135,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.ContextMenu>
-                                <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
+                                <ContextMenu ItemsSource="{Binding CombinedContextMenuCollection}">
                                     <ContextMenu.ItemTemplate>
                                         <DataTemplate>
                                             <MenuItem Header="{Binding Name}" CommandParameter="{Binding Value}" Icon="{DynamicResource ContextMenuIcon_Path}"/>

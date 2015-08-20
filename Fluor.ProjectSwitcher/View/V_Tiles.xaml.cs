@@ -69,9 +69,22 @@ namespace Fluor.ProjectSwitcher.View
         private void btnTileEdit_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            Project selectedTile = (Project)btn.DataContext;
-            Messenger.Default.Send(new Message.M_EditTile(selectedTile, this));
-            //Messenger.Default.Send<Project>(selectedTile);
+
+            Project selectedProject = btn.DataContext as Project;
+
+            if (selectedProject != null)
+            {
+                Messenger.Default.Send(new Message.M_EditTile(selectedProject, this));
+            }
+            else
+            {
+                TopApplication selectedApplication = btn.DataContext as TopApplication;
+
+                if (selectedApplication != null)
+                {
+                    Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayEditApplicationsTab));
+                }
+            }
         }
     }
 }

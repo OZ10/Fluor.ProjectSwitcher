@@ -173,35 +173,35 @@ namespace Fluor.ProjectSwitcher.Class
         //    return null;
         //}
 
-        public void GetContextMenus(IEnumerable<XElement> contextMenus)
-        {
-            if (ContextMenuCollection == null)
-            {
-                ContextMenuCollection = new ObservableCollection<ContextMenu>();
-            }
+        //public void GetContextMenus(IEnumerable<XElement> contextMenus)
+        //{
+        //    if (ContextMenuCollection == null)
+        //    {
+        //        ContextMenuCollection = new ObservableCollection<ContextMenu>();
+        //    }
 
-            if (contextMenus != null)
-            {
-                foreach (XElement contextMenu in contextMenus)
-                {
-                    if (contextMenu.Attribute("TYPE").Value != "")
-                    {
-                        //TODO Hard-coded PATH enum needs to be changed
-                        ContextMenu newContextMenu = new ContextMenu();
-                        newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
-                        AddContextMenu(newContextMenu);
-                    }
-                }
-            }
-            //else
-            //{
-            //    // Add a blank row so user can input data
-            //    //TODO Hard-coded PATH enum needs to be changed
-            //    ContextMenu newContextMenu = new ContextMenu();
-            //    newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, "", "");
-            //    AddContextMenu(newContextMenu);
-            //}
-        }
+        //    if (contextMenus != null)
+        //    {
+        //        foreach (XElement contextMenu in contextMenus)
+        //        {
+        //            if (contextMenu.Attribute("TYPE").Value != "")
+        //            {
+        //                //TODO Hard-coded PATH enum needs to be changed
+        //                ContextMenu newContextMenu = new ContextMenu();
+        //                newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, contextMenu.Attribute("VALUE").Value, contextMenu.Attribute("DISPLAYNAME").Value);
+        //                AddContextMenu(newContextMenu);
+        //            }
+        //        }
+        //    }
+        //    //else
+        //    //{
+        //    //    // Add a blank row so user can input data
+        //    //    //TODO Hard-coded PATH enum needs to be changed
+        //    //    ContextMenu newContextMenu = new ContextMenu();
+        //    //    newContextMenu.Setup(ContextMenu.ContextMenuTypeEnum.PATH, "", "");
+        //    //    AddContextMenu(newContextMenu);
+        //    //}
+        //}
 
         public void AddContextMenu(ContextMenu contextMenu)
         {

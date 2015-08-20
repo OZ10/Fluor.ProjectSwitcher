@@ -83,7 +83,7 @@
 
             <TextBlock Text="Context Menus" VerticalAlignment="Center" Grid.Row="3"/>
             <Button x:Name="btnAddNewContextMenu" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Height="20" Padding="5" ToolTip="Add New Context Menu" Click="btnAddNewContextMenu_Click_1"/>
-            <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedAssociation.ContextMenuCollection}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}" CanUserAddRows="False"/>
+            <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedAssociation.ContextMenuCollection}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyleCustom}" CanUserAddRows="False" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"/>
         </Grid>
         
         <Grid Grid.ColumnSpan="2" Visibility="{Binding SelectExistingAssociationVisibility}" d:IsHidden="True">

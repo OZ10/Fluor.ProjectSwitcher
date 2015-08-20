@@ -105,6 +105,15 @@ namespace Fluor.ProjectSwitcher.View
             vm.AddNewAssociationContextMenu();
         }
 
+        private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            string columnHeader = (string)e.Column.Header;
+            if (columnHeader == "EditedValue" || columnHeader == "EditedName" || columnHeader == "IsNew")
+            {
+                e.Cancel = true;
+            }
+        }
+
         //private void muApplication_Click(object sender, RoutedEventArgs e)
         //{
         //    MenuItem mi = (MenuItem)sender;

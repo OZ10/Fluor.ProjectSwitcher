@@ -54,6 +54,21 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
+        private ObservableCollection<ContextMenu> combinedContextMenuCollection;
+        [XmlIgnore]
+        public ObservableCollection<ContextMenu> CombinedContextMenuCollection
+        {
+            get
+            {
+                return combinedContextMenuCollection;
+            }
+            set
+            {
+                combinedContextMenuCollection = value;
+                RaisePropertyChanged("CombinedContextMenuCollection");
+            }
+        }
+
         public ObservableCollection<Project> SubItems { get; set; }
 
         public Project()
@@ -82,6 +97,7 @@ namespace Fluor.ProjectSwitcher.Class
             SubItems = new ObservableCollection<Project>();
             Associations = new ObservableCollection<Association>();
             Applications = new ObservableCollection<TopApplication>();
+            CombinedContextMenuCollection = new ObservableCollection<ContextMenu>();
         }
 
         public void ChangeIsActiveForSubProjects(string selectedProjectName)
@@ -94,23 +110,6 @@ namespace Fluor.ProjectSwitcher.Class
                 }
                 
                 subProject.ChangeIsActiveForSubProjects(selectedProjectName);
-            }
-        }
-
-        public void GetAssociations(Project project, XElement xmlSettings)
-        {
-            Association association;
-            foreach (XElement xmlAssociation in xmlSettings.Elements("ASSOCIATIONS").Elements("ASSOCIATION"))
-            {
-                if (xmlAssociation.Attribute("PROJECTNAME").Value == project.Name)
-                {
-                    //association = new Association(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
-                    //                                                xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
-                    association = new Association();
-                    //association.Setup(xmlAssociation.Attribute("PROJECTNAME").Value, xmlAssociation.Attribute("APPLICATIONNAME").Value,
-                                                                    //xmlAssociation.Elements("PARAMETERS").Elements("PARAMETER"), xmlAssociation.Elements("CONTEXTMENUS").Elements("CONTEXTMENU"));
-                    project.Associations.Add(association);
-                }
             }
         }
 
@@ -137,6 +136,22 @@ namespace Fluor.ProjectSwitcher.Class
             }
 
             return null;
+        }
+
+        public void CombineContextMenus()
+        {
+            CombinedContextMenuCollection = ContextMenuCollection.CloneJson<ObservableCollection<ContextMenu>>();
+
+            foreach (var association in Associations)
+            {
+                foreach (var cm in association.ContextMenuCollection)
+                {
+                    if (!CombinedContextMenuCollection.Contains(cm))
+                    {
+                        CombinedContextMenuCollection.Add(cm);
+                    }
+                }
+            }
         }
     }
 }

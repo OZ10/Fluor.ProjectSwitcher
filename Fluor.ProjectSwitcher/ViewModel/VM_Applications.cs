@@ -4,8 +4,6 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight;
 using Fluor.ProjectSwitcher.Class;
 using System.Linq;
-using System.Xml.Linq;
-using System.Collections.Generic;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {

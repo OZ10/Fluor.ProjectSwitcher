@@ -48,7 +48,7 @@ namespace Fluor.ProjectSwitcher
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void btnOpenProject_Click(object sender, RoutedEventArgs e) => vm.CloseAndOpenApplications();   
+        private void btnOpenProject_Click(object sender, RoutedEventArgs e) => vm.CloseOpenApplications();   
 
         /// <summary>
         /// Handles the Click event of the btnSettings control. Opens the sppid projects xml file
@@ -75,7 +75,7 @@ namespace Fluor.ProjectSwitcher
 
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
         {
-            vm.CloseApplications();
+            vm.CloseApplications(null);
             flySettings.IsOpen = false;
         }
 

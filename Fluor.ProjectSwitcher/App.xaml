@@ -42,7 +42,7 @@
             </Style>
 
                 <!-- Used with the MenuItem's Icon property to display a folder icon -->
-            <Path x:Key="ContextMenuIcon_Path" Data="{DynamicResource Folder}" Style="{DynamicResource MenuItemIcon}"/>
+            <Path x:Key="ContextMenuIcon_Path" Data="{Binding Mode=OneWay, Source={StaticResource Folder}}" Style="{DynamicResource MenuItemIcon}"/>
 
         </ResourceDictionary>
     </Application.Resources>

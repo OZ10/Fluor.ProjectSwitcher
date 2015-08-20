@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using GalaSoft.MvvmLight.Messaging;
 using Fluor.ProjectSwitcher.Class;
 using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using System.Xml.Linq;
 using System.Windows;
 
 namespace Fluor.ProjectSwitcher.ViewModel
@@ -310,13 +304,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         public void AddNewContextMenu()
         {
             SelectedContextMenu = new Class.ContextMenu();
-            if (EditedItem.ContextMenuCollection == null) EditedItem.ContextMenuCollection = new ObservableCollection<Class.ContextMenu>();
-            EditedItem.ContextMenuCollection.Add(SelectedContextMenu);
+            if (EditedItem.CombinedContextMenuCollection == null) EditedItem.CombinedContextMenuCollection = new ObservableCollection<Class.ContextMenu>();
+            EditedItem.CombinedContextMenuCollection.Add(SelectedContextMenu);
         }
 
         public void DeleteContextMenu(Class.ContextMenu cm)
         {
-            EditedItem.ContextMenuCollection.Remove(cm);
+            EditedItem.CombinedContextMenuCollection.Remove(cm);
         }
 
         public void DeleteAssociation(Class.Association association)
@@ -432,7 +426,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 if (SelectedContextMenu.Name == null)
                 {
-                    EditedItem.ContextMenuCollection.Remove(SelectedContextMenu);
+                    EditedItem.CombinedContextMenuCollection.Remove(SelectedContextMenu);
                 }
 
                 SetViewVisibility(true);
@@ -474,7 +468,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             else
             {
                 SelectedItem.Name = EditedItem.Name;
-                SelectedItem.ContextMenuCollection = EditedItem.ContextMenuCollection;
+                SelectedItem.CombinedContextMenuCollection = EditedItem.CombinedContextMenuCollection;
                 SelectedItem.Applications = editedItem.Applications;
                 SelectedItem.Associations = EditedItem.Associations;
                 SelectedItem.MiscText = EditedItem.MiscText;
@@ -487,9 +481,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         public void CancelButton_Clicked()
         {
-            //EditedItem = EditedItem;
-            //Messenger.Default.Send<Message.M_EditTile>(new Message.M_EditTile(SelectedItem, this));
-            Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+            // Got back to the tile display if the main edit project view is displayed
+            if (EditProjectVisibility == Visibility.Visible)
+            {
+                Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayTilesTab));
+            }
+
+            SetViewVisibility(showEditProject: true);
         }
 
         public void DeleteProjectButton_Clicked()

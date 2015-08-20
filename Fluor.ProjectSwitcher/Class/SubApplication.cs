@@ -108,27 +108,6 @@ namespace Fluor.ProjectSwitcher.Class
             ParentItem = parentApplication;
             IsEnabled = isEnabled;
             InstallPath = installPath;
-
-            //if (installPath.Attribute("TYPE").Value != "")
-            //{
-            //    Parameter parameter = new Parameter();
-            //    parameter.Setup((Parameter.ParameterTypeEnum)Enum.Parse(typeof(Parameter.ParameterTypeEnum), installPath.Attribute("TYPE").Value), installPath.Attribute("VALUE").Value, installPath.Attribute("PATH").Value);
-            //    InstallPath = parameter.GetInstallationPath();
-            //}
-            //else
-            //{
-            //    //InstallPath = parentApplication.InstallPath;
-            //}
-
-            //if (ParentItem != null && ParentItem.ContextMenuCollection.Any())
-            //{
-            //    foreach (ContextMenu cm in ParentItem.ContextMenuCollection)
-            //    {
-            //        ContextMenuCollection.Add(cm);
-            //    }
-            //}
-
-            //GetContextMenus(contextMenu);
         }
     }
 }

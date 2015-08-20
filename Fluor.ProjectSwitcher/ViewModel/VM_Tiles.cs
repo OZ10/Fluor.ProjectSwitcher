@@ -5,10 +5,7 @@ using System.Windows.Controls;
 using System.Linq;
 using Fluor.ProjectSwitcher.Class;
 using System.Windows;
-using System.Xml.Linq;
 using System;
-using System.Xml.Serialization;
-using System.IO;
 
 namespace Fluor.ProjectSwitcher.ViewModel
 {
@@ -111,21 +108,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                 CreateTiles();
 
-                // Send a message to the App.xaml.cs to retrieve the pre-Selected Project name (as 
-                // selected from the jumplist menu)
-                Messenger.Default.Send(new NotificationMessageAction<string>("", (preSelectedProject) =>
-                {
-                    if (preSelectedProject != "")
-                    {
-                        // Search through all the projects to find the one with the same name
-                        foreach (var proj in ProjectsCollection)
-                        {
-                            SelectedTile = proj.FindSubProjectByName(proj, preSelectedProject);
+                GetPreselectedProject();
 
-                            if (SelectedTile != null) { break; }
-                        }
-                    }
-                }));
+                CombineContextMenus(ProjectsCollection);
 
                 // Select the project if it's been pre-selected or just show the tiles tab
                 if (SelectedTile != null)
@@ -142,6 +127,39 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 MessageBox.Show("Errooooooooorrrrrr");
                 throw;
             }
+        }
+
+        private void CombineContextMenus(ObservableCollection<Project> collection)
+        {
+            // Combines all context menus from child to parent
+            foreach (var project in collection)
+            {
+                project.CombineContextMenus();
+
+                if (project.SubItems.Any())
+                {
+                    CombineContextMenus(project.SubItems);
+                }
+            }
+        }
+
+        private void GetPreselectedProject()
+        {
+            // Send a message to the App.xaml.cs to retrieve the pre-Selected Project name (as 
+            // selected from the jumplist menu)
+            Messenger.Default.Send(new NotificationMessageAction<string>("", (preSelectedProject) =>
+            {
+                if (preSelectedProject != "")
+                {
+                    // Search through all the projects to find the one with the same name
+                    foreach (var proj in ProjectsCollection)
+                    {
+                        SelectedTile = proj.FindSubProjectByName(proj, preSelectedProject);
+
+                        if (SelectedTile != null) { break; }
+                    }
+                }
+            }));
         }
 
         /// <summary>
@@ -196,7 +214,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             else
             {
                 // Selected tile must be an application. Send a message to the main view model containing the selected application
-                Messenger.Default.Send<GenericMessage<TopApplication>>(new GenericMessage<TopApplication>(this, msg.SelectedApplication));
+                Messenger.Default.Send(new GenericMessage<TopApplication>(this, msg.SelectedApplication));
             }
         }
 
@@ -274,9 +292,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="msg">Message containing the grid control contained within tile that has been clicked.</param>
         public void DisplayContextMenus(Grid grid)
         {
-            SwitcherItem switcherItem = (SwitcherItem)grid.DataContext;
+            Project project = grid.DataContext as Project;
 
-            grid.ContextMenu.ItemsSource = switcherItem.ContextMenuCollection;
+            if (project != null) { grid.ContextMenu.ItemsSource = project.CombinedContextMenuCollection; }
+            else
+            {
+                TopApplication application = grid.DataContext as TopApplication;
+
+                if (application != null) { grid.ContextMenu.ItemsSource = application.ContextMenuCollection; }
+            }
         }
 
         /// <summary>

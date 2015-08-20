@@ -20,9 +20,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        // TODO Add code to deal with applications with only one sub application to run - i.e. notepad
-        // TODO Fix bug where selected sub apps will launch even if they are not currently displayed - i.e. even with SPEL selected, Drawing Manager will launch because it's selected by default
-
         private static string SettingsFileName = "Fluor.ProjectSwitcher.Projects.xml";
         private static string SettingsFileBackupName = "Fluor.ProjectSwitcher.Projects_Backup.xml";
         private static string InstallDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -182,7 +179,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <summary>
         /// Closes any open applications and opens new ones.
         /// </summary>
-        public async void CloseAndOpenApplications()
+        public async void CloseOpenApplications()
         {
             if (SelectedTile != null)
             {
@@ -193,22 +190,32 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 if (SelectedTile.IsActiveProject != true)
                 {
                     UpdateStatusBar("closing applications");
-                    bool closeResult = await Task.Run(() => CloseApplications());
+                    await Task.Run(() => CloseApplications(_selectedApplication));
                 }
 
-                Messenger.Default.Send(new Message.M_SimpleAction(Message.M_SimpleAction.Action.ChangeActiveProject));
+                ApplySettingsForSelectedProject();
 
-                SetProjectSpecificSettings();
-
-                UpdateStatusBar("opening applications");
-
-                // Open new applications
-                System.Threading.Thread.Sleep(1000);
-                bool openResult = await Task.Run(() => OpenApplications());
+                await OpenSelectedApplications();
 
                 // Hide the status grid
                 Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Hidden));
             }
+        }
+
+        private async Task OpenSelectedApplications()
+        {
+            UpdateStatusBar("opening applications");
+
+            // Allow time for previous applications to close
+            System.Threading.Thread.Sleep(1000);
+            await Task.Run(() => OpenApplications(_selectedApplication, 0));
+        }
+
+        private void ApplySettingsForSelectedProject()
+        {
+            Messenger.Default.Send(new Message.M_SimpleAction(Message.M_SimpleAction.Action.ChangeActiveProject));
+
+            SetProjectSpecificSettings();
         }
 
         public void SetProjectSpecificSettings()
@@ -283,18 +290,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Closes the applications.
         /// </summary>
         /// <returns></returns>
-        public bool CloseApplications()
+        public bool CloseApplications(TopApplication application)
         {
-            // Check if the application is already open
-            foreach (TopApplication application in SelectedTile.Applications)
-            {
-                CloseSubApplications(application);
-            }
-            return true;
-        }
+            if (application == null) { application = _selectedApplication; }
 
-        private static void CloseSubApplications(TopApplication application)
-        {
             foreach (SubApplication subApplication in application.SubItems)
             {
                 Process[] procs = Process.GetProcessesByName(subApplication.Exe.Replace(".exe", ""));
@@ -309,9 +308,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
                 if (subApplication.SubItems.Any())
                 {
-                    CloseSubApplications(subApplication);
+                    CloseApplications(subApplication);
                 }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -319,24 +320,24 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// </summary>
         /// <param name="p">The p.</param>
         /// <returns></returns>
-        private bool OpenApplications()
+        private bool OpenApplications(TopApplication application, int count)
         {
             try
             {
-                int i = 0;
-                foreach (TopApplication application in SelectedTile.Applications)
+                foreach (SubApplication subApplication in application.SubItems)
                 {
-                    foreach (SubApplication subApplication in application.SubItems)
+                    if (subApplication.IsSelected == true && subApplication.Exe != "")
                     {
-                        if (subApplication.IsSelected == true && subApplication.Exe != "")
-                        {
-                            LaunchApplication(ref i, subApplication);
-                        }
-
-                        OpeningSubApplications(i, subApplication);
+                        LaunchApplication(ref count, subApplication);
                     }
-                    System.Threading.Thread.Sleep(2000 * i);
+
+                    if (subApplication.SubItems.Any())
+                    {
+                        OpenApplications(subApplication, count);
+                    }
                 }
+                System.Threading.Thread.Sleep(2000 * count);
+
                 return true;
             }
             catch (Exception)
@@ -344,29 +345,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 MessageBox.Show("Executable is missing from install directory.\n\nCheck the executable paths in the configuration XML file.", "Executable Missing", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
                 //throw;
-            }
-        }
-
-        private void OpeningSubApplications(int i, SubApplication application)
-        {
-            try
-            {
-                foreach (SubApplication subApplication in application.SubItems)
-                {
-                    if (subApplication.IsSelected == true)
-                    {
-                        LaunchApplication(ref i, subApplication);
-                    }
-
-                    if (subApplication.SubItems.Any())
-                    {
-                        OpeningSubApplications(i, subApplication);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Executable is missing from install directory.\n\nCheck the executable paths in the configuration XML file.", "Executable Missing", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -403,16 +381,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             // Only change the selectedtile if a project tile has been selected
             // do nothing and keep the previously selected tile if an application tile has been selected
 
-            SelectedTile = msg?.SelectedProject;
-
-            if (SelectedTile != null)
+            if (msg.SelectedProject != null)
             {
-                if (SelectedTile.SubItems.Any() | SelectedTile.Associations.Any())
+                SelectedTile = msg.SelectedProject;
+                
+                if (SelectedTile != null)
                 {
-                    // Change the breadcrumb (title bar) to reflect the newly selected item
-                    PopulateBreadCrumb(SelectedTile);
+                    if (SelectedTile.SubItems.Any() | SelectedTile.Associations.Any())
+                    {
+                        // Change the breadcrumb (title bar) to reflect the newly selected item
+                        PopulateBreadCrumb(SelectedTile);
+                    }
                 }
             }
+            
         }
 
         /// <summary>
@@ -421,10 +403,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// <param name="switcherItem">The switcher item to be added.</param>
         private void PopulateBreadCrumb(SwitcherItem switcherItem)
         {
-            //Button btn = new Button();
-            //btn.Style = (Style)System.Windows.Application.Current.Resources["MetroBreadCrumbButtonStyle"];
-            //btn.DataContext = switcherItem;
-
             // Check if the breadcrumb collection already has items
             // Method: Add each item one by one to a new temp collection until the item which has been select (passed in) is found
             // Then overwrite the Breadcrumb collection with the temp collection - therefore any item after the selected item will be removed.
@@ -455,40 +433,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             BreadcrumbCollection = new ObservableCollection<SwitcherItem>();
         }
 
-        ///// <summary>
-        ///// Gather & returns all context menus associated with the selected item.
-        ///// </summary>
-        ///// <param name="getContextMenuMessage">The get context menu message.</param>
-        //private void GetContextMenuParameters(NotificationMessageAction<string> msg)
-        //{
-        //    // Message sent by either the projects or the applications view
-
-        //    string contextMenus = "";
-
-        //    Project project = msg.Sender as Project;
-
-        //    if (project != null)
-        //    {
-        //        // Get all associtions associated with the selected item
-        //        foreach (Association association in project?.Associations) //.Where(ass => ass.ProjectName == msg.Notification))
-        //        {
-        //            if (association.ContextMenuCollection != null)
-        //            {
-        //                foreach (Class.ContextMenu contextMenu in association.ContextMenuCollection)
-        //                {
-        //                    project.AddContextMenu(contextMenu);
-        //                }
-        //            }
-
-        //            //contextMenus = SetContextMenuValue(contextMenus, association.ContextMenus);
-        //        }
-        //    }
-
-        //    // Return contextmenus to sender
-        //    //TODO This no longer needs to be an Action message
-        //    msg.Execute(contextMenus);
-        //}
-
         /// <summary>
         /// Combines context menu values (strings) into one string.
         /// </summary>
@@ -513,8 +457,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private void UpdateSelectedApplication(GenericMessage<TopApplication> message)
         {
-            _selectedApplication = (TopApplication)message.Content;
-            Messenger.Default.Send<Message.M_ChangeView>(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
+            _selectedApplication = message.Content;
+
+            // If the select application only has one subapplication, & that subapplication only has one executable application, launch it
+            if (_selectedApplication.SubItems.Count == 1)
+            {
+                SubApplication subApplication = _selectedApplication.SubItems[0];
+
+                if (subApplication.SubItems.Count == 1)
+                {
+                    CloseOpenApplications();
+                }
+            }
+
+            Messenger.Default.Send(new Message.M_ChangeView(Message.M_ChangeView.ViewToSelect.DisplayApplicationsTab));
         }
 
         public void SaveAndClose()
