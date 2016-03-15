@@ -20,6 +20,8 @@ namespace Fluor.ProjectSwitcher
     /// </summary>
     public partial class App : System.Windows.Application
     {
+        public ResourceDictionary AppTheme { get { return Resources.MergedDictionaries[0]; } } 
+
         private string PreselectedProject;
 
         protected override void OnStartup(StartupEventArgs e)
@@ -34,6 +36,7 @@ namespace Fluor.ProjectSwitcher
             }
 
             Messenger.Default.Register<NotificationMessageAction<string>>(this, GetPreselectedProject);
+            Messenger.Default.Register<GenericMessage<Uri>>(this, ChangeTheme);
         }
 
         private static string CombineArgs(StartupEventArgs e)
@@ -58,6 +61,12 @@ namespace Fluor.ProjectSwitcher
         private void GetPreselectedProject(NotificationMessageAction<string> msg)
         {
             msg.Execute(PreselectedProject);
+        }
+
+        private void ChangeTheme(GenericMessage<Uri> msg)
+        {
+            AppTheme.MergedDictionaries.Clear();
+            AppTheme.MergedDictionaries.Add(new ResourceDictionary() { Source = msg.Content });
         }
     }
 }

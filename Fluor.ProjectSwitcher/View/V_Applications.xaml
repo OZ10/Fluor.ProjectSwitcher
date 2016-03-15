@@ -23,7 +23,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Margin="0,0,0,1" Padding="5" Background="White" FontSize="18" FontWeight="Normal" Foreground="Black">
+                <!--<Ellipse Fill="{DynamicResource SubColorBrush4}" Stretch="Uniform" Height="8"/>-->
+                <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Margin="4,0,0,1" Padding="5" Background="{x:Null}" FontSize="18" FontWeight="Normal" Foreground="Black">
                     <TextBlock.ContextMenu>
                         <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
                             <ContextMenu.ItemTemplate>
@@ -40,7 +41,7 @@
                     </TextBlock.ContextMenu>
                 </TextBlock>
 
-                <Border BorderBrush="#33000000" BorderThickness="1,0,0,1" Margin="0,0,0,1"/>
+                <!--<Border BorderBrush="#33000000" BorderThickness="1,0,0,1" Margin="0,0,0,1"/>-->
                 <ListBox Grid.Row="1" ItemsSource="{Binding SubItems}" BorderBrush="{DynamicResource AccentColorBrush4}" BorderThickness="1,0,0,0" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}">
                     <!--Background="{DynamicResource AccentColorBrush4}"-->
                     <ListBox.ItemTemplate>

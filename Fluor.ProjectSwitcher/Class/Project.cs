@@ -83,7 +83,7 @@ namespace Fluor.ProjectSwitcher.Class
             MiscText = miscText;
             IsEnabled = isEnabled;
             ParentItem = parentProject;
-            IsEditMode = Visibility.Collapsed;
+            //IsEditMode = Visibility.Collapsed;
             IsNew = isNew;
 
             ContextMenuCollection = contextMenus;

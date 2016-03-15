@@ -104,7 +104,9 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             try
             {
-                ProjectsCollection = msg;
+                SortProjectsByPosition(ref msg);
+
+                ProjectsCollection = msg; //new ObservableCollection<Project>(msg.OrderBy((proj) => proj.Position));
 
                 CreateTiles();
 
@@ -126,6 +128,19 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 MessageBox.Show("Errooooooooorrrrrr");
                 throw;
+            }
+        }
+
+        private void SortProjectsByPosition(ref ObservableCollection<Project> projectCollection)
+        {
+            projectCollection = new ObservableCollection<Project>(projectCollection.OrderBy((proj) => proj.Position));
+
+            foreach (var proj in projectCollection)
+            {
+                // Can't pass a property as ref so create a local variable, sort it and then re-assign it to the property
+                ObservableCollection<Project> subProjs = proj.SubItems;
+                SortProjectsByPosition(ref subProjs);
+                proj.SubItems = subProjs;
             }
         }
 

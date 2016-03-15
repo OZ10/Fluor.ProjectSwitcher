@@ -89,7 +89,6 @@
                         <Grid Margin="0,0,0,7" Width="350" MouseRightButtonUp="tile_MouseRightButtonUp">
                             <!--Background="{TemplateBinding Background}">-->
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="50"/>
                             </Grid.ColumnDefinitions>
@@ -114,26 +113,26 @@
                                 </ContextMenu>
                             </Grid.ContextMenu>
 
-                            <Rectangle x:Name="rec1" Fill="White" Grid.RowSpan="2"/>
-                            <Rectangle x:Name="rec2" Fill="{DynamicResource SubColorBrush}" Grid.RowSpan="2" Opacity="0"/>
+                            <!--<Rectangle  Fill="White" Grid.RowSpan="2"/>-->
+                            <!--<Rectangle x:Name="rec2" Fill="{DynamicResource SubColorBrush}" Grid.RowSpan="2" Opacity="0"/>-->
                             <Border BorderBrush="#33000000" BorderThickness="1,0,0,1"/>
 
-                            <Rectangle Fill="White" Margin="2,0,0,0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                            <Border BorderBrush="#33000000" BorderThickness="0,0,0,1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                            <Rectangle x:Name="rec1" Fill="{DynamicResource SubColorBrush2}" Margin="2,0,0,0" Grid.ColumnSpan="2" Grid.RowSpan="2" Opacity="0"/>
+                            <Border BorderBrush="#33000000" BorderThickness="0,0,0,1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
 
-                            <Button x:Name="btnTileMain" Grid.Column="1" Click="btnTileMain_Click">
+                            <Button x:Name="btnTileMain" Click="btnTileMain_Click">
                                 <Button.Template>
                                     <ControlTemplate>
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Normal" FontSize="20" />
-                                            <TextBlock Text="{Binding MiscText}" VerticalAlignment="Center" Margin="10,4,0,4" FontWeight="Normal" FontSize="12" Visibility="{Binding MiscTextVisibility}" Foreground="{DynamicResource TextBlack54Brush}"/>
+                                            <TextBlock Text="{Binding MiscText}" VerticalAlignment="Center" Margin="10,4,0,4" FontWeight="Normal" FontSize="12" Visibility="{Binding MiscTextVisibility}" />
                                         </StackPanel>
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
 
                             <!--<Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="10" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Opacity="0" Visibility="Visible" Click="btnEdit_Click"/>-->
-                            <Button x:Name="btnTileEdit" Content="{DynamicResource EditIcon}" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Click="btnTileEdit_Click" Opacity="0"/>
+                            <Button x:Name="btnTileEdit" Content="{DynamicResource EditIcon}" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustom}" Click="btnTileEdit_Click" Opacity="0"/>
                         </Grid>
 
                         <ControlTemplate.Triggers>
@@ -146,10 +145,11 @@
                             </Trigger>
 
                             <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White" TargetName="btnTileMain"/>
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="rec2"/>
+                                            <DoubleAnimation Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="rec1"/>
                                             <DoubleAnimation BeginTime="0:0:1.5" Duration="0:0:0.3" From="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="btnTileEdit"/>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -157,7 +157,7 @@
                                 <Trigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="rec2"/>
+                                            <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="rec1"/>
                                             <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="btnTileEdit"/>
                                         </Storyboard>
                                     </BeginStoryboard>

@@ -119,6 +119,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<Message.M_SettingsHaveBeenChanged>(this, SettingsHaveChanged);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
+            Messenger.Default.Register<GenericMessage<Uri>>(this, ChangeTheme);
         }
 
         /// <summary>
@@ -130,6 +131,10 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 ProjectSwitcherSettings = CheckStatusOfSettingsFile();
 
+                // Load theme
+                if (ProjectSwitcherSettings.ActiveTheme != null)
+                { Messenger.Default.Send(new GenericMessage<Uri>(new Uri(ProjectSwitcherSettings.ActiveTheme, UriKind.Relative))); }
+                
                 PopulateProjectsAndApplications();
 
             }
@@ -518,6 +523,15 @@ namespace Fluor.ProjectSwitcher.ViewModel
         private void UpdateStatusBar(string message)
         {
             Messenger.Default.Send(new Message.MessageStatusUpdate(Visibility.Visible, message));
+        }
+
+        private void ChangeTheme(GenericMessage<Uri> msg)
+        {
+            if (msg.Sender != this)
+            {
+                ProjectSwitcherSettings.ActiveTheme = msg.Content.ToString();
+                ProjectSwitcherSettings.HasBeenChanged = true;
+            }
         }
     }
 }

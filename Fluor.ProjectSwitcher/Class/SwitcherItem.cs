@@ -137,20 +137,23 @@ namespace Fluor.ProjectSwitcher.Class
             }
         }
 
-        private Visibility isEditMode;
-        [XmlIgnore]
-        public Visibility IsEditMode
-        {
-            get
-            {
-                return isEditMode;
-            }
-            set
-            {
-                isEditMode = value;
-                RaisePropertyChanged("IsEditMode");
-            }
-        }
+        [XmlAttribute]
+        public int Position { get; set; }
+
+        //private Visibility isEditMode;
+        //[XmlIgnore]
+        //public Visibility IsEditMode
+        //{
+        //    get
+        //    {
+        //        return isEditMode;
+        //    }
+        //    set
+        //    {
+        //        isEditMode = value;
+        //        RaisePropertyChanged("IsEditMode");
+        //    }
+        //}
 
         //public SwitcherItem GetActiveSubItem()
         //{

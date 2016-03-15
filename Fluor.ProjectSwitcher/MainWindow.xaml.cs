@@ -59,19 +59,19 @@ namespace Fluor.ProjectSwitcher
 
         private void recDisable_MouseDown(object sender, MouseButtonEventArgs e) => flySettings.IsOpen = false;
 
-        private void flyOut_IsOpenChanged(object sender, EventArgs e)
-        {
-            MahApps.Metro.Controls.Flyout fly = (MahApps.Metro.Controls.Flyout)sender;
+        //private void flyOut_IsOpenChanged(object sender, EventArgs e)
+        //{
+        //    MahApps.Metro.Controls.Flyout fly = (MahApps.Metro.Controls.Flyout)sender;
 
-            if (fly.IsOpen == true)
-            {
-                recDisable.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                recDisable.Visibility = System.Windows.Visibility.Hidden;
-            }
-        }
+        //    if (fly.IsOpen == true)
+        //    {
+        //        recDisable.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        recDisable.Visibility = System.Windows.Visibility.Hidden;
+        //    }
+        //}
 
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
         {
@@ -180,6 +180,17 @@ namespace Fluor.ProjectSwitcher
             Button btn = (Button)sender;
             SwitcherItem selectedTile = (SwitcherItem)btn.DataContext;
             Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
+        }
+
+        private void btnMinimise_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Theme_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Messenger.Default.Send(new GenericMessage<Uri>(new Uri((string)btn.Tag, UriKind.Relative)));
         }
     }
 }

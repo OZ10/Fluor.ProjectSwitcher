@@ -19,6 +19,9 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlAttribute]
         public int UserVersion { get; set; }
 
+        [XmlAttribute]
+        public string ActiveTheme { get; set; }
+
         public ObservableCollection<Project> Projects { get; set; }
         public ObservableCollection<TopApplication> Applications { get; set; }
 
@@ -27,6 +30,8 @@ namespace Fluor.ProjectSwitcher.Class
             HasBeenChanged = false;
             Projects = new ObservableCollection<Project>();
             Applications = new ObservableCollection<TopApplication>();
+
+            if (ActiveTheme == "") ActiveTheme = "/Themes/Accents_Default.xaml";
         }
     }
 }
