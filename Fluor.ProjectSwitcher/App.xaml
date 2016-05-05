@@ -7,7 +7,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="AppTheme">
                     <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="Themes/Accents_Default.xaml" />
+                        <ResourceDictionary Source="Themes/Accents_Fluor.xaml" />
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
                 

@@ -31,7 +31,7 @@ namespace Fluor.ProjectSwitcher.Class
             Projects = new ObservableCollection<Project>();
             Applications = new ObservableCollection<TopApplication>();
 
-            if (ActiveTheme == "") ActiveTheme = "/Themes/Accents_Default.xaml";
+            if (ActiveTheme == "") ActiveTheme = "/Themes/Accents_Fluor.xaml";
         }
     }
 }

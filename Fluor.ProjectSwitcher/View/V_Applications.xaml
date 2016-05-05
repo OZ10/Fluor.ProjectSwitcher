@@ -16,7 +16,36 @@
     </Grid>
 
     <UserControl.Resources>
-
+        <Style x:Key="CheckBoxStyleCustom" TargetType="{x:Type CheckBox}">
+            <Style.BasedOn>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}"/>
+                    <Setter Property="FontSize" Value="{DynamicResource ContentFontSize}"/>
+                    <Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="0,0,0,0"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                <Grid>
+                                    <Rectangle x:Name="rec" Fill="Transparent"/>
+                                    <TextBlock x:Name="txt" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    <!--<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>-->
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Fill" Value="{DynamicResource SubColorBrush2}" TargetName="rec"/>
+                                        <Setter Property="Foreground" Value="White" TargetName="txt"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Style.BasedOn>
+        </Style>
         <ControlTemplate x:Key="ApplicationListTemplate">
             <Grid Margin="5,0,5,10">
                 <Grid.RowDefinitions>
@@ -46,7 +75,7 @@
                     <!--Background="{DynamicResource AccentColorBrush4}"-->
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Visibility="{Binding Visibility}" Padding="5" FontSize="14" Foreground="{DynamicResource TextBlack87Brush}">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Visibility="{Binding Visibility}" Padding="5" FontSize="14" Foreground="{DynamicResource TextBlack87Brush}" Style="{DynamicResource CheckBoxStyleCustom}">
                                 <CheckBox.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem x:Name="miSelectAll" Header="select all" Click="MenuItem_Click">
