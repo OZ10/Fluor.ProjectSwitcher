@@ -80,22 +80,22 @@
                                     <ContextMenu>
                                         <MenuItem x:Name="miSelectAll" Header="select all" Click="MenuItem_Click">
                                             <MenuItem.Icon>
-                                                <Path Data="{DynamicResource SelectAll}" Style="{DynamicResource MenuItemIcon}"/>
+                                                <Path Data="{DynamicResource SelectAll}" Style="{DynamicResource MenuItemIconStyle}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem x:Name="miSelectNone" Header="select none" Click="MenuItem_Click">
                                             <MenuItem.Icon>
-                                                <Path Data="{DynamicResource Minus}" Style="{DynamicResource MenuItemIcon}"/>
+                                                <Path Data="{DynamicResource Minus}" Style="{DynamicResource MenuItemIconStyle}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem x:Name="miSelectOnlyThis" Header="select only this" Click="MenuItem_Click">
                                             <MenuItem.Icon>
-                                                <Path Data="{DynamicResource SelectThisOnly}" Style="{DynamicResource MenuItemIcon}"/>
+                                                <Path Data="{DynamicResource SelectThisOnly}" Style="{DynamicResource MenuItemIconStyle}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem x:Name="miSelectAllExceptThis" Header="select all except this" Click="MenuItem_Click">
                                             <MenuItem.Icon>
-                                                <Path Data="{DynamicResource SelectAllExceptThis}" Style="{DynamicResource MenuItemIcon}"/>
+                                                <Path Data="{DynamicResource SelectAllExceptThis}" Style="{DynamicResource MenuItemIconStyle}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                     </ContextMenu>

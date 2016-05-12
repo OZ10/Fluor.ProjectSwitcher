@@ -2,14 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!--ACCENT COLORS-->
     <!--<Color x:Key="HighlightColor">#FF00457D</Color>-->
-    <Color x:Key="HighlightColor">#0277BD</Color>
+    <Color x:Key="HighlightColor">#795548</Color>
 
     <!--80%-->
-    <Color x:Key="AccentColor">#CC0277BD</Color>
+    <Color x:Key="AccentColor">#CC795548</Color>
     <!--60%-->
-    <Color x:Key="AccentColor2">#990277BD</Color>
+    <Color x:Key="AccentColor2">#99795548</Color>
     <!--40%-->
-    <Color x:Key="AccentColor3">#660277BD</Color>
+    <Color x:Key="AccentColor3">#66795548</Color>
     <!--20%-->
     <Color x:Key="AccentColor4">#FFEDEDED</Color>
 
@@ -33,19 +33,19 @@
     <SolidColorBrush x:Key="RightArrowFill" Color="{StaticResource AccentColor}" />
 
     <!-- SubColor used for focus points such as buttons. Meant to be used to draw the user's attention -->
-    <Color x:Key="SubColor">#FF6F00</Color>
+    <Color x:Key="SubColor">#FF3D00</Color>
     <!--60%-->
-    <Color x:Key="SubColor2">#99FF6F00</Color>
+    <Color x:Key="SubColor2">#99FF3D00</Color>
     <!--40%-->
-    <Color x:Key="SubColor3">#66FF6F00</Color>
+    <Color x:Key="SubColor3">#66FF3D00</Color>
     <!--20%-->
-    <Color x:Key="SubColor4">#33FF6F00</Color>
-    
+    <Color x:Key="SubColor4">#33FF3D00</Color>
+
     <SolidColorBrush x:Key="SubColorBrush" Color="{StaticResource SubColor}"/>
     <SolidColorBrush x:Key="SubColorBrush2" Color="{StaticResource SubColor2}"/>
     <SolidColorBrush x:Key="SubColorBrush3" Color="{StaticResource SubColor3}"/>
     <SolidColorBrush x:Key="SubColorBrush4" Color="{StaticResource SubColor4}"/>
-    
+
     <Color x:Key="CloseButtonBackGroundColor">#FF003264</Color>
     <SolidColorBrush x:Key="CloseButtonBackGroundBrush" Color="{StaticResource CloseButtonBackGroundColor}"/>
 

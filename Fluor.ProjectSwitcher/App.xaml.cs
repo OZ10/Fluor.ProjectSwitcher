@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
-using MahApps.Metro.Controls;
 using Fluor.ProjectSwitcher.Class;
 using System.Windows.Shell;
 using System.Reflection;
@@ -18,9 +17,9 @@ namespace Fluor.ProjectSwitcher
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application
+    public partial class App : Application
     {
-        public ResourceDictionary AppTheme { get { return Resources.MergedDictionaries[0]; } } 
+        public ResourceDictionary AppTheme { get { return Resources.MergedDictionaries[2]; } } 
 
         private string PreselectedProject;
 

@@ -1,27 +1,23 @@
-﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Fluor.ProjectSwitcher" xmlns:classes="clr-namespace:Fluor.ProjectSwitcher.Class" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="Fluor.ProjectSwitcher.App" StartupUri="MainWindow.xaml" d1p1:Ignorable="d"  >
+﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Fluor.ProjectSwitcher" xmlns:classes="clr-namespace:Fluor.ProjectSwitcher.Class" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="Fluor.ProjectSwitcher.App" StartupUri="MainWindow.xaml" d1p1:Ignorable="d"  >
     <JumpList.JumpList>
         <JumpList ShowRecentCategory="True"/>
     </JumpList.JumpList>
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Fluor.WPF.Resources;component/Themes/Icons.xaml" />
+                <!--<ResourceDictionary Source="/Themes/Fluor_CustomControlStyles.xaml" />-->
+                <ResourceDictionary Source="pack://application:,,,/Fluor.WPF.Resources;component/Styles/Controls.xaml"/>
+                
                 <ResourceDictionary x:Name="AppTheme">
                     <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="Themes/Accents_Fluor.xaml" />
+                        <ResourceDictionary Source="/Themes/Accents_Fluor.xaml" />
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
-                
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />-->
-                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />-->
-                <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />-->
-                <ResourceDictionary Source="Themes/Fluor_Icons.xaml" />
-                <ResourceDictionary Source="Themes/Fluor_CustomControlStyles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style x:Key="MetroListboxItemCustom" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MetroListBoxItem}">
+            <!-- //BasedOn="{StaticResource MetroListBoxItem}"> -->
+            <Style x:Key="MetroListboxItemCustom" TargetType="{x:Type ListBoxItem}"> 
                 <Setter Property="Visibility" Value="{Binding Visibility}"/>
                 <Setter Property="IsSelected" Value="{Binding IsActive}"/>
                 <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
@@ -45,9 +41,9 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
-                <!-- Used with the MenuItem's Icon property to display a folder icon -->
-            <Path x:Key="ContextMenuIcon_Path" Data="{Binding Mode=OneWay, Source={StaticResource Folder}}" Style="{DynamicResource MenuItemIcon}"/>
+            
+            <!-- Used with the MenuItem's Icon property to display a folder icon -->
+            <Path x:Key="ContextMenuIcon_Path" Data="{Binding Mode=OneWay, Source={StaticResource Folder}}" Style="{DynamicResource MenuItemIconStyle}"/>
 
         </ResourceDictionary>
     </Application.Resources>

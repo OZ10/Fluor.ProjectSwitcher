@@ -32,8 +32,6 @@
     <SolidColorBrush x:Key="CheckmarkFill" Color="{StaticResource AccentColor}" />
     <SolidColorBrush x:Key="RightArrowFill" Color="{StaticResource AccentColor}" />
 
-    <!-- Above settings are all from Mahapps. They should not be removed if using Mahapps. -->
-    <!-- Settings below are Fluor added -->
     <!-- SubColor used for focus points such as buttons. Meant to be used to draw the user's attention -->
     <Color x:Key="SubColor">#000000</Color>
     <!--60%-->

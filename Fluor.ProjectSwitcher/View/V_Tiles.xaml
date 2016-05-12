@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:classes="clr-namespace:Fluor.ProjectSwitcher.Class"
-             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="Fluor.ProjectSwitcher.View.V_Tiles" 
+             xmlns:Controls="clr-namespace:Fluor.WPF.Resources.Controls;assembly=Fluor.WPF.Resources"
+             x:Class="Fluor.ProjectSwitcher.View.V_Tiles" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding Projects, Mode=OneWay, Source={StaticResource Locator}}" Style="{DynamicResource VisibleAnimation}">
     <Grid>
@@ -22,26 +23,21 @@
                             <Setter Property="MinWidth" Value="350"/>
                             <Setter Property="MinHeight" Value="15"/>
                             <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="FontSize" Value="{DynamicResource UpperCaseContentFontSize}"/>
-                            <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
                             <Setter Property="Background" Value="White"/>
                             <Setter Property="BorderBrush" Value="#33000000"/>
                             <Setter Property="Foreground" Value="{DynamicResource TextBlack87Brush}"/>
-                            <!--<Setter Property="Padding" Value="1,0,0,1"/>-->
                             <Setter Property="BorderThickness" Value="1,0,0,1"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>
                                             <Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="3"/>
-                                            <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource ControlsDisabledBrush}" IsHitTestVisible="False" Opacity="0" RadiusY="3" RadiusX="3"/>
-                                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content, Converter={Custom:ToUpperConverter}}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                            <Rectangle x:Name="DisabledVisualElement" Fill="LightGray" IsHitTestVisible="False" Opacity="0" RadiusY="3" RadiusX="3"/>
+                                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                         </Grid>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter Property="Background" TargetName="Background" Value="{DynamicResource SubColorBrush4}"/>
-                                                <!--<Setter Property="Foreground" Value="White"/>-->
-                                                <!--<Setter Property="Foreground"  Value="{DynamicResource SubColorBrush}" />-->
                                                 <Trigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
@@ -57,13 +53,9 @@
                                                     </BeginStoryboard>
                                                 </Trigger.ExitActions>
                                             </Trigger>
-                                            <Trigger Property="IsPressed" Value="True">
+                                            <!--<Trigger Property="IsPressed" Value="True">
                                                 <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush7}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                                <Setter Property="BorderThickness" TargetName="Background" Value="2"/>
-                                                <Setter Property="BorderBrush" TargetName="Background" Value="{DynamicResource ButtonMouseOverBorderBrush}"/>
-                                            </Trigger>
+                                            </Trigger>-->
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
                                                 <Setter Property="Opacity" TargetName="contentPresenter" Value="0.3"/>
@@ -81,13 +73,10 @@
 
     <UserControl.Resources>
         <Style x:Key="MetroTileCustom" TargetType="{x:Type ContentControl}">
-            <!--BasedOn="{StaticResource {x:Type Button}}">-->
-            <!--<Setter Property="Background" Value="Aqua"/>-->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContentControl}">
                         <Grid Margin="0,0,0,7" Width="350" MouseRightButtonUp="tile_MouseRightButtonUp">
-                            <!--Background="{TemplateBinding Background}">-->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="50"/>
@@ -98,20 +87,17 @@
 
                             <Grid.ContextMenu>
                                 <ContextMenu>
-                                    <!--ItemTemplateSelector="{DynamicResource MenuItemTemplateSelector}" >-->
                                     <ContextMenu.ItemTemplate>
                                         <DataTemplate>
-                                            <!--  Icon="{DynamicResource ContextMenuIcon_Path}"/> -->
                                             <MenuItem Header="{Binding Name}" CommandParameter="{Binding Value}">
                                                 <MenuItem.Icon>
-                                                    <Path Data="{DynamicResource Folder}" Style="{DynamicResource MenuItemIcon}"/>
+                                                    <Path Data="{DynamicResource Folder}" Style="{DynamicResource MenuItemIconStyle}"/>
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                         </DataTemplate>
                                     </ContextMenu.ItemTemplate>
                                     <ContextMenu.ItemContainerStyle>
-                                        <Style TargetType="{x:Type MenuItem}">
-                                            <!--<Setter Property="MenuItem.IsEnabled" Value="{Binding IsEnabled}"/>-->
+                                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource StandardMenuItemStyle}">
                                             <EventSetter Event="MenuItem.Click" Handler="muProject_Click"/>
                                         </Style>
                                     </ContextMenu.ItemContainerStyle>
@@ -135,8 +121,7 @@
                                 </Button.Template>
                             </Button>
 
-                            <!--<Button Name="btnEdit" Content="{DynamicResource EditIcon}" Margin="10" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Opacity="0" Visibility="Visible" Click="btnEdit_Click"/>-->
-                            <Button x:Name="btnTileEdit" Content="{DynamicResource EditIcon}" Grid.RowSpan="2" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustom}" Click="btnTileEdit_Click" Opacity="0"/>
+                            <Button x:Name="btnTileEdit" Content="{DynamicResource EditIcon}" Grid.RowSpan="2" Grid.Column="2" Click="btnTileEdit_Click" Opacity="0" Padding="15"/>
                         </Grid>
 
                         <ControlTemplate.Triggers>

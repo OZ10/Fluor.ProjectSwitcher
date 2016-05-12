@@ -48,7 +48,7 @@ namespace Fluor.ProjectSwitcher
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void btnOpenProject_Click(object sender, RoutedEventArgs e) => vm.CloseOpenApplications();   
+        private void btnOpenProject_Click(object sender, RoutedEventArgs e) => vm.CloseOpenApplications();
 
         /// <summary>
         /// Handles the Click event of the btnSettings control. Opens the sppid projects xml file
@@ -57,7 +57,7 @@ namespace Fluor.ProjectSwitcher
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void btnSettings_Click(object sender, RoutedEventArgs e) => flySettings.IsOpen = true;
 
-        private void recDisable_MouseDown(object sender, MouseButtonEventArgs e) => flySettings.IsOpen = false;
+        //private void recDisable_MouseDown(object sender, MouseButtonEventArgs e) => flySettings.IsOpen = false;
 
         //private void flyOut_IsOpenChanged(object sender, EventArgs e)
         //{
@@ -119,6 +119,7 @@ namespace Fluor.ProjectSwitcher
         {
             Messenger.Default.Send<GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>>(new GenericMessage<Fluor.ProjectSwitcher.Class.SwitcherItem>(this, null));
             vm.ResetBreadCrumb();
+            ResetWindowSize();
         }
 
         private void miLoadSettingsFile_Click(object sender, RoutedEventArgs e)
@@ -153,8 +154,17 @@ namespace Fluor.ProjectSwitcher
 
         private void miResetSize_Click(object sender, RoutedEventArgs e)
         {
-            this.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+            ResetWindowSize();
             flySettings.IsOpen = false;
+        }
+
+        private void ResetWindowSize()
+        {
+            // After removing Mahapps the window's width would not reset
+            // Setting the size manually and then resetting it to widthandheight worked
+            this.SizeToContent = 0;
+            Width = 370;
+            this.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
         }
 
         private void miEditApps_Click(object sender, RoutedEventArgs e)
@@ -180,6 +190,7 @@ namespace Fluor.ProjectSwitcher
             Button btn = (Button)sender;
             SwitcherItem selectedTile = (SwitcherItem)btn.DataContext;
             Messenger.Default.Send<GenericMessage<SwitcherItem>>(new GenericMessage<SwitcherItem>(this, selectedTile));
+            ResetWindowSize();
         }
 
         private void btnMinimise_Click(object sender, RoutedEventArgs e)
@@ -191,6 +202,12 @@ namespace Fluor.ProjectSwitcher
         {
             Button btn = (Button)sender;
             Messenger.Default.Send(new GenericMessage<Uri>(new Uri((string)btn.Tag, UriKind.Relative)));
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            flySettings.IsOpen = false;
+            DragMove();
         }
     }
 }

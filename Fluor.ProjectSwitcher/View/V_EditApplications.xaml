@@ -23,7 +23,7 @@
             </Grid.RowDefinitions>
         
             <TextBlock Text="Applications" VerticalAlignment="Center" FontSize="16"/>
-            <Button Name="btnAddNewApplication" HorizontalAlignment="Right" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Padding="10" Width="30" ToolTip="Add New Application" Click="btnAddNewApplication_Click"/>
+            <Button Name="btnAddNewApplication" HorizontalAlignment="Right" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Padding="10" Width="30" ToolTip="Add New Application" Click="btnAddNewApplication_Click"/>
             <TreeView Grid.Row="1" ItemsSource="{Binding ApplicationsCollection}" SelectedItemChanged="TreeView_SelectedItemChanged">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
@@ -52,7 +52,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Details" VerticalAlignment="Center" FontSize="16"/>
-                <Button Name="btnDeleteApplication" Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Content="{Binding Mode=OneWay, Source={StaticResource DeleteIcon}}" Height="25" Width="20" Padding="5" HorizontalAlignment="Right" ToolTip="Delete Application" VerticalAlignment="Center" Click="btnDeleteApplication_Click"/>
+                <Button Name="btnDeleteApplication" Grid.Column="2"  Content="{Binding Mode=OneWay, Source={StaticResource DeleteIcon}}" Height="25" Width="20" Padding="5" HorizontalAlignment="Right" ToolTip="Delete Application" VerticalAlignment="Center" Click="btnDeleteApplication_Click"/>
                 <TextBlock Text="Name" VerticalAlignment="Bottom" Grid.Row="1"/>
                 <TextBox Grid.Row="2" Text="{Binding Name}"/>
                 <TextBlock Grid.Row="3" Text="Executable" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
@@ -60,13 +60,13 @@
                 <TextBlock Text="Install Path" Grid.Row="5" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
                 <TextBox Grid.Row="6" Text="{Binding InstallPath}"/>
                 <TextBlock Text="Enabled:" Grid.Row="8" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="8" Style="{DynamicResource MetroToggleButtonStyle}" Width="40" Height="20" VerticalAlignment="Center" IsChecked="{Binding IsEnabled}"/>
+                <CheckBox Grid.Row="8" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsEnabled}"/>
                 <TextBlock Text="Selected:" Grid.Row="9" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="9" Style="{DynamicResource MetroToggleButtonStyle}" Width="40" Height="20" VerticalAlignment="Center" IsChecked="{Binding IsSelected}"/>
+                <CheckBox Grid.Row="9" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsSelected}"/>
                 <TextBlock Text="Visible:" Grid.Row="10" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="10" Style="{DynamicResource MetroToggleButtonStyle}" Width="40" Height="20" VerticalAlignment="Center" IsChecked="{Binding IsVisible}"/>
+                <CheckBox Grid.Row="10" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsVisible}"/>
                 <TextBlock Grid.Row="12" Text="Context Menus"  VerticalAlignment="Bottom"/>
-                <Button Grid.Row="12" Name="btnAddnewContextMenu" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="20" Width="20" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Click="btnAddnewContextMenu_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5" ToolTip="Add New Context Menu"/>
+                <Button Grid.Row="12" Name="btnAddnewContextMenu"  Height="20" Width="20" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Click="btnAddnewContextMenu_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5" ToolTip="Add New Context Menu"/>
                 <ListBox Grid.Row="13" FontSize="12" ItemTemplate="{DynamicResource ListViewItemWithEditButton}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource AccentColorBrush3}" ItemsSource="{Binding ContextMenuCollection}"/>
             </Grid>
         </Grid>
@@ -87,8 +87,8 @@
             <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SelectedContextMenu.EditedValue}" />
         </Grid>
 
-        <Button Name="btnEditOk" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource TickIcon}}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" Background="{Binding Mode=OneWay, Source={StaticResource SubColorBrush}}" Style="{DynamicResource MetroCircleButtonStyleCustom}" />
-        <Button Name="btnEditCancel" Grid.Row="2" Grid.ColumnSpan="3" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{Binding Mode=OneWay, Source={StaticResource CloseIcon}}" Height="50" Width="50" Margin="80,10,0,0" Background="{DynamicResource SubColorBrush}" Click="btnEditCancel_Click"/>
+        <Button Name="btnEditOk" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource TickIcon}}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" Background="{DynamicResource SubColorBrush}" />
+        <Button Name="btnEditCancel" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource CloseIcon}}" Height="50" Width="50" Margin="80,10,0,0" Background="{DynamicResource SubColorBrush}" Click="btnEditCancel_Click"/>
     </Grid>
 
     <UserControl.Resources>
@@ -102,8 +102,8 @@
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <DockPanel Name="dp" Width="Auto" Height="Auto">
-                    <Button x:Name="btnDeleteListViewItem" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Click="ChangeListViewItem_Click" Padding="5,5,5,5" ToolTip="Delete" Tag="Delete" Opacity="0"/>
-                    <Button x:Name="btnEditListViewItem" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Center" Content="{DynamicResource EditIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Click="ChangeListViewItem_Click" Padding="5,5,5,5" ToolTip="Edit" Tag="Edit" Opacity="0"/>
+                    <Button x:Name="btnDeleteListViewItem" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Center" Content="{DynamicResource CloseIcon}"  Click="ChangeListViewItem_Click" Padding="5,5,5,5" ToolTip="Delete" Tag="Delete" Opacity="0"/>
+                    <Button x:Name="btnEditListViewItem" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="20" Height="20" VerticalAlignment="Center" Content="{DynamicResource EditIcon}"  Click="ChangeListViewItem_Click" Padding="5,5,5,5" ToolTip="Edit" Tag="Edit" Opacity="0"/>
                     <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
                 </DockPanel>
             </Grid>

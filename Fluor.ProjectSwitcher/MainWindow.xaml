@@ -1,135 +1,20 @@
-﻿<Controls:MetroWindow
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Fluor.ProjectSwitcher"          
-        xmlns:View="clr-namespace:Fluor.ProjectSwitcher.View"      
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"  
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"  x:Class="Fluor.ProjectSwitcher.MainWindow"  
-        Title="" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="280" MinWidth="370" BorderBrush="{DynamicResource HighlightBrush}" FontFamily="Calibri" ShowTitleBar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowCloseButton="False" ShowSystemMenuOnRightClick="False">
-
-
-    <Controls:MetroWindow.DataContext>
+        xmlns:View="clr-namespace:Fluor.ProjectSwitcher.View"
+        xmlns:Controls="clr-namespace:Fluor.WPF.Resources.Controls;assembly=Fluor.WPF.Resources"
+        xmlns:Converters="clr-namespace:Fluor.WPF.Resources.Converters;assembly=Fluor.WPF.Resources"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"  x:Class="Fluor.ProjectSwitcher.MainWindow"
+        Title="" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="280" MinWidth="370" BorderBrush="{DynamicResource HighlightBrush}" FontFamily="Calibri" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Window.DataContext>
         <Binding Mode="OneWay" Path="Main" Source="{StaticResource Locator}"/>
-    </Controls:MetroWindow.DataContext>
-    <Controls:MetroWindow.Flyouts>
-        <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="flySettings" Position="Left" Width="Auto" IsModal="True" Header="Settings">
-                <Grid Margin="10,0,10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="15"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Settings File" Foreground="{DynamicResource TextBlack87Brush}"/>
-                    <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2"/>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top">
-                        <Button x:Name="miViewSettingsFile" ToolTip="Open" Click="miViewSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource SettingsIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45"/>
-                        <Button x:Name="miLoadSettingsFile" ToolTip="Load" Click="miLoadSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource LoadIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45"/>
-                        <Button x:Name="miExportSettingsFile" ToolTip="Export" Click="miExportSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource ExportIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45"/>
-                    </StackPanel>
-                    <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="2"/>
-                    <TextBlock Text="Applications" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="2"/>
-                    <Button x:Name="miEditApps" ToolTip="Edit Applications" Click="miEditApps_Click" FontSize="12" Grid.Row="3" Content="{Binding Mode=OneWay, Source={StaticResource EditIcon}}" Style="{DynamicResource MetroCircleButtonStyleCustomBlack}" Height="45" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="4"/>
-                    <TextBlock Text="Theme" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="4"/>
-                    <StackPanel Orientation="Horizontal" Grid.Row="5">
-                        <Button Name="ThemeDefault" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#FF595959" Foreground="#FF00A8CD" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Original.xaml" ToolTip="Default"/>
-                        <Button Name="ThemeFluor" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#FF003872" Foreground="#000000" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Fluor.xaml" ToolTip="Fluor"/>
-                        <Button Name="ThemeWinter" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#607D8B" Foreground="#0091EA" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Winter.xaml" ToolTip="Winter"/>
-                        <Button Name="ThemeSpring" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#33691E" Foreground="#F9A825" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Spring.xaml" ToolTip="Spring"/>
-                        <Button Name="ThemeSummer" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#0277BD" Foreground="#FF6F00" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Summer.xaml" ToolTip="Summer"/>
-                        <Button Name="ThemeAutumn" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#795548" Foreground="#FF3D00" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Autumn.xaml" ToolTip="Autumn"/>
-                    </StackPanel>
-                    <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="6"/>
-                    <TextBlock Text="Misc" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="6"/>
-                    <StackPanel Grid.Row="7">
-                        <MenuItem x:Name="miRefresh" Header="Refresh After Changes" FontSize="12" Click="miRefresh_Click">
-                            <MenuItem.Icon>
-                                <Path Data="{DynamicResource Refresh}" Style="{DynamicResource MenuItemIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="miCloseAllApps" Header="Close All Open Apps" Click="miCloseAllApps_Click" FontSize="12">
-                            <MenuItem.Icon>
-                                <Path Data="{DynamicResource Close}" Style="{DynamicResource MenuItemIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem x:Name="miResetSize" Header="Reset Window Size" FontSize="12" Click="miResetSize_Click">
-                            <MenuItem.Icon>
-                                <Path Data="{DynamicResource Restore}" Style="{DynamicResource MenuItemIcon}"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </StackPanel>
-                    <TextBlock Grid.Row="9" Text="{Binding Version}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="{DynamicResource TextBlack54Brush}" FontSize="12"/>
-                </Grid>
-            </Controls:Flyout>
-        </Controls:FlyoutsControl>
-    </Controls:MetroWindow.Flyouts>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition />
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    </Window.DataContext>
+    <Window.Resources>
 
-        <Grid Background="{DynamicResource HighlightBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="50"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="btnSettings" Click="btnSettings_Click" Content="{DynamicResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" ToolTip="Settings" Visibility="{Binding MainViewButtonsVisibility}"/>
-            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyleCustom}" Content="{DynamicResource HomeIcon}" Click="btnHome_Click" ToolTip="Home" Visibility="{Binding MainViewButtonsVisibility}"/>
-            <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{DynamicResource MetroBreadCrumbButton}" VerticalAlignment="Center" Grid.Column="2" Visibility="{Binding MainViewButtonsVisibility}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-            <Button x:Name="btnMinimise" Content="{DynamicResource MinimiseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustom}" Grid.Column="3" ToolTip="Minimise" VerticalAlignment="Bottom" Click="btnMinimise_Click" Margin="0,15,0,0"/>
-            <Button x:Name="btnClose" Content="{DynamicResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="Close" Foreground="White"/>
-        </Grid>
-
-        <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>
-
-        <View:V_Tiles Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsTileTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <View:V_Applications Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <View:V_Edit Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsAddNewTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <View:V_EditApplications Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsEditApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-        <Button x:Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="Switch Project" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource MetroCircleButtonStyleCustomSpin}" Foreground="White" Background="{DynamicResource SubColorBrush}" RenderTransformOrigin="0.5,0.5" Margin="10" Visibility="{Binding MainViewButtonsVisibility}">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-
-        <local:StatusWindow x:Name="StatusWindow" Grid.RowSpan="4" Grid.ColumnSpan="4" Visibility="Hidden"/>
-        <!--<Rectangle x:Name="recDisable" Grid.RowSpan="3" Grid.ColumnSpan="4" Opacity="0.5" Visibility="Hidden" MouseDown="recDisable_MouseDown">
-            <Rectangle.Fill>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
-            </Rectangle.Fill>
-        </Rectangle>-->
-    </Grid>
-
-    <Controls:MetroWindow.Resources>
+        <Converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
         <Style x:Key="MetroBreadCrumbButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="2"/>
@@ -186,8 +71,7 @@
                                 </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
-                                <Setter Property="Opacity" TargetName="rectanglebg" Value="0.3"/>
+                                <Setter Property="Opacity" TargetName="txtProjectName" Value="0.3"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -241,5 +125,104 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Controls:MetroWindow.Resources>
-</Controls:MetroWindow>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Background="{DynamicResource HighlightBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnSettings" Click="btnSettings_Click" Content="{StaticResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource StandardButtonStyleWhite}" ToolTip="Settings" Visibility="{Binding MainViewButtonsVisibility}"/>
+            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource StandardButtonStyleWhite}" Content="{StaticResource HomeIcon}" Click="btnHome_Click" ToolTip="Home" Visibility="{Binding MainViewButtonsVisibility}"/>
+            <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{DynamicResource MetroBreadCrumbButton}" VerticalAlignment="Center" Grid.Column="2" Visibility="{Binding MainViewButtonsVisibility}"  IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <Button x:Name="btnMinimise" Content="{StaticResource MinimiseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource StandardButtonStyleWhite}" Grid.Column="3" ToolTip="Minimise" VerticalAlignment="Bottom" Click="btnMinimise_Click" Margin="0,15,0,0"/>
+            <Button x:Name="btnClose" Content="{StaticResource CloseIcon}" BorderBrush="{x:Null}" Style="{DynamicResource StandardButtonStyleSpin}" Grid.Column="4" Click="btnClose_Click" ToolTip="Close" Foreground="White" Background="Transparent"/>
+        </Grid>
+
+        <Rectangle Grid.Row="1" Grid.RowSpan="3" Fill="{DynamicResource AccentColorBrush4}" Width="Auto"/>
+
+        <View:V_Tiles Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsTileTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}" />
+        <View:V_Applications Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}"  IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
+        <View:V_Edit Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsAddNewTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
+        <View:V_EditApplications Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsEditApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
+
+        <Button x:Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="Switch Project" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource StandardButtonStyleSpin}" Foreground="White" Background="{DynamicResource SubColorBrush}" RenderTransformOrigin="0.5,0.5" Margin="10" Visibility="{Binding MainViewButtonsVisibility}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
+
+        <local:StatusWindow x:Name="StatusWindow" Grid.RowSpan="4" Grid.ColumnSpan="4" Visibility="Hidden"/>
+
+        <Controls:Flyout Name="flySettings" Grid.RowSpan="3" Header="Settings">
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="15"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Settings File" Foreground="{DynamicResource TextBlack87Brush}"/>
+                <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top">
+                    <Button x:Name="miViewSettingsFile" ToolTip="Open" Click="miViewSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource SettingsIcon}}" Height="45"/>
+                    <Button x:Name="miLoadSettingsFile" ToolTip="Load" Click="miLoadSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource LoadIcon}}" Height="45"/>
+                    <Button x:Name="miExportSettingsFile" ToolTip="Export" Click="miExportSettingsFile_Click" FontSize="12" Content="{Binding Mode=OneWay, Source={StaticResource ExportIcon}}" Height="45"/>
+                </StackPanel>
+                <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="2"/>
+                <TextBlock Text="Applications" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="2"/>
+                <Button x:Name="miEditApps" ToolTip="Edit Applications" Click="miEditApps_Click" FontSize="12" Grid.Row="3" Content="{Binding Mode=OneWay, Source={StaticResource EditIcon}}" Height="45" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="4"/>
+                <TextBlock Text="Theme" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="4"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="5">
+                    <Button Name="ThemeDefault" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#FF595959" Foreground="#FF00A8CD" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Original.xaml" ToolTip="Default"/>
+                    <Button Name="ThemeFluor" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#FF003872" Foreground="#000000" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Fluor.xaml" ToolTip="Fluor"/>
+                    <Button Name="ThemeWinter" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#607D8B" Foreground="#0091EA" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Winter.xaml" ToolTip="Winter"/>
+                    <Button Name="ThemeSpring" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#33691E" Foreground="#F9A825" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Spring.xaml" ToolTip="Spring"/>
+                    <Button Name="ThemeSummer" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#0277BD" Foreground="#FF6F00" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Summer.xaml" ToolTip="Summer"/>
+                    <Button Name="ThemeAutumn" Height="20" Width="20" Style="{DynamicResource ThemeButtonStyle}" Background="#795548" Foreground="#FF3D00" Margin="3" Click="Theme_Click" Tag="/Themes/Accents_Autumn.xaml" ToolTip="Autumn"/>
+                </StackPanel>
+                <Rectangle VerticalAlignment="Bottom" Fill="{DynamicResource SubColorBrush4}" Height="2" Grid.Row="6"/>
+                <TextBlock Text="Misc" Foreground="{DynamicResource TextBlack87Brush}" Grid.Row="6"/>
+                <StackPanel Grid.Row="7">
+                    <MenuItem x:Name="miRefresh" Header="Refresh After Changes" FontSize="12" Click="miRefresh_Click">
+                        <MenuItem.Icon>
+                            <Path Data="{DynamicResource Refresh}" Style="{DynamicResource MenuItemIconStyle}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="miCloseAllApps" Header="Close All Open Apps" Click="miCloseAllApps_Click" FontSize="12">
+                        <MenuItem.Icon>
+                            <Path Data="{DynamicResource Close}" Style="{DynamicResource MenuItemIconStyle}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="miResetSize" Header="Reset Window Size" FontSize="12" Click="miResetSize_Click">
+                        <MenuItem.Icon>
+                            <Path Data="{DynamicResource Restore}" Style="{DynamicResource MenuItemIconStyle}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </StackPanel>
+                <TextBlock Grid.Row="9" Text="{Binding Version}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="{DynamicResource TextBlack54Brush}" FontSize="12"/>
+            </Grid>
+        </Controls:Flyout>
+    </Grid>
+</Window>
