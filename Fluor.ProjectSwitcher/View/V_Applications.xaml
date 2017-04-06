@@ -19,24 +19,18 @@
         <Style x:Key="CheckBoxStyleCustom" TargetType="{x:Type CheckBox}">
             <Style.BasedOn>
                 <Style TargetType="{x:Type CheckBox}">
-                    <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}"/>
-                    <Setter Property="FontSize" Value="{DynamicResource ContentFontSize}"/>
-                    <Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="Padding" Value="0,0,0,0"/>
-                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type CheckBox}">
-                                <Grid>
-                                    <Rectangle x:Name="rec" Fill="Transparent"/>
-                                    <TextBlock x:Name="txt" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    <!--<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>-->
-                                </Grid>
+                                <TextBlock x:Name="txt" Background="Transparent" Text="{TemplateBinding Content}" HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control}}}" Padding="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="Fill" Value="{DynamicResource SubColorBrush2}" TargetName="rec"/>
+                                        <Setter Property="Background" Value="{DynamicResource SubColorBrush2}" TargetName="txt"/>
                                         <Setter Property="Foreground" Value="White" TargetName="txt"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
@@ -49,30 +43,21 @@
         <ControlTemplate x:Key="ApplicationListTemplate">
             <Grid Margin="5,0,5,10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <!--<Ellipse Fill="{DynamicResource SubColorBrush4}" Stretch="Uniform" Height="8"/>-->
-                <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Margin="4,0,0,1" Padding="5" Background="{x:Null}" FontSize="18" FontWeight="Normal" Foreground="Black">
+
+                <Border BorderBrush="{StaticResource AccentColorBrush4}" BorderThickness="2" Background="White" Grid.RowSpan="2" CornerRadius="4"/>
+
+                <TextBlock x:Name="tbApplicationName" Text="{Binding Name}" MouseRightButtonDown="tbApplicationName_MouseRightButtonDown" Padding="10" Background="Transparent" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock.ContextMenu>
-                        <ContextMenu ItemsSource="{Binding ContextMenuCollection}">
-                            <ContextMenu.ItemTemplate>
-                                <DataTemplate>
-                                    <MenuItem Header="{Binding Name}" CommandParameter="{Binding Value}" Icon="{DynamicResource ContextMenuIcon_Path}" />
-                                </DataTemplate>
-                            </ContextMenu.ItemTemplate>
-                            <ContextMenu.ItemContainerStyle>
-                                <Style TargetType="{x:Type MenuItem}">
-                                    <EventSetter Event="MenuItem.Click" Handler="muApplication_Click"/>
-                                </Style>
-                            </ContextMenu.ItemContainerStyle>
-                        </ContextMenu>
+                        <ContextMenu ItemsSource="{Binding ContextMenuCollection}"/>
                     </TextBlock.ContextMenu>
                 </TextBlock>
 
-                <!--<Border BorderBrush="#33000000" BorderThickness="1,0,0,1" Margin="0,0,0,1"/>-->
-                <ListBox Grid.Row="1" ItemsSource="{Binding SubItems}" BorderBrush="{DynamicResource AccentColorBrush4}" BorderThickness="1,0,0,0" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}">
-                    <!--Background="{DynamicResource AccentColorBrush4}"-->
+                <Rectangle VerticalAlignment="Bottom" Fill="{StaticResource AccentColorBrush4}" Height="2" Margin="10,0,10,0"/>
+
+                <ListBox Grid.Row="1" ItemsSource="{Binding SubItems}" ItemContainerStyle="{DynamicResource MetroListboxItemCustom}" BorderThickness="0" BorderBrush="{x:Null}" HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Visibility="{Binding Visibility}" Padding="5" FontSize="14" Foreground="{DynamicResource TextBlack87Brush}" Style="{DynamicResource CheckBoxStyleCustom}">

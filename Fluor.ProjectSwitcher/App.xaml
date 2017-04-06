@@ -41,7 +41,15 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            
+
+             <!-- Custom MenuItem style for all menu items -->
+            <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                <Setter Property="Header" Value="{Binding Name}"/>
+                <Setter Property="CommandParameter" Value="{Binding Value}"/>
+                <Setter Property="Icon" Value="{Binding ContextMenuIcon_Path}"/>
+                <EventSetter Event="MenuItem.Click" Handler="mu_Click"/>
+            </Style>
+
             <!-- Used with the MenuItem's Icon property to display a folder icon -->
             <Path x:Key="ContextMenuIcon_Path" Data="{Binding Mode=OneWay, Source={StaticResource Folder}}" Style="{DynamicResource MenuItemIconStyle}"/>
 

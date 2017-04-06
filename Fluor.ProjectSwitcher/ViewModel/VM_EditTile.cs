@@ -183,11 +183,6 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 selectedExistingAssociation = value;
 
-                //if (selectedExistingAssociation != null)
-                //{
-                //    SelectedAssociation = selectedExistingAssociation;
-                //}
-
                 RaisePropertyChanged("SelectedExistingAssociation");
             }
         }
@@ -264,6 +259,20 @@ namespace Fluor.ProjectSwitcher.ViewModel
             foreach (var project in msg)
             {
                 foreach (var association in project.Associations)
+                {
+                    ExistingAssociationCollection.Add(association);
+                }
+
+                RecurseAssociations(project);
+            }
+        }
+
+        //TODO Need a standard method for recursing collections
+        private void RecurseAssociations(Project project)
+        {
+            foreach (var subProject in project.SubItems)
+            {
+                foreach (var association in subProject.Associations)
                 {
                     ExistingAssociationCollection.Add(association);
                 }

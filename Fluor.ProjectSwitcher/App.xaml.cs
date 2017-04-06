@@ -67,5 +67,22 @@ namespace Fluor.ProjectSwitcher
             AppTheme.MergedDictionaries.Clear();
             AppTheme.MergedDictionaries.Add(new ResourceDictionary() { Source = msg.Content });
         }
+
+        private void mu_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
+
+            if (mi.DataContext is Class.ContextMenu)
+            {
+                Class.ContextMenu contextMenu = (Class.ContextMenu)mi.DataContext;
+
+                Utilities.OpenFolder(contextMenu.Value);
+            }
+            else if (mi.DataContext is Project)
+            {
+                e.Handled = true;
+                Messenger.Default.Send(new Message.M_ChangeSelectedTile((Project)mi.DataContext, this, true));
+            }
+        }
     }
 }

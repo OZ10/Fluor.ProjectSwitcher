@@ -56,12 +56,12 @@ namespace Fluor.ProjectSwitcher.View
 
             if (selectedProject != null)
             {
-                Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedProject, this));
+                Messenger.Default.Send(new Message.M_ChangeSelectedTile(selectedProject, this));
             }
             else
             {
                 TopApplication selectedApplication = btn.DataContext as TopApplication;
-                Messenger.Default.Send(new Message.M_UpdateSelectedTile(selectedApplication, this));
+                Messenger.Default.Send(new Message.M_ChangeSelectedTile(selectedApplication, this));
             }
         }
 

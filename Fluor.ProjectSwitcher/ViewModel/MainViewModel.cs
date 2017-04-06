@@ -115,7 +115,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
             version = "v" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, ChangeSelectedTile);
+            Messenger.Default.Register<Message.M_ChangeSelectedTile>(this, ChangeSelectedTile);
             Messenger.Default.Register<GenericMessage<TopApplication>>(this, UpdateSelectedApplication);
             Messenger.Default.Register<Message.M_SettingsHaveBeenChanged>(this, SettingsHaveChanged);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
@@ -134,9 +134,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Load theme
                 if (ProjectSwitcherSettings.ActiveTheme != null)
                 { Messenger.Default.Send(new GenericMessage<Uri>(new Uri(ProjectSwitcherSettings.ActiveTheme, UriKind.Relative))); }
-                
-                PopulateProjectsAndApplications();
 
+                PopulateProjectsAndApplications();
             }
             catch (Exception ex)
             {
@@ -209,6 +208,8 @@ namespace Fluor.ProjectSwitcher.ViewModel
 
         private async Task OpenSelectedApplications()
         {
+            ProjectSwitcherSettings.RefreshProjects();
+
             UpdateStatusBar("opening applications");
 
             // Allow time for previous applications to close
@@ -381,7 +382,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Changes the selected tile.
         /// </summary>
         /// <param name="msg">Message containing the selected item.</param>
-        private void ChangeSelectedTile(Message.M_UpdateSelectedTile msg)
+        private void ChangeSelectedTile(Message.M_ChangeSelectedTile msg)
         {
             // Only change the selectedtile if a project tile has been selected
             // do nothing and keep the previously selected tile if an application tile has been selected
@@ -395,7 +396,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                     if (SelectedTile.SubItems.Any() | SelectedTile.Associations.Any())
                     {
                         // Change the breadcrumb (title bar) to reflect the newly selected item
-                        PopulateBreadCrumb(SelectedTile);
+                        PopulateBreadCrumb(SelectedTile, msg.ResetBreadcrumb);
                     }
                 }
             }
@@ -406,11 +407,14 @@ namespace Fluor.ProjectSwitcher.ViewModel
         /// Populates the breadcrumb in the title bar.
         /// </summary>
         /// <param name="switcherItem">The switcher item to be added.</param>
-        private void PopulateBreadCrumb(SwitcherItem switcherItem)
+        private void PopulateBreadCrumb(SwitcherItem switcherItem, bool resetBreadcrumb)
         {
             // Check if the breadcrumb collection already has items
             // Method: Add each item one by one to a new temp collection until the item which has been select (passed in) is found
             // Then overwrite the Breadcrumb collection with the temp collection - therefore any item after the selected item will be removed.
+
+            if (resetBreadcrumb) { BreadcrumbCollection = new ObservableCollection<SwitcherItem>(); }
+
             if (BreadcrumbCollection.Any())
             {
                 ObservableCollection<SwitcherItem> tempCollection = new ObservableCollection<SwitcherItem>();
@@ -482,6 +486,12 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (ProjectSwitcherSettings.HasBeenChanged)
             {
+                // Get any changes to the project details from the Tiles viewmodel
+                Messenger.Default.Send(new NotificationMessageAction<ObservableCollection<Project>>("", (updatedProjects) => 
+                {
+                    ProjectSwitcherSettings.Projects = updatedProjects;
+                } ));
+
                 ProjectSwitcherSettings.UserVersion += 1;
                 ProjectSwitcherSettings.HasBeenChanged = false;
 
@@ -529,8 +539,13 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (msg.Sender != this)
             {
-                ProjectSwitcherSettings.ActiveTheme = msg.Content.ToString();
-                ProjectSwitcherSettings.HasBeenChanged = true;
+                string themeName = msg.Content.ToString();
+
+                if (ProjectSwitcherSettings.ActiveTheme != themeName)
+                {
+                    ProjectSwitcherSettings.ActiveTheme = themeName;
+                    ProjectSwitcherSettings.HasBeenChanged = true;
+                }
             }
         }
     }

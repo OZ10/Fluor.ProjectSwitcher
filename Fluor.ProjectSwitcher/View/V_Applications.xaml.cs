@@ -41,17 +41,5 @@ namespace Fluor.ProjectSwitcher.View
             MenuItem mi = (MenuItem)sender;
             Messenger.Default.Send<GenericMessage<MenuItem>>(new GenericMessage<MenuItem>(mi));
         }
-
-        private void muApplication_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem mi = (MenuItem)sender;
-
-            //TODO The binding is not working correctly here; I'm not sure why. For some reason the
-            //     The ContextMenu class is bound to the header property of the MenuItem.
-            Class.ContextMenu contextMenu = (Class.ContextMenu)mi.Header;
-
-            Utilities.OpenFolder(contextMenu.Value);
-            //Fluor.ProjectSwitcher.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
-        }
     }
 }

@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace Fluor.ProjectSwitcher.Class
 {
-    public class ProjectSwitcherSettings
+    public class ProjectSwitcherSettings : GalaSoft.MvvmLight.ViewModelBase
     {
         [XmlAttribute]
         public bool HasBeenChanged { get; set; }
@@ -22,7 +22,8 @@ namespace Fluor.ProjectSwitcher.Class
         [XmlAttribute]
         public string ActiveTheme { get; set; }
 
-        public ObservableCollection<Project> Projects { get; set; }
+        private ObservableCollection<Project> projects;
+        public ObservableCollection<Project> Projects { get { return projects; } set { projects = value; RaisePropertyChanged("Projects"); } }
         public ObservableCollection<TopApplication> Applications { get; set; }
 
         public ProjectSwitcherSettings()
@@ -32,6 +33,11 @@ namespace Fluor.ProjectSwitcher.Class
             Applications = new ObservableCollection<TopApplication>();
 
             if (ActiveTheme == "") ActiveTheme = "/Themes/Accents_Fluor.xaml";
+        }
+
+        public void RefreshProjects()
+        {
+            RaisePropertyChanged("Projects");
         }
     }
 }

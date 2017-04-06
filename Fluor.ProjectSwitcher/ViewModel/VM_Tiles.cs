@@ -92,8 +92,11 @@ namespace Fluor.ProjectSwitcher.ViewModel
             Messenger.Default.Register<ObservableCollection<Project>>(this, PopulateProjects);
             Messenger.Default.Register<Message.M_EditTile>(this, SaveChangesToProject);
             Messenger.Default.Register<Message.M_ChangeView>(this, ChangeView);
-            Messenger.Default.Register<Message.M_UpdateSelectedTile>(this, TileClicked);
+            Messenger.Default.Register<Message.M_ChangeSelectedTile>(this, TileClicked);
             Messenger.Default.Register<Message.M_SimpleAction>(this, ChangeActiveProject);
+
+            // Return the projects collection to the main viewmodel
+            Messenger.Default.Register<NotificationMessageAction<ObservableCollection<Project>>>(this, (msg) => { msg.Execute(projectsCollection); });
         }
 
         /// <summary>
@@ -106,7 +109,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             {
                 SortProjectsByPosition(ref msg);
 
-                ProjectsCollection = msg; //new ObservableCollection<Project>(msg.OrderBy((proj) => proj.Position));
+                ProjectsCollection = msg;
 
                 CreateTiles();
 
@@ -117,7 +120,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                 // Select the project if it's been pre-selected or just show the tiles tab
                 if (SelectedTile != null)
                 {
-                    Messenger.Default.Send(new Message.M_UpdateSelectedTile(SelectedTile, this));
+                    Messenger.Default.Send(new Message.M_ChangeSelectedTile(SelectedTile, this));
                 }
                 else
                 {
@@ -178,7 +181,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
         }
 
         /// <summary>
-        /// reates a tile for each project.
+        /// creates a tile for each project.
         /// </summary>
         /// <param name="msg">Message containing a collection of projects.</param>
         private void CreateTiles()
@@ -209,7 +212,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
             ActiveTileCollection = new ObservableCollection<SwitcherItem>(SelectedTile.Applications);
         }
 
-        private void TileClicked(Message.M_UpdateSelectedTile msg)
+        private void TileClicked(Message.M_ChangeSelectedTile msg)
         {
             // Try to cast the item as a Project
             Project project = msg.SelectedProject as Project;
@@ -346,7 +349,7 @@ namespace Fluor.ProjectSwitcher.ViewModel
                         SelectedTile = switcherItem;
 
                         // Send a message to the main view to update the breadcrumb
-                        Messenger.Default.Send(new Message.M_UpdateSelectedTile(SelectedTile, this));
+                        Messenger.Default.Send(new Message.M_ChangeSelectedTile(SelectedTile, this));
                     }
                 }
             }

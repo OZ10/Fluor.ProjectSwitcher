@@ -5,8 +5,9 @@
         xmlns:View="clr-namespace:Fluor.ProjectSwitcher.View"
         xmlns:Controls="clr-namespace:Fluor.WPF.Resources.Controls;assembly=Fluor.WPF.Resources"
         xmlns:Converters="clr-namespace:Fluor.WPF.Resources.Converters;assembly=Fluor.WPF.Resources"
+        xmlns:Class="clr-namespace:Fluor.ProjectSwitcher.Class"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"  x:Class="Fluor.ProjectSwitcher.MainWindow"
-        Title="" SizeToContent="WidthAndHeight" FontSize="16" BorderThickness="1" MaxHeight="900" MinHeight="280" MinWidth="370" BorderBrush="{DynamicResource HighlightBrush}" FontFamily="Calibri" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="" MaxHeight="900" MinHeight="280" MinWidth="370" MouseLeftButtonDown="Window_MouseLeftButtonDown" Style="{StaticResource StandardWindowStyle}">
     <Window.DataContext>
         <Binding Mode="OneWay" Path="Main" Source="{StaticResource Locator}"/>
     </Window.DataContext>
@@ -14,7 +15,6 @@
 
         <Converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        
         <Style x:Key="MetroBreadCrumbButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="2"/>
@@ -33,8 +33,8 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.ContextMenu>
-                                <ContextMenu ItemsSource="{Binding CombinedContextMenuCollection}">
-                                    <ContextMenu.ItemTemplate>
+                                <ContextMenu ItemsSource="{Binding CombinedContextMenuCollection}" >
+                                    <!--<ContextMenu.ItemTemplate>
                                         <DataTemplate>
                                             <MenuItem Header="{Binding Name}" CommandParameter="{Binding Value}" Icon="{DynamicResource ContextMenuIcon_Path}"/>
                                         </DataTemplate>
@@ -43,7 +43,7 @@
                                         <Style TargetType="{x:Type MenuItem}">
                                             <EventSetter Event="MenuItem.Click" Handler="muBreadCrumb_Click"/>
                                         </Style>
-                                    </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu.ItemContainerStyle>-->
                                 </ContextMenu>
                             </Grid.ContextMenu>
 
@@ -125,6 +125,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
+   
+        <HierarchicalDataTemplate DataType="{x:Type Class:Project}" ItemsSource="{Binding Path=SubItems}">
+            <MenuItem Header="{Binding Name}" ItemsSource="{Binding SubItems}"/>
+        </HierarchicalDataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -143,7 +147,11 @@
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="btnSettings" Click="btnSettings_Click" Content="{StaticResource MenuIcon}" BorderBrush="{x:Null}" Style="{DynamicResource StandardButtonStyleWhite}" ToolTip="Settings" Visibility="{Binding MainViewButtonsVisibility}"/>
-            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource StandardButtonStyleWhite}" Content="{StaticResource HomeIcon}" Click="btnHome_Click" ToolTip="Home" Visibility="{Binding MainViewButtonsVisibility}"/>
+            <Button x:Name="btnHome" Grid.Column="1" Style="{DynamicResource StandardButtonStyleWhite}" Content="{StaticResource HomeIcon}" Click="btnHome_Click" ToolTip="Home" Visibility="{Binding MainViewButtonsVisibility}">
+                <Button.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ProjectSwitcherSettings.Projects}"/>
+                </Button.ContextMenu>
+            </Button>
             <ItemsControl ItemsSource="{Binding BreadcrumbCollection}" ItemTemplate="{DynamicResource MetroBreadCrumbButton}" VerticalAlignment="Center" Grid.Column="2" Visibility="{Binding MainViewButtonsVisibility}"  IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -162,7 +170,17 @@
         <View:V_Edit Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsAddNewTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
         <View:V_EditApplications Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding IsEditApplicationsTabSelected, Converter={StaticResource BooleanToVisibilityConverter}}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
 
-        <Button x:Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="Switch Project" Content="{DynamicResource SwitchProjectIcon}" Style="{DynamicResource StandardButtonStyleSpin}" Foreground="White" Background="{DynamicResource SubColorBrush}" RenderTransformOrigin="0.5,0.5" Margin="10" Visibility="{Binding MainViewButtonsVisibility}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}"/>
+        <Button x:Name="btnOpenProject" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Click="btnOpenProject_Click" Width="60" Height="60" ToolTip="Switch Project" Content="{DynamicResource SwitchProjectIcon}" Foreground="White" Background="{DynamicResource SubColorBrush}" RenderTransformOrigin="0.5,0.5" Margin="10" Visibility="{Binding MainViewButtonsVisibility}" IsEnabled="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, ElementName=flySettings}">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyleSpin}">
+                    <Setter Property="Button.Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Gray" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
 
         <local:StatusWindow x:Name="StatusWindow" Grid.RowSpan="4" Grid.ColumnSpan="4" Visibility="Hidden"/>
 
@@ -180,6 +198,7 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="15"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Settings File" Foreground="{DynamicResource TextBlack87Brush}"/>

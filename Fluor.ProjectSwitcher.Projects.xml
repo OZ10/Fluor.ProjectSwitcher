@@ -1,41 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ProjectSwitcherSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" HasBeenUpdated="false" Version="1" UserVersion="4">
+<ProjectSwitcherSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" HasBeenChanged="false" Version="1" UserVersion="273" ActiveTheme="/Themes/Accents_Winter.xaml">
   <Projects>
+    <Project Name="Maaden" IsEnabled="true" MiscText="" Position="0">
+      <ContextMenuCollection>
+        <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\" Name="Open project location" />
+      </ContextMenuCollection>
+      <Associations />
+      <SubItems>
+        <Project Name="Sandbox" IsEnabled="true" MiscText="EPC0" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC0 - Seed" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Sandbox">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID_SB\SMARTPLANT_RESOURCES\EPC0" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM_SB\SITE\SPPID\EPC0" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM_SB\SITE\SPPID\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC0" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC0" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Daelim Satellite" IsEnabled="true" MiscText="EPC1" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC1 - Daelim" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Daelim Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC1" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\EPC1" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC1" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC1" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Intecsa Satellite" IsEnabled="true" MiscText="EPC2" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC2 - Intecsa" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Intecsa Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC2" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\EPC2" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC2" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC2" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="SNC Satellite" IsEnabled="true" MiscText="EPC3" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC3 - SNC" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="SNC Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC3" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\EPC3" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC3" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC3" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Hanwha Satellite" IsEnabled="true" MiscText="EPC4" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC4 - Hanwha" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Hanwha Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC4" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\EPC4" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC4" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC4" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Jacobs Satellite" IsEnabled="true" MiscText="EPC6" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC6 - Jacobs" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Jacobs Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC6" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\EPC6" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC6" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC6" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="HQC Satellite" IsEnabled="true" MiscText="EPC7" Position="0">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="\\xespdfp001\xe_a6mp\107_PIM\SmartPlant\SPPID\Workshare Management\EPC7 - HQC" Name="Open project location" />
+          </ContextMenuCollection>
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="HQC Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC7" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\EPC7" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="INI Location" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC7" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Plant" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC7" Path="C:\Users\fre11896\\SmartPlantManager.INI" Name="Active Parent Plant" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Ballestra Satellite" IsEnabled="true" MiscText="EPC8" Position="0">
+          <ContextMenuCollection />
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Ballestra Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC8" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC8" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC8" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Fluor Satellite" IsEnabled="true" MiscText="EPC10" Position="0">
+          <ContextMenuCollection />
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Fluor Satellite">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID\SMARTPLANT_RESOURCES\EPC10" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM\SITE\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,EPC10" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,EPC10" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Maaden Test" IsEnabled="true" MiscText="" Position="0">
+          <ContextMenuCollection />
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Maaden Test">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPPID_SB\SMARTPLANT_RESOURCES\TestPlant" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil009\FB_A6MPCAD\000\SPEM_SB\SITE\SPPID\TestPlant" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil009\FB_A6MPCAD\000\SPEM_SB\SITE\SPPID\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,TestPlant" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,TestPlant" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+      </SubItems>
+    </Project>
+    <Project Name="TCO FGP" IsEnabled="true" MiscText="" Position="0">
+      <ContextMenuCollection>
+        <ContextMenu ContextMenuType="PATH" Value="\\fdnet.com\fb_projects\FB_T2CO" Name="Project Location" />
+      </ContextMenuCollection>
+      <Associations />
+      <SubItems>
+        <Project Name="Sandbox" IsEnabled="true" MiscText="" Position="0">
+          <ContextMenuCollection />
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Sandbox">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil006\FB_T2CO\CAD\000\SPPID_SB\SMARTPLANT_RESOURCES_SB" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil006\FB_T2CO\CAD\000\SPEM_SB\SITE\SPPID\TCOFGP_SB" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil006\FB_T2CO\CAD\000\SPEM_SB\SITE\SPPID\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,TCOFGP_SB" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,TCOFGP_SB" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+        <Project Name="Production" IsEnabled="true" MiscText="" Position="0">
+          <ContextMenuCollection />
+          <Associations>
+            <Association Name="SPPID" IsEnabled="false" Position="0" ProjectName="Production">
+              <ContextMenuCollection>
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil006\FB_T2CO\CAD\000\SPPID\SMARTPLANT_RESOURCES_PROD" Name="Open P&amp;ID Ref Data Folder" />
+                <ContextMenu ContextMenuType="PATH" Value="\\fbppfil006\FB_T2CO\CAD\000\SPEM_PROD\SITE\SPPID\TCOFGP" Name="Open Eng Manager Folder" />
+              </ContextMenuCollection>
+              <Parameters>
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,SiteServer,\\fbppfil006\FB_T2CO\CAD\000\SPEM_PROD\SITE\SPPID\smartplantv4.ini" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActivePlant,TCOFGP" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+                <Parameter ParameterType="INI" Value="SmartPlant Manager,ActiveParentPlant,TCOFGP" Path="C:\Users\fre11896\\SmartPlantManager.INI" />
+              </Parameters>
+            </Association>
+          </Associations>
+          <SubItems />
+        </Project>
+      </SubItems>
+    </Project>
   </Projects>
   <Applications>
-    <TopApplication Name="SPPID" IsEnabled="true" ParentItem="">
+    <TopApplication Name="SPPID" IsEnabled="true" ParentItem="" Position="0">
       <ContextMenuCollection />
       <SubItems>
-        <SubApplication Name="SmartPlant P&amp;ID" IsEnabled="true" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\" ParentItem="SPPID">
+        <SubApplication Name="SmartPlant P&amp;ID" IsEnabled="true" ParentItem="SPPID" Position="0" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\">
           <ContextMenuCollection>
             <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" Name="Open SPPID install location" />
           </ContextMenuCollection>
           <SubItems>
-            <SubApplication Name="Drawing Manager" IsEnabled="true" Exe="DrawingManagerEXE.exe" IsSelected="true" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\" ParentItem="SmartPlant P&amp;ID">
+            <SubApplication Name="Drawing Manager" IsEnabled="true" ParentItem="SmartPlant P&amp;ID" Position="0" Exe="DrawingManagerEXE.exe" IsSelected="true" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" Name="Open SPPID install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Rule Manager" IsEnabled="true" Exe="Rule Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\" ParentItem="SmartPlant P&amp;ID">
+            <SubApplication Name="Rule Manager" IsEnabled="true" ParentItem="SmartPlant P&amp;ID" Position="0" Exe="Rule Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" Name="Open SPPID install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Insulation Manager" IsEnabled="true" Exe="Insulation Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\" ParentItem="SmartPlant P&amp;ID">
+            <SubApplication Name="Insulation Manager" IsEnabled="true" ParentItem="SmartPlant P&amp;ID" Position="0" Exe="Insulation Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" Name="Open SPPID install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Options Manager" IsEnabled="true" Exe="Options Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\" ParentItem="SmartPlant P&amp;ID">
+            <SubApplication Name="Options Manager" IsEnabled="true" ParentItem="SmartPlant P&amp;ID" Position="0" Exe="Options Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" Name="Open SPPID install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Draft" IsEnabled="true" Exe="draft.exe" IsSelected="false" IsVisible="false" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\" ParentItem="SmartPlant P&amp;ID">
+            <SubApplication Name="Draft" IsEnabled="true" ParentItem="SmartPlant P&amp;ID" Position="0" Exe="draft.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\Program" Name="Open SPPID install location" />
               </ContextMenuCollection>
@@ -43,42 +277,42 @@
             </SubApplication>
           </SubItems>
         </SubApplication>
-        <SubApplication Name="SmartPlant Engineering Manager" IsEnabled="true" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SPPID">
+        <SubApplication Name="SmartPlant Engineering Manager" IsEnabled="true" ParentItem="SPPID" Position="0" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
           <ContextMenuCollection>
             <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
           </ContextMenuCollection>
           <SubItems>
-            <SubApplication Name="Engineering Manager" IsEnabled="true" Exe="SmartPlant Engineering Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Engineering Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="SmartPlant Engineering Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Data Dictionary Manager" IsEnabled="true" Exe="Data Dictionary Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Data Dictionary Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="Data Dictionary Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Catalog Manager" IsEnabled="true" Exe="CatalogManager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Catalog Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="CatalogManager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Filter Manager" IsEnabled="true" Exe="igrFilterManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Filter Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="igrFilterManager412.exe" IsSelected="true" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Format Manager" IsEnabled="true" Exe="igrFormatManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Format Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="igrFormatManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Ref Data Sync Manager" IsEnabled="true" Exe="RefDataSyncMgr.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Ref Data Sync Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="RefDataSyncMgr.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
@@ -86,30 +320,30 @@
             </SubApplication>
           </SubItems>
         </SubApplication>
-        <SubApplication Name="Support Utilities" IsEnabled="true" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\"  ParentItem="SPPID">
+        <SubApplication Name="Support Utilities" IsEnabled="true" ParentItem="SPPID" Position="0" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
           <ContextMenuCollection />
           <SubItems>
-            <SubApplication Name="Item Tag Configuration Utility" IsEnabled="true" Exe="ConfigureItemTagFormatUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\" ParentItem="Support Utilities">
+            <SubApplication Name="Item Tag Configuration Utility" IsEnabled="true" ParentItem="Support Utilities" Position="0" Exe="ConfigureItemTagFormatUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Change Linked Document Utility" IsEnabled="true" Exe="GlobalChangeLinkedDocSourceUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\" ParentItem="Support Utilities">
+            <SubApplication Name="Change Linked Document Utility" IsEnabled="true" ParentItem="Support Utilities" Position="0" Exe="GlobalChangeLinkedDocSourceUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Global Report Utility" IsEnabled="true" Exe="GlobalReportUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\" ParentItem="Support Utilities">
+            <SubApplication Name="Global Report Utility" IsEnabled="true" ParentItem="Support Utilities" Position="0" Exe="GlobalReportUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Global Symbol Update Utility" IsEnabled="true" Exe="GlobalSymbolUpdateUtility" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\" ParentItem="Support Utilities">
+            <SubApplication Name="Global Symbol Update Utility" IsEnabled="true" ParentItem="Support Utilities" Position="0" Exe="GlobalSymbolUpdateUtility" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Global Validation Utility" IsEnabled="true" Exe="GlobalValidationUpdateUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\" ParentItem="Support Utilities">
+            <SubApplication Name="Global Validation Utility" IsEnabled="true" ParentItem="Support Utilities" Position="0" Exe="GlobalValidationUpdateUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Symbol Report Utility" IsEnabled="true" Exe="SymbolReportUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\" ParentItem="Support Utilities">
+            <SubApplication Name="Symbol Report Utility" IsEnabled="true" ParentItem="Support Utilities" Position="0" Exe="SymbolReportUtility.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\P&amp;ID Workstation\SupportUtilities\">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
@@ -117,70 +351,70 @@
         </SubApplication>
       </SubItems>
     </TopApplication>
-    <TopApplication Name="SPEL" IsEnabled="true" ParentItem="">
+    <TopApplication Name="SPEL" IsEnabled="true" ParentItem="" Position="0">
       <ContextMenuCollection />
       <SubItems>
-        <SubApplication Name="SmartPlant Electrical" IsEnabled="true" Exe="" IsSelected="false" IsVisible="true" ParentItem="SPEL">
+        <SubApplication Name="SmartPlant Electrical" IsEnabled="true" ParentItem="SPEL" Position="0" Exe="" IsSelected="false" IsVisible="true">
           <ContextMenuCollection />
           <SubItems>
-            <SubApplication Name="Smartplant Electrical" IsEnabled="true" Exe="spelect.exe" IsSelected="false" IsVisible="true" ParentItem="Smartplant Electrical">
+            <SubApplication Name="Smartplant Electrical" IsEnabled="true" ParentItem="Smartplant Electrical" Position="0" Exe="spelect.exe" IsSelected="false" IsVisible="true">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Rule Manager" IsEnabled="true" Exe="SpelRuleManager.exe" IsSelected="false" IsVisible="true" ParentItem="Smartplant Electrical">
+            <SubApplication Name="Rule Manager" IsEnabled="true" ParentItem="Smartplant Electrical" Position="0" Exe="SpelRuleManager.exe" IsSelected="false" IsVisible="true">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Import Manager" IsEnabled="true" Exe="SPELImportManager.exe" IsSelected="false" IsVisible="true" ParentItem="Smartplant Electrical">
+            <SubApplication Name="Import Manager" IsEnabled="true" ParentItem="Smartplant Electrical" Position="0" Exe="SPELImportManager.exe" IsSelected="false" IsVisible="true">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Options Manager" IsEnabled="true" Exe="SPELOptionsManager.exe" IsSelected="false" IsVisible="true" ParentItem="Smartplant Electrical">
+            <SubApplication Name="Options Manager" IsEnabled="true" ParentItem="Smartplant Electrical" Position="0" Exe="SPELOptionsManager.exe" IsSelected="false" IsVisible="true">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Draft" IsEnabled="true" Exe="draft.exe" IsSelected="false" IsVisible="false" ParentItem="Smartplant Electrical">
+            <SubApplication Name="Draft" IsEnabled="true" ParentItem="Smartplant Electrical" Position="0" Exe="draft.exe" IsSelected="false" IsVisible="false">
               <ContextMenuCollection />
               <SubItems />
             </SubApplication>
           </SubItems>
         </SubApplication>
-        <SubApplication Name="SmartPlant Engineering Manager" IsEnabled="true" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SPEL">
+        <SubApplication Name="SmartPlant Engineering Manager" IsEnabled="true" ParentItem="SPEL" Position="0" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
           <ContextMenuCollection>
             <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
           </ContextMenuCollection>
           <SubItems>
-            <SubApplication Name="Engineering Manager" IsEnabled="true" Exe="SmartPlant Engineering Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Engineering Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="SmartPlant Engineering Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Data Dictionary Manager" IsEnabled="true" Exe="Data Dictionary Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Data Dictionary Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="Data Dictionary Manager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Catalog Manager" IsEnabled="true" Exe="CatalogManager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Catalog Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="CatalogManager.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Filter Manager" IsEnabled="true" Exe="igrFilterManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Filter Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="igrFilterManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Format Manager" IsEnabled="true" Exe="igrFormatManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Format Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="igrFormatManager412.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Ref Data Sync Manager" IsEnabled="true" Exe="RefDataSyncMgr.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\" ParentItem="SmartPlant Engineering Manager">
+            <SubApplication Name="Ref Data Sync Manager" IsEnabled="true" ParentItem="SmartPlant Engineering Manager" Position="0" Exe="RefDataSyncMgr.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program\">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Engineering Manager\Program" Name="Open SPENG install location" />
               </ContextMenuCollection>
@@ -190,21 +424,21 @@
         </SubApplication>
       </SubItems>
     </TopApplication>
-    <TopApplication Name="SPI" IsEnabled="true" ParentItem="">
+    <TopApplication Name="SPI" IsEnabled="true" ParentItem="" Position="0">
       <ContextMenuCollection />
       <SubItems>
-        <SubApplication Name="SmartPlant Instrumentation" IsEnabled="true" Exe="" IsSelected="false" IsVisible="true" ParentItem="SPI">
+        <SubApplication Name="SmartPlant Instrumentation" IsEnabled="true" ParentItem="SPI" Position="0" Exe="" IsSelected="false" IsVisible="true">
           <ContextMenuCollection>
             <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Instrumentation\" Name="Open SPI install location" />
           </ContextMenuCollection>
           <SubItems>
-            <SubApplication Name="SPI" IsEnabled="true" Exe="intools.exe" IsSelected="false" IsVisible="true" ParentItem="SmartPlant Instrumentation">
+            <SubApplication Name="SPI" IsEnabled="true" ParentItem="SmartPlant Instrumentation" Position="0" Exe="intools.exe" IsSelected="false" IsVisible="true">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Instrumentation\" Name="Open SPI install location" />
               </ContextMenuCollection>
               <SubItems />
             </SubApplication>
-            <SubApplication Name="Administration" IsEnabled="true" Exe="main.exe" IsSelected="false" IsVisible="true" ParentItem="SmartPlant Instrumentation">
+            <SubApplication Name="Administration" IsEnabled="true" ParentItem="SmartPlant Instrumentation" Position="0" Exe="main.exe" IsSelected="false" IsVisible="true">
               <ContextMenuCollection>
                 <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Instrumentation\" Name="Open SPI install location" />
               </ContextMenuCollection>
@@ -214,12 +448,19 @@
         </SubApplication>
       </SubItems>
     </TopApplication>
-    <TopApplication Name="NOTEPAD" IsEnabled="true" ParentItem="">
+    <TopApplication Name="SPC" IsEnabled="true" Position="0">
       <ContextMenuCollection />
       <SubItems>
-        <SubApplication Name="NotePad" IsEnabled="true" Exe="notepad.exe" IsSelected="false" IsVisible="true" InstallPath="C:\Windows\" ParentItem="NOTEPAD">
-          <ContextMenuCollection />
-          <SubItems />
+        <SubApplication Name="SmartPlant Construction" IsEnabled="true" ParentItem="SPC" Position="0" Exe="" IsSelected="false" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Construction\2015\SPCClient\">
+          <ContextMenuCollection>
+            <ContextMenu ContextMenuType="PATH" Value="C:\Program Files (x86)\SmartPlant\Construction\2015" Name="Install Location" />
+          </ContextMenuCollection>
+          <SubItems>
+            <SubApplication Name="SPC" IsEnabled="true" ParentItem="SmartPlant Construction" Position="0" Exe="SPC.Client.exe" IsSelected="true" IsVisible="true" InstallPath="C:\Program Files (x86)\SmartPlant\Construction\2015\SPCClient\">
+              <ContextMenuCollection />
+              <SubItems />
+            </SubApplication>
+          </SubItems>
         </SubApplication>
       </SubItems>
     </TopApplication>
