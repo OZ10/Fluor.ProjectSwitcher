@@ -2,16 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!--ACCENT COLORS-->
     <!--<Color x:Key="HighlightColor">#FF00457D</Color>-->
-    <Color x:Key="HighlightColor">#795548</Color>
+    <Color x:Key="HighlightColor">#FF333337</Color>
 
     <!--80%-->
-    <Color x:Key="AccentColor">#CC795548</Color>
+    <Color x:Key="AccentColor">#FF3F3F46</Color>
     <!--60%-->
-    <Color x:Key="AccentColor2">#99795548</Color>
+    <Color x:Key="AccentColor2">#FF5C5C66</Color>
     <!--40%-->
-    <Color x:Key="AccentColor3">#66795548</Color>
+    <Color x:Key="AccentColor3">#FF8E8E9C</Color>
     <!--20%-->
-    <Color x:Key="AccentColor4">#FFEDEDED</Color>
+    <Color x:Key="AccentColor4">#FFCECEE0</Color>
 
     <!-- re-set brushes too -->
     <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
@@ -48,6 +48,9 @@
 
     <Color x:Key="CloseButtonBackGroundColor">#FF003264</Color>
     <SolidColorBrush x:Key="CloseButtonBackGroundBrush" Color="{StaticResource CloseButtonBackGroundColor}"/>
+
+    <Color x:Key="WindowBackgroundColor">#FFEDEDED</Color>
+    <SolidColorBrush x:Key="WindowBackgroundColorBrush" Color="{StaticResource WindowBackgroundColor}" />
 
     <!-- Text Colours & brushes -->
     <Color x:Key="TextBlackMain">Black</Color>

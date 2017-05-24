@@ -9,7 +9,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="200"/>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition MinWidth="200"/>
+            <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -23,7 +23,7 @@
             </Grid.RowDefinitions>
         
             <TextBlock Text="Applications" VerticalAlignment="Center" FontSize="16"/>
-            <Button Name="btnAddNewApplication" HorizontalAlignment="Right" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Padding="10" Width="30" ToolTip="Add New Application" Click="btnAddNewApplication_Click"/>
+            <Button Name="btnAddNewApplication" HorizontalAlignment="Right" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Padding="10" Width="30" ToolTip="Add New Application" Click="btnAddNewApplication_Click" VerticalAlignment="Center"/>
             <TreeView Grid.Row="1" ItemsSource="{Binding ApplicationsCollection}" SelectedItemChanged="TreeView_SelectedItemChanged">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
@@ -59,12 +59,9 @@
                 <TextBox Grid.Row="4" Text="{Binding Exe}"/>
                 <TextBlock Text="Install Path" Grid.Row="5" VerticalAlignment="Bottom" Margin="0,10,0,0"/>
                 <TextBox Grid.Row="6" Text="{Binding InstallPath}"/>
-                <TextBlock Text="Enabled:" Grid.Row="8" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="8" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsEnabled}"/>
-                <TextBlock Text="Selected:" Grid.Row="9" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="9" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsSelected}"/>
-                <TextBlock Text="Visible:" Grid.Row="10" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="10" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsVisible}"/>
+                <CheckBox Grid.Row="8" Content="Enabled" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsEnabled}"/>
+                <CheckBox Grid.Row="9" Content="Selected" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsSelected}"/>
+                <CheckBox Grid.Row="10" Content="Visible" Style="{DynamicResource StandardSwitchStyle}" IsChecked="{Binding IsVisible}"/>
                 <TextBlock Grid.Row="12" Text="Context Menus"  VerticalAlignment="Bottom"/>
                 <Button Grid.Row="12" Name="btnAddnewContextMenu"  Height="20" Width="20" Content="{Binding Mode=OneWay, Source={StaticResource PlusIcon}}" Click="btnAddnewContextMenu_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5" ToolTip="Add New Context Menu"/>
                 <ListBox Grid.Row="13" FontSize="12" ItemTemplate="{DynamicResource ListViewItemWithEditButton}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource AccentColorBrush3}" ItemsSource="{Binding ContextMenuCollection}"/>
@@ -87,8 +84,8 @@
             <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SelectedContextMenu.EditedValue}" />
         </Grid>
 
-        <Button Name="btnEditOk" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource TickIcon}}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" Background="{DynamicResource SubColorBrush}" />
-        <Button Name="btnEditCancel" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource CloseIcon}}" Height="50" Width="50" Margin="80,10,0,0" Background="{DynamicResource SubColorBrush}" Click="btnEditCancel_Click"/>
+        <Button Name="btnEditOk" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource TickIcon}}" Height="50" Width="50" Margin="0,10,80,0" Click="btnEditOk_Click" />
+        <Button Name="btnEditCancel" Grid.Row="2" Grid.ColumnSpan="3" Content="{Binding Mode=OneWay, Source={StaticResource CloseIcon}}" Height="50" Width="50" Margin="80,10,0,0" Click="btnEditCancel_Click"/>
     </Grid>
 
     <UserControl.Resources>

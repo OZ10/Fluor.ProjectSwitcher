@@ -12,16 +12,8 @@ namespace Fluor.ProjectSwitcher
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow 
     {
-        //public ViewModel.MainViewModel vm
-        //{
-        //    get
-        //    {
-        //        return (ViewModel.MainViewModel)DataContext;
-        //    }
-        //}
-
         public ViewModel.MainViewModel vm => (ViewModel.MainViewModel)DataContext;
 
         /// <summary>
@@ -32,16 +24,9 @@ namespace Fluor.ProjectSwitcher
             InitializeComponent();
 
             Messenger.Default.Register<Message.MessageStatusUpdate>(this, UpdateStatusWindow);
-            //SetUpJumplist();
+            Messenger.Default.Register<Message.M_ChangeView>(this, (msg) => ResetWindowSize());
             vm.SetupEnvironment();
         }
-
-        //private void SetUpJumplist()
-        //{
-        //    JumpList jumpList = JumpList.GetJumpList(App.Current);
-        //    jumpList.JumpItems.Clear();
-        //    jumpList.Apply();
-        //}
 
         /// <summary>
         /// Handles the Click event of the btnOpenProject control.
@@ -55,23 +40,7 @@ namespace Fluor.ProjectSwitcher
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void btnSettings_Click(object sender, RoutedEventArgs e) => flySettings.IsOpen = true;
-
-        //private void recDisable_MouseDown(object sender, MouseButtonEventArgs e) => flySettings.IsOpen = false;
-
-        //private void flyOut_IsOpenChanged(object sender, EventArgs e)
-        //{
-        //    MahApps.Metro.Controls.Flyout fly = (MahApps.Metro.Controls.Flyout)sender;
-
-        //    if (fly.IsOpen == true)
-        //    {
-        //        recDisable.Visibility = Visibility.Visible;
-        //    }
-        //    else
-        //    {
-        //        recDisable.Visibility = System.Windows.Visibility.Hidden;
-        //    }
-        //}
+        private void btnSettings_Click(object sender, RoutedEventArgs e) => flySettings.IsOpen = !flySettings.IsOpen;
 
         private void miCloseAllApps_Click(object sender, RoutedEventArgs e)
         {
@@ -105,15 +74,8 @@ namespace Fluor.ProjectSwitcher
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             vm.SaveAndClose();
-            this.Close();
+            //this.Close();
         }
-
-        //private void muProject_Click(object sender, RoutedEventArgs e)
-        //{
-        //    MenuItem mi = (MenuItem)sender;
-
-        //    Fluor.ProjectSwitcher.Class.Utilities.OpenFolder(mi.CommandParameter.ToString());
-        //}
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
@@ -163,8 +125,8 @@ namespace Fluor.ProjectSwitcher
             // After removing Mahapps the window's width would not reset
             // Setting the size manually and then resetting it to widthandheight worked
             this.SizeToContent = 0;
-            Width = 370;
-            this.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+            Width = 370; //this.Width + 1;
+            this.SizeToContent = SizeToContent.WidthAndHeight;
         }
 
         private void miEditApps_Click(object sender, RoutedEventArgs e)
@@ -193,11 +155,6 @@ namespace Fluor.ProjectSwitcher
             ResetWindowSize();
         }
 
-        private void btnMinimise_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
         private void Theme_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
@@ -207,7 +164,12 @@ namespace Fluor.ProjectSwitcher
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             flySettings.IsOpen = false;
-            DragMove();
+            //DragMove();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            vm.SaveAndClose();
         }
     }
 }

@@ -5,11 +5,11 @@
     <Color x:Key="HighlightColor">#795548</Color>
 
     <!--80%-->
-    <Color x:Key="AccentColor">#CC795548</Color>
+    <Color x:Key="AccentColor">#FF8F6252</Color>
     <!--60%-->
-    <Color x:Key="AccentColor2">#99795548</Color>
+    <Color x:Key="AccentColor2">#FFB17D6A</Color>
     <!--40%-->
-    <Color x:Key="AccentColor3">#66795548</Color>
+    <Color x:Key="AccentColor3">#FFDB9A83</Color>
     <!--20%-->
     <Color x:Key="AccentColor4">#FFEDEDED</Color>
 
@@ -48,6 +48,9 @@
     
     <Color x:Key="CloseButtonBackGroundColor">#FF003264</Color>
     <SolidColorBrush x:Key="CloseButtonBackGroundBrush" Color="{StaticResource CloseButtonBackGroundColor}"/>
+
+    <Color x:Key="WindowBackgroundColor">#FFEDEDED</Color>
+    <SolidColorBrush x:Key="WindowBackgroundColorBrush" Color="{StaticResource WindowBackgroundColor}" />
 
     <!-- Text Colours & brushes -->
     <Color x:Key="TextBlackMain">Black</Color>

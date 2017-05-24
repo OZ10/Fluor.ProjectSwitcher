@@ -15,7 +15,7 @@
         <Rectangle Fill="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Opacity="0.9"/>
         <Rectangle Grid.Row="1" Grid.RowSpan="2" Fill="White"/>
         <TextBlock Name="tbStatus" Text="LOADING" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <ProgressBar Grid.Row="2" Margin="10" IsIndeterminate="True"/>
+        <Label Grid.Row="2" Margin="10,0" Style="{StaticResource FlipBarProgress}" Content="{StaticResource Square}" HorizontalAlignment="Center"/>
         <Rectangle Fill="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Opacity="0.9" Grid.Row="3"/>
     </Grid>
 </UserControl>

@@ -300,21 +300,24 @@ namespace Fluor.ProjectSwitcher.ViewModel
         {
             if (application == null) { application = _selectedApplication; }
 
-            foreach (SubApplication subApplication in application.SubItems)
+            if (application != null)
             {
-                Process[] procs = Process.GetProcessesByName(subApplication.Exe.Replace(".exe", ""));
-
-                if (procs.Length > 0)
+                foreach (SubApplication subApplication in application.SubItems)
                 {
-                    for (var i = 0; i < procs.Length; i++)
+                    Process[] procs = Process.GetProcessesByName(subApplication.Exe.Replace(".exe", ""));
+
+                    if (procs.Length > 0)
                     {
-                        procs[i].CloseMainWindow();
+                        for (var i = 0; i < procs.Length; i++)
+                        {
+                            procs[i].CloseMainWindow();
+                        }
                     }
-                }
 
-                if (subApplication.SubItems.Any())
-                {
-                    CloseApplications(subApplication);
+                    if (subApplication.SubItems.Any())
+                    {
+                        CloseApplications(subApplication);
+                    }
                 }
             }
 
